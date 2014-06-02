@@ -12,7 +12,7 @@ class ComboField extends DropdownField {
 	public function __construct($name, $title = null, $source = array(), $value = '', $form = null, $emptyString = null) {
 		parent::__construct($name, $title, $source, $value, $form, $emptyString);
 
-		Requirements::javascript('mysite/javascript/ComboField.js');
+		Requirements::javascript('form-extras/javascript/ComboField.js');
 	}
 
 	public function setCustomValue($v) {
