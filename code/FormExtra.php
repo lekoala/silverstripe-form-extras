@@ -29,7 +29,7 @@ class FormExtra extends Form {
 		if ($actions === null) {
 			$actions = new FieldList;
 		}
-		parent::__construct($controller, $name, $fields, $actions);
+		parent::__construct($controller, $name, $fields, $actions,$validator);
 	}
 
 	public function validate() {
