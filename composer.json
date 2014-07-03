@@ -1,7 +1,7 @@
 {
 	"name": "lekoala/silverstripe-form-extras",
 	"description": "Form extras for Silverstripe",
-	"type": "silverstripe-form-extras",
+	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "form", "extras", "module", "cms"],
 	"license": "BSD-3-Clause",
 	"authors": [
