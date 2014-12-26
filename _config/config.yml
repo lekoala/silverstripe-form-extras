@@ -1,0 +1,6 @@
+---
+Name: form-extras
+After: 'framework/*','cms/*'
+---
+BaseUploadField:
+  use_subsite_integration: true

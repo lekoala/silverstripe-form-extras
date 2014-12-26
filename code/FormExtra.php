@@ -32,15 +32,6 @@ class FormExtra extends Form {
 		parent::__construct($controller, $name, $fields, $actions,$validator);
 	}
 
-	public function validate() {
-		//add support for unvalidated actions
-		$action = $this->Actions()->dataFieldByName('action_' . Form::current_action());
-		if (get_class($action) === 'FormActionUnvalidated') {
-			return true;
-		}
-		return parent::validate();
-	}
-
 	/**
 	 * Shortcut for an error
 	 * 

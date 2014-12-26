@@ -12,16 +12,15 @@
 	],
 	"require":
 			{
-				"silverstripe/framework": "~3.1",
-				"silverstripe/cms": "~3.1"
+				"silverstripe/framework": "~3.1"
 			},
 	"suggest":
 			{
 				"sheadawson/silverstripe-zenvalidator": "*",
-				"unclecheese/display-logic": "*"		
+				"unclecheese/display-logic": "*"
 			},
 	"extra": {
-		"installer-name": "masonry"
+		"installer-name": "form-extras"
 	}
 
 }
