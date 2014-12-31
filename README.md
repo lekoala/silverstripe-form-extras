@@ -25,6 +25,10 @@ ImageUploadField
 
 An UploadField already set up for image upload
 
+Sample usage:
+
+	$fields->replaceField('Logo', ImageUploadField::createForClass($this, 'Logo'));
+
 Recommended modules
 ==================
 Works best with
