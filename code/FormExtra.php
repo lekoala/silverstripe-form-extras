@@ -4,7 +4,6 @@
  * FormExtra
  * 
  * Extend your forms from this class instead of Form to add extra functionalities
- * - Support for Unvalidated actions
  * - Shortcut for returning messages or errors
  *
  * @author lekoala

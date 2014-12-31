@@ -12,8 +12,9 @@ class ImageUploadField extends BaseUploadField
     {
         parent::__construct($name, $title, $items);
         $this->getValidator()->setAllowedExtensions(
-            array('jpg', 'jpeg', 'png', 'gif')
+            self::config()->default_allowed_extensions
         );
+        $sizeInBytes = self::config()->default_max_file_size * 1024 * 1024;
+        $this->getValidator()->setAllowedMaxFileSize($sizeInBytes);
     }
-
 }

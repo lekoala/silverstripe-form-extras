@@ -1,6 +1,12 @@
 ---
 Name: form-extras
-After: 'framework/*','cms/*'
+After: 
+- 'framework/*'
+- 'cms/*'
 ---
 BaseUploadField:
   use_subsite_integration: true
+ImageUploadField:
+  # default size in MB
+  default_max_file_size: 4
+  default_allowed_extensions: [jpg,jpeg,png,gif]
