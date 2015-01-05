@@ -24,6 +24,21 @@ class BaseUploadField extends UploadField
     public static function createForClass($class, $name, $title = null,
                                           \SS_List $items = null)
     {
+        $folderName = self::getFolderForClass($class);
+
+        $inst = new static($name, $title, $items);
+        $inst->setFolderName($folderName);
+        return $inst;
+    }
+
+    /**
+     * Get folder for a given class
+     * 
+     * @param mixed $class
+     * @return string
+     */
+    public static function getFolderForClass($class)
+    {
         $folderName = 'Uploads';
 
         if (is_object($class)) {
@@ -36,6 +51,8 @@ class BaseUploadField extends UploadField
             } else {
                 $folderName = get_class($class);
             }
+        } else if (is_string($class)) {
+            $folderName = $class;
         }
 
         if (class_exists('Subsite') && Config::inst()->get(__CLASS__,
@@ -57,9 +74,7 @@ class BaseUploadField extends UploadField
             }
         }
 
-        $inst = new static($name, $title, $items);
-        $inst->setFolderName($folderName);
-        return $inst;
+        return $folderName;
     }
 
     public function __construct($name, $title = null, \SS_List $items = null)
