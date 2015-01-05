@@ -27,7 +27,9 @@ class BaseUploadField extends UploadField
         $folderName = 'Uploads';
 
         if (is_object($class)) {
-            if ($class instanceof DataObject) {
+            if ($class instanceof Page) {
+                $folderName = get_class($class);
+            } else if ($class instanceof DataObject) {
                 $folderName = $class->baseTable();
             } else if ($class instanceof DataExtension) {
                 $folderName = $class->getOwner()->baseTable();
