@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @link http://addons.silverstripe.org/add-ons/simonwelsh/hasoneedit
+ */
 class HasOneEditDataObjectExtension extends DataExtension
 {
     const separator = '-_1_-';
