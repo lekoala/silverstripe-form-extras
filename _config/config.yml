@@ -10,3 +10,12 @@ ImageUploadField:
   # default size in MB
   default_max_file_size: 4
   default_allowed_extensions: [jpg,jpeg,png,gif]
+CMSMain:
+  extensions:
+    - 'HasOneEditUpdateFormExtension'
+GridFieldDetailForm_ItemRequest:
+  extensions:
+    - 'HasOneEditUpdateFormExtension'
+DataObject:
+  extensions:
+    - 'HasOneEditDataObjectExtension'
