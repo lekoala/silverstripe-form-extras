@@ -53,7 +53,7 @@ class BirthDateField extends DateField {
 		$list = new ArrayList();
 		foreach (range(1, 31) as $v) {
 			$list->push(new ArrayData(array(
-				'Value' => $v,
+				'Value' => str_pad($v,2,0,STR_PAD_LEFT),
 				'Title' => str_pad($v,2,0,STR_PAD_LEFT),
 				'Selected' => $this->Day() == $v
 			)));
@@ -65,7 +65,7 @@ class BirthDateField extends DateField {
 		$list = new ArrayList();
 		foreach (range(1, 12) as $v) {
 			$list->push(new ArrayData(array(
-				'Value' => $v,
+				'Value' => str_pad($v,2,0,STR_PAD_LEFT),
 				'Title' => str_pad($v,2,0,STR_PAD_LEFT),
 				'Selected' => $this->Month() == $v
 			)));
