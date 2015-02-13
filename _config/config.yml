@@ -19,3 +19,6 @@ GridFieldDetailForm_ItemRequest:
 DataObject:
   extensions:
     - 'HasOneEditDataObjectExtension'
+ChosenField:
+  rtl: false
+     
