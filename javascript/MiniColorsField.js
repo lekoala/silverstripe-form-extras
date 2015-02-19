@@ -1,3 +1,6 @@
+/**
+ * MiniColorsField
+ */
 (function ($) {
 	$.entwine('ss', function ($) {
 		$('input.minicolorsfield').entwine({

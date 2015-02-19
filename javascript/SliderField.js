@@ -1,5 +1,5 @@
 /**
- * ComboBox functionnality
+ * SliderField
  */
 (function($) {
 	$(function() {

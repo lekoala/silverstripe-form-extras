@@ -1,5 +1,5 @@
 /**
- * ComboBox functionnality
+ * ComboField
  */
 (function($) {
 	$(function() {

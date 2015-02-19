@@ -21,4 +21,6 @@ DataObject:
     - 'HasOneEditDataObjectExtension'
 ChosenField:
   rtl: false
-     
+SexyPasswordField:
+  show_password_constraints: true
+  enable_show_hide: true
