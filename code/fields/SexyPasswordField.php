@@ -3,6 +3,8 @@
 /**
  * SexyPasswordField
  *
+ * 
+ *
  * @author Koala
  */
 class SexyPasswordField extends PasswordField
@@ -21,24 +23,49 @@ class SexyPasswordField extends PasswordField
         return 'sexy-password '.parent::extraClass();
     }
 
-    public function Restrictions()
+    public function getRules()
     {
         /* @var $validator PasswordValidator */
         $validator = Member::password_validator();
 
-        $messages = array();
+        $rules = array();
+
         foreach ((array) $validator as $k => $v) {
             $k = str_replace("\x00*\x00", '', $k); //watch for null bytes!
 
+            if (!in_array($k,
+                    array('minLength', 'minScore', 'testNames', 'historicalPasswordCount'))) {
+                continue;
+            }
+
+            $rules[$k] = $v;
+        }
+        return $rules;
+    }
+
+    public function getRulesJson()
+    {
+        return json_encode($this->getRules());
+    }
+
+    public function Restrictions()
+    {
+        $rules    = $this->getRules();
+        $messages = array();
+
+        foreach ($rules as $k => $v) {
             switch ($k) {
                 case 'minLength':
                     $messages['minLength'] = _t('SexyPasswordField.minLength',
                         'Must be at least {v} characters long', array('v' => $v));
                     break;
                 case 'minScore':
-                    $messages['minScore']  = _t('SexyPasswordField.minScore',
-                        'Must have at least {v} special characters',
-                        array('v' => $v));
+                    // If minScore is equal testNames length, we can skip this
+                    if (count($rules['testNames']) != $v) {
+                        $messages['minScore'] = _t('SexyPasswordField.minScore',
+                            'Must have at least {v} special characters',
+                            array('v' => $v));
+                    }
                     break;
                 case 'testNames':
                     foreach ($v as $el) {
@@ -48,15 +75,15 @@ class SexyPasswordField extends PasswordField
                                     'Must contain lowercase characters');
                                 break;
                             case 'uppercase':
-                                $messages['uppercase']   = _t('SexyPasswordField.lowercase',
+                                $messages['uppercase']   = _t('SexyPasswordField.uppercase',
                                     'Must contain uppercase characters');
                                 break;
                             case 'digits':
-                                $messages['digits']      = _t('SexyPasswordField.lowercase',
+                                $messages['digits']      = _t('SexyPasswordField.digits',
                                     'Must contain numbers');
                                 break;
                             case 'punctuation':
-                                $messages['punctuation'] = _t('SexyPasswordField.lowercase',
+                                $messages['punctuation'] = _t('SexyPasswordField.punctuation',
                                     'Must contain punctuation');
                                 break;
                         }

@@ -11,7 +11,10 @@ en:
     SHOW: Show
     historicalPasswordCount: 'Must be different than your last {v} passwords'
     historicalPasswordCountOne: 'Must be different than your last password'
-    lowercase: 'Must contain punctuation'
+    lowercase: 'Must contain lowercase characters'
+    uppercase: 'Must contain uppercase characters'
+    digits: 'Must contain digits'
+    punctuation: 'Must contain punctuation'
     minLength: 'Must be at least {v} characters long'
     minScore: 'Must have at least {v} special characters'
   UploadField:

@@ -1,33 +1,36 @@
 fr:
   AvatarGalleryField:
-    FROMGALLERY: 'From the gallery'
+    FROMGALLERY: 'Depuis la gallerie'
   ChosenField:
-    NO_RESULTS: 'Oops, nothing found!'
+    NO_RESULTS: 'Oups, rien de trouver'
   GridFieldDownloadButton:
-    DOWLOAD: Download
+    DOWLOAD: Télécharger
   RegexTextField:
-    VALIDATE: 'Please enter a valid format for "%s".'
+    VALIDATE: 'Merci de rentrer un format valide pour "%s".'
   SexyPasswordField:
-    SHOW: Show
-    historicalPasswordCount: 'Must be different than your last {v} passwords'
-    historicalPasswordCountOne: 'Must be different than your last password'
-    lowercase: 'Must contain punctuation'
-    minLength: 'Must be at least {v} characters long'
-    minScore: 'Must have at least {v} special characters'
+    SHOW: Visualiser
+    historicalPasswordCount: 'Doit être différent de vos {v} derniers mots de passe'
+    historicalPasswordCountOne: 'Doit être différent de votre derneir mot de passe'
+    lowercase: 'Doit contenir des minuscules'
+    uppercase: 'Doit contenir des majuscules'
+    digits: 'Doit contenir des chiffres'
+    punctuation: 'Doit contenir des ponctuations'
+    minLength: 'Doit avoir au moins {v} caractères'
+    minScore: 'Doit avoir au moins {v} caractères spéciaux'
   UploadField:
-    ATTACHFILE: 'Attach a file'
-    ATTACHFILES: 'Attach files'
-    CHOOSEANOTHERFILE: 'Choose another file'
-    CHOOSEANOTHERINFO: 'Replace this file with another one from the file store'
-    DROPFILE: 'drop a file'
-    DROPFILES: 'drop files'
-    EDIT: Edit
-    EDITINFO: 'Edit this file'
-    FROMCOMPUTER: 'From your computer'
-    FROMCOMPUTERINFO: 'Select from files'
-    FROMFILES: 'From files'
-    NOT_EDITABLE: 'Not editable'
-    REMOVE: Remove
-    REMOVEINFO: 'Remove this file from here, but do not delete it from the file store'
+    ATTACHFILE: 'Attacher un fichier'
+    ATTACHFILES: 'Attacher des fichiers'
+    CHOOSEANOTHERFILE: 'Choisir un autre fichier'
+    CHOOSEANOTHERINFO: 'Remplacer ce fichier par un autre fichier de la base de fichiers'
+    DROPFILE: 'Déposer un fichier'
+    DROPFILES: 'Déposer des fichiers'
+    EDIT: Editer
+    EDITINFO: 'Editer ce fichier'
+    FROMCOMPUTER: 'Depuis votre ordinateur'
+    FROMCOMPUTERINFO: 'Dans vos dossiers'
+    FROMFILES: 'Depuis vos dossiers'
+    NOT_EDITABLE: 'Non éditable'
+    REMOVE: Supprimer
+    REMOVEINFO: 'Supprimer ce fichier dmais ne pas effacer de la base de fichier'
     STARTALL: 'Start all'
-    UPLOADSINTO: 'saves into /{path}'
+    UPLOADSINTO: 'Sauvegarder dans /{path}'
