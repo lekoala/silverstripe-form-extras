@@ -1,6 +1,17 @@
 /**
  * SexyPasswordField
  */
+(function () {
+	window.ParsleyConfig = window.ParsleyConfig || {};
+	window.ParsleyConfig.validators = window.ParsleyConfig.validators || {};
+
+	window.ParsleyConfig.validators.sexypassword = {
+		fn: function (value, requirement) {
+			return $(requirement).data('sp-valid');
+		},
+		priority: 256
+	};
+})();
 (function ($) {
 	$(function () {
 
@@ -14,6 +25,7 @@
 		function validatePassword(input, rules, restrictions) {
 			var val = input.val();
 			var restrictionsItems = restrictions.find('li');
+			var valid = true;
 
 			if (rules.minLength) {
 				if (val.length >= rules.minLength) {
@@ -21,21 +33,25 @@
 				}
 				else {
 					restrictions.find('li.sp-restriction-minLength').removeClass('valid').addClass('invalid');
+					valid = false;
 				}
 			}
 			if (rules.minScore) {
 				for (prop in rules.testNames) {
 					var testName = rules.testNames[prop];
 					var regex = regexes[testName];
-					
-					if(regex.test(val)) {
+
+					if (regex.test(val)) {
 						restrictions.find('li.sp-restriction-' + testName).removeClass('invalid').addClass('valid');
 					}
 					else {
 						restrictions.find('li.sp-restriction-' + testName).removeClass('valid').addClass('invalid');
+						valid = false;
 					}
 				}
 			}
+
+			input.data('sp-valid', valid);
 		}
 
 		$('.field.sexy-password').each(function () {
@@ -44,6 +60,12 @@
 			var cb = $this.find('input.sp-checkbox');
 			var restrictions = $this.find('.sp-restrictions');
 			var rules = input.data('rules');
+
+			// Parsley integration
+			var parsley = input.data('parsley-required');
+			if (parsley) {
+				input.attr('data-parsley-sexypassword', '#' + input.attr('id'));
+			}
 
 			restrictions.hide();
 			input.focus(function (e) {

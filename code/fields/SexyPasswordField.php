@@ -3,8 +3,6 @@
 /**
  * SexyPasswordField
  *
- * 
- *
  * @author Koala
  */
 class SexyPasswordField extends PasswordField
