@@ -12,8 +12,19 @@ class ComboField extends DropdownField {
 	public function __construct($name, $title = null, $source = array(), $value = '', $form = null, $emptyString = null) {
 		parent::__construct($name, $title, $source, $value, $form, $emptyString);
 
+        if($emptyString) {
+            $this->freeTextItem = $emptyString;
+        }
+        else {
+            $this->freeTextItem = _t('ComboField.FREETEXT','Enter a new value');
+        }
 		Requirements::javascript('form-extras/javascript/ComboField.js');
 	}
+
+    function extraClass()
+    {
+        return parent::extraClass() . ' dropdown';
+    }
 
 	public function setCustomValue($v) {
 		Session::set('ComboField.' . $this->getName(), $v);
