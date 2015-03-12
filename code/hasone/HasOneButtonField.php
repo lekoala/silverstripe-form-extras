@@ -8,6 +8,13 @@ class HasOneButtonField extends GridField{
 	protected $record;
 	protected $parent;
 
+    /**
+     * Create a new has one button field
+     *
+     * @param string $name Name of the relation on the parent
+     * @param string $title Title of the button
+     * @param DataObject $parent Parent dataobject
+     */
 	function __construct($name, $title, $parent) {
 		$this->record = $parent->{$name}();
 		$this->parent = $parent;
