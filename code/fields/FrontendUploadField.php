@@ -3,7 +3,16 @@
 /**
  * FrontendUploadField
  *
- * @link http://doc.silverstripe.org/framework/en/trunk/reference/uploadfield
+ * An upload field ready to use in a front end context
+ * - Prevent access to cms files
+ * - Add a gallery button for preselected images
+ * - Enable editing on the front end with focuspoint or cropzoom
+ *
+ * Please note that to enable front end edition, the method canEditFrontend on the image
+ * must return true
+ *
+ * @link http://doc.silverstripe.org/framework/en/trunk/reference/uploadfield (broken)
+ * @link http://api.silverstripe.org/master/class-UploadField.html
  * @author lekoala
  */
 class FrontendUploadField extends UploadField
@@ -26,9 +35,13 @@ class FrontendUploadField extends UploadField
     public function __construct($name, $title = null, \SS_List $items = null)
     {
         parent::__construct($name, $title, $items);
+
+        // Update templates to avoid cms styles
         $this->setTemplate('forms/FrontendUploadField');
         $this->setTemplateFileEdit('forms/FrontendUploadField_FileEdit');
         $this->setTemplateFileButtons('forms/FrontendUploadField_FileButtons');
+
+        // Configure to something more bullet proof
         $this->setCanAttachExisting(false); // Block access to Silverstripe assets library
         $this->setCanPreviewFolder(false); // Don't show target filesystem folder on upload field
         $this->relationAutoSetting = false; // Prevents the form thinking the GalleryPage is the underlying object
@@ -63,13 +76,11 @@ jQuery(window).load(function() {
     }
 
     /**
-     * @param boolean|string $canChooseFromGallery Either a boolean flag, or a required
-     * permission code
+     * @param boolean|string $canChooseFromGallery Either a boolean flag, or a required permission code
      * @return UploadField Self reference
      */
-    public function setCanChooseFromGallery($canChooseFromGallery)
+    public function setCanChooseFromGallery($canChooseFromGallery = true)
     {
-//		$this->setCanAttachExisting($canChooseFromGallery);
         return $this->setConfig('canChooseFromGallery', $canChooseFromGallery);
     }
 
@@ -87,6 +98,8 @@ jQuery(window).load(function() {
     }
 
     /**
+     * Set the url from where gallery items are loaded
+     * 
      * @param string $galleryUrl
      * permission code
      * @return UploadField Self reference
@@ -98,7 +111,8 @@ jQuery(window).load(function() {
     }
 
     /**
-     * @return boolean
+     * Get gallery items url. Default to action "gallery" on current controller if none set
+     * @return string
      */
     public function GalleryUrl()
     {
@@ -109,6 +123,8 @@ jQuery(window).load(function() {
     }
 
     /**
+     * Override default item handler
+     * 
      * @param int $itemID
      * @return UploadField_ItemHandler
      */
@@ -122,28 +138,20 @@ jQuery(window).load(function() {
         return $this->useCropbox;
     }
 
+    public function setUseCropbox($useCropbox = true)
+    {
+        $this->useCropbox = $useCropbox;
+    }
+
     public function getUseFocuspoint()
     {
         return $this->useFocuspoint;
     }
 
-    public function setUseCropbox($useCropbox)
-    {
-        $this->useCropbox = $useCropbox;
-    }
-
-    public function setUseFocuspoint($useFocuspoint)
+    public function setUseFocuspoint($useFocuspoint = true)
     {
         $this->useFocuspoint = $useFocuspoint;
     }
-
-    /**
-     * @param SS_HTTPRequest $request
-     * @return UploadField_ItemHandler
-     */
-    /* public function handleSelect(SS_HTTPRequest $request) {
-      return FrontendUploadField_SelectHandler::create($this, $this->getFolderName());
-      } */
 
     public function handleGallery(SS_HTTPRequest $request)
     {
@@ -188,7 +196,7 @@ jQuery(window).load(function() {
      */
     protected function saveTemporaryFile($tmpFile, &$error = null)
     {
-        //override with a more meaningful name
+        // Override with a more meaningful name
         $tmpFile['name'] = $this->name.'_'.time().'.'.strtolower(pathinfo($tmpFile['name'],
                     PATHINFO_EXTENSION));
 
@@ -210,8 +218,7 @@ jQuery(window).load(function() {
             'UploadFieldThumbnailURL' => $this->getThumbnailURLForFile($file),
             'UploadFieldDeleteLink' => $this->getItemHandler($file->ID)->DeleteLink(),
             'UploadFieldEditLink' => $this->getItemHandler($file->ID)->EditLink(),
-            'UploadField' => $this,
-            'OriginalFile' => $file, //the customized object has no extensions :-(
+            'UploadField' => $this
         ));
 
         // we do this in a second customise to have the access to the previous customisations
@@ -256,10 +263,6 @@ jQuery(window).load(function() {
 
 /**
  * RequestHandler for actions (edit, remove, delete) on a single item (File) of the UploadField
- *
- * @author Zauberfisch
- * @package framework
- * @subpackage forms
  */
 class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
 {
