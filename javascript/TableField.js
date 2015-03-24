@@ -24,17 +24,37 @@
 
 		}
 
-		// Init
-		$('.field.table').each(function () {
-			var table = $(this);
-			var input = table.find('input[type=hidden]');
-			var val = [];
-			if (input.val()) {
-				val = JSON.parse(input.val());
-			}
-			
-			refreshTableRows(table, val);
-		});
+		if ($.entwine) {
+			$.entwine('ss', function ($) {
+
+				$('.field.table').entwine({
+					onmatch: function () {
+						this._super();
+						var table = $(this);
+						var input = table.find('input[type=hidden]');
+						var val = [];
+						if (input.val()) {
+							val = JSON.parse(input.val());
+						}
+
+						refreshTableRows(table, val);
+					}
+				});
+			});
+		}
+		else {
+			// Init
+			$('.field.table').each(function () {
+				var table = $(this);
+				var input = table.find('input[type=hidden]');
+				var val = [];
+				if (input.val()) {
+					val = JSON.parse(input.val());
+				}
+
+				refreshTableRows(table, val);
+			});
+		}
 
 		// Remove a row
 		$('.tablefield-btn-remove').live('click', function () {
@@ -60,7 +80,7 @@
 		});
 
 		// Add a row
-		$('.tablefield-btn-add').click(function () {
+		$('.tablefield-btn-add').live('click', function () {
 			var row = $(this).parents('tr');
 			var table = $(this).parents('.field.table');
 			var input = table.find('input[type=hidden]');

@@ -1,4 +1,4 @@
-<input type="hidden" name="$Name" value='$Value' />
+<input type="hidden" name="$Name" id="$ID" value='$Value' />
 <table class="ss-gridfield-table">
 	<thead>
 		<tr>
