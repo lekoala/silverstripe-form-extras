@@ -50,13 +50,12 @@ class FrontendUploadField extends UploadField
 
         //the page crash if we click edit before the page is loaded
         Requirements::customCSS('.ss-uploadfield-item-edit.disabled { background:#eee; color:#666}');
-        Requirements::customScript("
-jQuery('.ss-uploadfield-item-edit').attr('disabled','disabled').addClass('disabled');
+        Requirements::customScript("jQuery('.ss-uploadfield-item-edit').attr('disabled','disabled').addClass('disabled');
 jQuery(window).load(function() {
 	jQuery('.ss-uploadfield-item-editform').removeClass('loading'); //fix edit form in frontend
 	jQuery('.ss-uploadfield-item-edit').removeAttr('disabled').removeClass('disabled');
 });
-");
+", "FrontendUploadFieldFix");
     }
 
     public function attach(SS_HTTPRequest $request)
