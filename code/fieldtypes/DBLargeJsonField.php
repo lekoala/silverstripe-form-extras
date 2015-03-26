@@ -7,7 +7,7 @@
  *
  * @author lekoala
  */
-class DBJsonField extends Text
+class DBLargeJsonField extends Text
 {
 
     public function getValue()
