@@ -52,29 +52,29 @@ class FormExtraMulti extends FormExtra
      */
     public static function AllSteps()
     {
-        $n     = 1;
-        $curr  = self::getCurrentStep();
-        if(!$curr) {
+        $n    = 1;
+        $curr = self::getCurrentStep();
+        if (!$curr) {
             $curr = 1;
         }
         $c     = Controller::curr();
         $class = str_replace(self::classNameNumber(), $n, get_called_class());
         $steps = new ArrayList();
         while (class_exists($class)) {
-            $isCurrent = $isCompleted = false;
-            $cssClass = $n == $curr ? 'current' : 'link';
-            if($n == 1) {
+            $isCurrent   = $isCompleted = false;
+            $cssClass    = $n == $curr ? 'current' : 'link';
+            if ($n == 1) {
                 $isCurrent = true;
                 $cssClass .= ' first';
             }
-            if($class::isLastStep()) {
+            if ($class::isLastStep()) {
                 $cssClass .= ' last';
             }
-            if($n < $curr) {
+            if ($n < $curr) {
                 $isCompleted = true;
                 $cssClass .= ' completed';
             }
-            $link = $c->Link($c->getAction().'?step='.$n);
+            $link  = $c->Link($c->getAction().'?step='.$n);
             $steps->push(new ArrayData(array(
                 'Title' => $class::getStepTitle(),
                 'Number' => $n,
@@ -87,6 +87,15 @@ class FormExtraMulti extends FormExtra
             $class = str_replace(self::classNameNumber(), $n, get_called_class());
         }
         return $steps;
+    }
+
+    /**
+     * Clear current step
+     * @return void
+     */
+    public static function clearCurrentStep()
+    {
+        return Session::clear(self::classNameWithoutNumber().'.step');
     }
 
     /**
@@ -175,6 +184,8 @@ class FormExtraMulti extends FormExtra
     {
         self::incrementStep();
         $this->saveDataInSession();
+
+        // You will need to clear the current step and redirect to something else on the last step
         return $this->Controller()->redirectBack();
     }
 
@@ -221,6 +232,12 @@ class FormExtraMulti extends FormExtra
             "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber(),
             $this->getData()
         );
+    }
+
+    public static function getDataFromStep($step)
+    {
+        return Session::get(
+                "FormInfo.".self::classNameWithoutNumber().".formData.step".$step);
     }
 
     protected function getDataFromSession()
