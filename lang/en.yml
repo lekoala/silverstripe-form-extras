@@ -3,20 +3,28 @@ en:
     FROMGALLERY: 'From the gallery'
   ChosenField:
     NO_RESULTS: 'Oops, nothing found!'
+  ComboField:
+    FREETEXT: 'Enter a new value'
+  GridField:
+    Edit: 'Edit {name}'
   GridFieldDownloadButton:
     DOWLOAD: Download
+  MaskedInputField:
+    VALIDATION: '''{value}'' does not respect the required format'
+  NumericField:
+    VALIDATION: '''{value}'' is not a number, only numbers can be accepted for this field'
   RegexTextField:
     VALIDATE: 'Please enter a valid format for "%s".'
   SexyPasswordField:
     SHOW: Show
+    digits: 'Must contain digits'
     historicalPasswordCount: 'Must be different than your last {v} passwords'
     historicalPasswordCountOne: 'Must be different than your last password'
     lowercase: 'Must contain lowercase characters'
-    uppercase: 'Must contain uppercase characters'
-    digits: 'Must contain digits'
-    punctuation: 'Must contain punctuation'
     minLength: 'Must be at least {v} characters long'
     minScore: 'Must have at least {v} special characters'
+    punctuation: 'Must contain punctuation'
+    uppercase: 'Must contain uppercase characters'
   UploadField:
     ATTACHFILE: 'Attach a file'
     ATTACHFILES: 'Attach files'

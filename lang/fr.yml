@@ -3,20 +3,26 @@ fr:
     FROMGALLERY: 'Depuis la gallerie'
   ChosenField:
     NO_RESULTS: 'Oups, rien de trouver'
+  ComboField:
+    FREETEXT: 'Autre (précisez)'
+  GridField:
+    Edit: 'Editer {name}'
   GridFieldDownloadButton:
     DOWLOAD: Télécharger
+  MaskedInputField:
+    VALIDATION: '''{value}'' ne respecte pas le format'
   RegexTextField:
     VALIDATE: 'Merci de rentrer un format valide pour "%s".'
   SexyPasswordField:
     SHOW: Visualiser
+    digits: 'Doit contenir des chiffres'
     historicalPasswordCount: 'Doit être différent de vos {v} derniers mots de passe'
     historicalPasswordCountOne: 'Doit être différent de votre derneir mot de passe'
     lowercase: 'Doit contenir des minuscules'
-    uppercase: 'Doit contenir des majuscules'
-    digits: 'Doit contenir des chiffres'
-    punctuation: 'Doit contenir des ponctuations'
     minLength: 'Doit avoir au moins {v} caractères'
     minScore: 'Doit avoir au moins {v} caractères spéciaux'
+    punctuation: 'Doit contenir des ponctuations'
+    uppercase: 'Doit contenir des majuscules'
   UploadField:
     ATTACHFILE: 'Attacher un fichier'
     ATTACHFILES: 'Attacher des fichiers'
