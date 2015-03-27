@@ -8,6 +8,7 @@
  * - Define a class name with a number in it (MyFormStep1)
  * - Call definePrevNextActions instead of defining your actions
  * - Define a name in getStepTitle for a nicer name
+ * - In your controller, create the form with classForCurrentStep
  * 
  * @author lekoala
  */
@@ -33,12 +34,25 @@ class FormExtraMulti extends FormExtra
     }
 
     /**
-     * Get current step
+     * Get class name for current step based on this class name
+     * @return string
+     */
+    public static function classForCurrentStep()
+    {
+        $step = self::getCurrentStep();
+        if (!$step) {
+            $step = 1;
+        }
+        return str_replace(self::classNameNumber(), $step, get_called_class());
+    }
+
+    /**
+     * Get current step (defined in session). 0 if not started yet.
      * @return int
      */
     public static function getCurrentStep()
     {
-        return Session::get(self::classNameWithoutNumber().'.step');
+        return (int) Session::get(self::classNameWithoutNumber().'.step');
     }
 
     /**
@@ -99,17 +113,28 @@ class FormExtraMulti extends FormExtra
         return static::classNameWithoutNumber();
     }
 
+    /**
+     * A basic previous action that decrements the current step
+     * @return SS_HTTPResponse
+     */
     public function doPrev()
     {
+        $c = $this->Controller();
         self::decrementStep();
-        return $this->Controller()->redirect($this->Controller()->Link());
+        return $c->redirectBack();
     }
 
+    /**
+     * A basic next action that increments the current step and save the data to the session
+     * @param array $data
+     * @return SS_HTTPResponse
+     */
     public function doNext($data)
     {
+        $c = $this->Controller();
         self::incrementStep();
         $this->saveDataInSession();
-        return $this->Controller()->redirect($this->Controller()->Link());
+        return $c->redirectBack();
     }
 
     /**
