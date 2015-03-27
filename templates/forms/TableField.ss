@@ -2,8 +2,8 @@
 <table class="ss-gridfield-table">
 	<thead>
 		<tr>
-			<% loop HeadersList %>
-			<th class="main tablefield-header-$Name">$Name</th>
+			<% loop ColumnsList %>
+			<th class="main tablefield-header-$Key">$Header</th>
 			<% end_loop %>
 			<th class="main"></th>
 		</tr>
@@ -13,16 +13,16 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<% loop HeadersList %>
+			<% loop ColumnsList %>
 			<th>
 				<% if Values %>
-				<select name="$Name">
+				<select name="$Key" data-required="$Required">
 					<% loop Values %>
 					<option value="$Name">$Value</option>
 					<% end_loop %>
 				</select>
 				<% else %>
-				<input type="text" name="$Name" />
+				<input type="$Type" name="$Key" data-required="$Required" />
 				<% end_if %>
 			</th>
 			<% end_loop %>

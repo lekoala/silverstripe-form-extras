@@ -57,7 +57,9 @@
 		}
 
 		// Remove a row
-		$('.tablefield-btn-remove').live('click', function () {
+		$('.tablefield-btn-remove').live('click', function (e) {
+			e.preventDefault();
+
 			var row = $(this).parents('tr');
 			var tbody = $(this).parents('tbody');
 			var index = tbody.children().index(row);
@@ -80,7 +82,9 @@
 		});
 
 		// Add a row
-		$('.tablefield-btn-add').live('click', function () {
+		$('.tablefield-btn-add').live('click', function (e) {
+			e.preventDefault();
+
 			var row = $(this).parents('tr');
 			var table = $(this).parents('.field.table');
 			var input = table.find('input[type=hidden]');
@@ -96,6 +100,24 @@
 			$.each(rowData, function () {
 				result[this.name] = this.value;
 			});
+
+			// Verify if all requirements are met
+			var requiredRows = rowInputs.filter(function () {
+				return $(this).data('required') == true;
+			});
+			var invalids = [];
+			requiredRows.each(function() {
+				var name = $(this).attr('name');
+				if(!result[name]) {
+					$(this).attr('required','true');
+					invalids.push(name);
+				}
+			});
+			if(invalids.length) {
+				return;
+			}
+			requiredRows.removeAttr('required');
+
 			val.push(result);
 
 			// Clear values

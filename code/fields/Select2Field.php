@@ -180,6 +180,7 @@ class Select2Field extends ListboxField
 
     function setTags($tags)
     {
+        $this->setMultiple(true);
         $this->tags = $tags;
     }
 
