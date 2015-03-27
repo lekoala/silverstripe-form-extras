@@ -13,8 +13,13 @@ class SliderField extends TextField {
 	
 	public function __construct($name, $title = null, $value = null) {
 		parent::__construct($name, $title, $value);
-		Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/SliderField.js');
 	}
+
+    public function Field($properties = array())
+    {
+        Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/SliderField.js');
+        return parent::Field($properties);
+    }
 	
 	public function SliderOptionsJson() {
 		return json_encode($this->sliderOptions);

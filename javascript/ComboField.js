@@ -25,10 +25,18 @@
 
 				input.blur(function () {
 					var val = $(this).val();
+
+					// If no value is entered, back to select
 					if (val.length === 0) {
 						input.remove();
-						$this.show();
 						$this.val('');
+						if (chosenField) {
+							chosenField.show();
+							$this.trigger('liszt:updated').trigger("chosen:updated");
+						}
+						else {
+							$this.show();
+						}
 						return;
 					}
 					$this.find('option:last').before('<option value="' + val + '">' + val + '</option>');

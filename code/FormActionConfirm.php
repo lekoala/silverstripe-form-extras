@@ -5,17 +5,28 @@
  *
  * @author lekoala
  */
-class FormActionConfirm extends FormAction {
+class FormActionConfirm extends FormAction
+{
+    protected $confirmText = 'Are you sure?';
 
-	protected $confirmText = 'Are you sure?';
-	
-	public function setConfirmText($v) {
-		$this->confirmText = $v;
-		return $this;
-	}
+    public function __construct($action, $title = "", $form = null)
+    {
+        parent::__construct($action, $title, $form);
+    }
 
-	public function ConfirmText() {
-		return $this->confirmText;
-	}
+    public function Field($properties = array())
+    {
+        return parent::Field($properties);
+    }
 
+    public function setConfirmText($v)
+    {
+        $this->confirmText = $v;
+        return $this;
+    }
+
+    public function ConfirmText()
+    {
+        return $this->confirmText;
+    }
 }

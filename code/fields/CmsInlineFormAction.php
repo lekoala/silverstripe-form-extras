@@ -53,7 +53,7 @@ class CmsInlineFormAction extends FormField
     {
         return "<input type=\"submit\" name=\"action_{$this->name}\" value=\"{$this->title}\" id=\"{$this->id()}\""
             ." data-url=\"{$this->getUrl()}\""
-            ." class=\"action{$this->extraClass}\" onclick=\"jQuery.post(jQuery(this).data('url'),jQuery(this).parents('form').serialize(),function(res) {jQuery.noticeAdd({text:res})})\" />";
+            ." class=\"action{$this->extraClass}\" onclick=\"var t=jQuery(this);t.attr('disabled','disabled');jQuery.post(t.data('url'),t.parents('form').serialize(),function(r){t.removeAttr('disabled');jQuery.noticeAdd({text:r})})\" />";
     }
 
     public function Title()
