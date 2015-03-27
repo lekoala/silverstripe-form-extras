@@ -2,7 +2,7 @@
 
 /**
  * FormExtra
- * 
+ *
  * Extend your forms from this class instead of Form to add extra functionalities
  * - Shortcut for returning messages or errors
  * - Autoload form data on error
@@ -59,7 +59,7 @@ class FormExtra extends Form
 
     /**
      * Shortcut for an error
-     * 
+     *
      * @param string $msg
      * @param string $url
      * @return SS_HTTPResponse
@@ -72,7 +72,7 @@ class FormExtra extends Form
 
     /**
      * Shortcut for a success
-     * 
+     *
      * @param string $msg
      * @param string $url
      * @return SS_HTTPResponse
@@ -84,7 +84,7 @@ class FormExtra extends Form
 
     /**
      * Return a response with a message for your form
-     * 
+     *
      * @param string $msg
      * @param string $type good,bad,notice,warning
      * @param string $url

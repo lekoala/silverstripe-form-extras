@@ -5,6 +5,10 @@ en:
     NO_RESULTS: 'Oops, nothing found!'
   ComboField:
     FREETEXT: 'Enter a new value'
+  FormExtra:
+    doFinish: Finish
+    doNext: Next
+    doPrev: Previous
   GridField:
     Edit: 'Edit {name}'
   GridFieldDownloadButton:

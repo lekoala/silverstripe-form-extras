@@ -5,6 +5,10 @@ fr:
     NO_RESULTS: 'Oups, rien de trouver'
   ComboField:
     FREETEXT: 'Autre (précisez)'
+  FormExtra:
+    doFinish: Terminer
+    doNext: Suivant
+    doPrev: Précéde,t
   GridField:
     Edit: 'Editer {name}'
   GridFieldDownloadButton:
