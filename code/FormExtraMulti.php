@@ -47,6 +47,49 @@ class FormExtraMulti extends FormExtra
     }
 
     /**
+     * Get all steps as an ArrayList. To be used for your templates.
+     * @return ArrayList
+     */
+    public static function AllSteps()
+    {
+        $n     = 1;
+        $curr  = self::getCurrentStep();
+        if(!$curr) {
+            $curr = 1;
+        }
+        $c     = Controller::curr();
+        $class = str_replace(self::classNameNumber(), $n, get_called_class());
+        $steps = new ArrayList();
+        while (class_exists($class)) {
+            $isCurrent = $isCompleted = false;
+            $cssClass = $n == $curr ? 'current' : 'link';
+            if($n == 1) {
+                $isCurrent = true;
+                $cssClass .= ' first';
+            }
+            if($class::isLastStep()) {
+                $cssClass .= ' last';
+            }
+            if($n < $curr) {
+                $isCompleted = true;
+                $cssClass .= ' completed';
+            }
+            $link = $c->Link($c->getAction().'?step='.$n);
+            $steps->push(new ArrayData(array(
+                'Title' => $class::getStepTitle(),
+                'Number' => $n,
+                'Link' => $link,
+                'Class' => $cssClass,
+                'IsCurrent' => $isCurrent,
+                'IsCompleted' => $isCompleted,
+            )));
+            $n++;
+            $class = str_replace(self::classNameNumber(), $n, get_called_class());
+        }
+        return $steps;
+    }
+
+    /**
      * Get current step (defined in session). 0 if not started yet.
      * @return int
      */
@@ -107,7 +150,7 @@ class FormExtraMulti extends FormExtra
      * Return the step name
      * @return string
      */
-    public function getStepTitle()
+    public static function getStepTitle()
     {
         // Feel free to implement something nice in your subclass
         return static::classNameWithoutNumber();
@@ -119,9 +162,8 @@ class FormExtraMulti extends FormExtra
      */
     public function doPrev()
     {
-        $c = $this->Controller();
         self::decrementStep();
-        return $c->redirectBack();
+        return $this->Controller()->redirectBack();
     }
 
     /**
@@ -131,18 +173,20 @@ class FormExtraMulti extends FormExtra
      */
     public function doNext($data)
     {
-        $c = $this->Controller();
         self::incrementStep();
         $this->saveDataInSession();
-        return $c->redirectBack();
+        return $this->Controller()->redirectBack();
     }
 
     /**
      * Call this instead of manually creating your actions
-     * @param bool $doNotSet
+     *
+     * You can easily rename actions by calling $actions->fieldByName('action_doNext')->setTitle('...')
+     *
+     * @param bool $doSet
      * @return FieldList
      */
-    protected function definePrevNextActions($doNotSet = false)
+    protected function definePrevNextActions($doSet = false)
     {
         $actions   = new FieldList();
         $prevClass = 'FormAction';
@@ -163,7 +207,7 @@ class FormExtraMulti extends FormExtra
         }
         $actions->push(new FormAction('doNext', $label));
 
-        if (!$doNotSet) {
+        if (!$doSet) {
             $this->setActions($actions);
             $actions->setForm($this);
         }

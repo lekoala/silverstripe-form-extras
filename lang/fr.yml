@@ -8,7 +8,7 @@ fr:
   FormExtra:
     doFinish: Terminer
     doNext: Suivant
-    doPrev: Précéde,t
+    doPrev: Précédent
   GridField:
     Edit: 'Editer {name}'
   GridFieldDownloadButton:
