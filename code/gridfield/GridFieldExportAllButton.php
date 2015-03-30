@@ -2,6 +2,37 @@
 
 class GridFieldExportAllButton extends GridFieldExportButton
 {
+    protected $btnTitle = null;
+
+    public function getBtnTitle()
+    {
+        if (!$this->btnTitle) {
+            return _t('GridFieldExportAllButton.LABEL', 'Export all to CSV');
+        }
+        return $this->btnTitle;
+    }
+
+    public function setBtnTitle($v)
+    {
+        $this->btnTitle = $v;
+    }
+
+    /**
+     * Place the export button in a <p> tag below the field
+     */
+    public function getHTMLFragments($gridField)
+    {
+        $button = new GridField_FormAction(
+            $gridField, 'export',
+            $this->getBtnTitle(), 'export',
+            null
+        );
+        $button->setAttribute('data-icon', 'download-csv');
+        $button->addExtraClass('no-ajax');
+        return array(
+            $this->targetFragment => '<p class="grid-csv-button">'.$button->Field().'</p>',
+        );
+    }
 
     /**
      * Generate export fields for CSV.
