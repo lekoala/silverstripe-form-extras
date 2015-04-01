@@ -1,21 +1,10 @@
 <?php
 
+/**
+ * Export all records from the table instead of the current list
+ */
 class GridFieldExportAllButton extends GridFieldExportButton
 {
-    protected $btnTitle = null;
-
-    public function getBtnTitle()
-    {
-        if (!$this->btnTitle) {
-            return _t('GridFieldExportAllButton.LABEL', 'Export all to CSV');
-        }
-        return $this->btnTitle;
-    }
-
-    public function setBtnTitle($v)
-    {
-        $this->btnTitle = $v;
-    }
 
     /**
      * Place the export button in a <p> tag below the field
@@ -24,7 +13,7 @@ class GridFieldExportAllButton extends GridFieldExportButton
     {
         $button = new GridField_FormAction(
             $gridField, 'export',
-            $this->getBtnTitle(), 'export',
+            _t('GridFieldExportAllButton.LABEL', 'Export all to CSV'), 'export',
             null
         );
         $button->setAttribute('data-icon', 'download-csv');
