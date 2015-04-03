@@ -40,12 +40,12 @@ class MaskedInputField extends TextField
         // Set default options once
         $defaultOpts = self::config()->get('default_options');
         if (!empty($defaultOpts)) {
-            Requirements::customScript('$.extend($.inputmask.defaults, '.json_encode($defaultOpts).');',
+            Requirements::customScript('jQuery.extend($.inputmask.defaults, '.json_encode($defaultOpts).');',
                 'MaskedInputFieldDefault');
         }
 
         // Initialize on all input fields once
-        Requirements::customScript('$(document).ready(function(){$(":input").inputmask();});',
+        Requirements::customScript('jQuery(document).ready(function(){$(":input").inputmask();});',
             'MaskedInputFieldInit');
 
         return parent::Field($properties);

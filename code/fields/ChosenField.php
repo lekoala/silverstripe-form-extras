@@ -38,7 +38,7 @@ class ChosenField extends ListboxField
         if ($this->allow_max_selected) {
             $opts['allow_max_selected'] = $this->allow_max_selected;
         }
-        Requirements::customScript('$("#'.$this->ID().'").chosen('.json_encode($opts).')');
+        Requirements::customScript('jQuery("#'.$this->ID().'").chosen('.json_encode($opts).')');
 
         return parent::Field($properties);
     }
