@@ -150,6 +150,16 @@ TableField
 
 A field that supports multiple columns and unlimited rows. Data is stored as json.
 
+SimpleTinyMceField
+------------------
+
+A simple TinyMceField plugin for frontend use
+
+CropboxField
+------------------
+
+A field that uses CropboxField
+
 GridField
 ==================
 

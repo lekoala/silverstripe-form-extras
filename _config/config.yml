@@ -29,3 +29,6 @@ SexyPasswordField:
   enable_show_hide: true
 SimpleTinyMceField:
   plugins: 'autolink link lists hr anchor media emoticons'
+Image:
+  extensions: 
+    - 'CropboxImage'
