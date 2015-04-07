@@ -48,9 +48,7 @@ class CropboxField extends FormField
 				t.val(results.top);
             })
 			;
-      } );");
-
-
+      } );",'cropboxFieldInit');
 
         parent::__construct($name, ($title === null) ? $name : $title, $value,
             $form);
