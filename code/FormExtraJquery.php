@@ -68,7 +68,6 @@ class FormExtraJquery extends Object
         }
         // Avoid conflicts with jquery version of the cms
         if (self::isAdminBackend()) {
-            self::setDisabled(true); // Avoid future checks
             return;
         }
         switch (self::config()->jquery_version) {
