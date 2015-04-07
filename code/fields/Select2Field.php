@@ -43,7 +43,7 @@ class Select2Field extends ListboxField
 
             // Use full release
             Requirements::css(FORM_EXTRAS_PATH.'/javascript/select2-v4/css/select2.min.css');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/jquery.mousewheel.min.js');
+            FormExtraJquery::include_mousewheel();
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/select2-v4/js/select2.full.min.js');
         }
 
