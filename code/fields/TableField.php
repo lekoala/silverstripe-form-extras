@@ -66,8 +66,8 @@ class TableField extends FormField
     function setProperty($property, $arr)
     {
         // Make sure all columns exists
-        foreach($arr as $colName => $value) {
-            if(!isset($this->columns[$colName])) {
+        foreach ($arr as $colName => $value) {
+            if (!isset($this->columns[$colName])) {
                 $this->columns[$colName] = array();
             }
         }
@@ -153,11 +153,10 @@ class TableField extends FormField
     function setColumnsRequired($required)
     {
         $req = array();
-        foreach($required as $k => $v) {
-            if(is_int($k)) {
+        foreach ($required as $k => $v) {
+            if (is_int($k)) {
                 $req[$v] = 1;
-            }
-            else {
+            } else {
                 $req[$k] = 1;
             }
         }
@@ -226,7 +225,8 @@ class TableField extends FormField
 
             $header     = $this->array_get($column, self::KEY_HEADER);
             $required   = $this->array_get($column, self::KEY_REQUIRED);
-            $type       = $this->array_get($column, self::KEY_TYPE, self::TYPE_TEXT);
+            $type       = $this->array_get($column, self::KEY_TYPE,
+                self::TYPE_TEXT);
             $values     = $this->array_get($column, self::KEY_VALUES);
             $valuesList = null;
             if ($values) {
@@ -249,6 +249,7 @@ class TableField extends FormField
 
     public function Field($properties = array())
     {
+        FormExtraJquery::include_jquery();
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/TableField.js');
         return parent::Field($properties);
     }

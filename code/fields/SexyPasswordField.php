@@ -12,8 +12,9 @@ class SexyPasswordField extends PasswordField
 
     public function __construct($name, $title = null, $value = "")
     {
-        parent::__construct($name, $title, $value);
+        FormExtraJquery::include_jquery();
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/SexyPasswordField.js');
+        parent::__construct($name, $title, $value);
     }
 
     public function extraClass()

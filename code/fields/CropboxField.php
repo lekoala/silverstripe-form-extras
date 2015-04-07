@@ -14,6 +14,13 @@ class CropboxField extends FormField
         $this->setDefaultValue();
         $this->setImage($imageID);
 
+        FormExtraJquery::include_jquery();
+        if (self::config()->use_hammer) {
+            FormExtraJquery::include_hammer();
+        }
+        if (self::config()->use_mousewheel) {
+            FormExtraJquery::include_mousewheel();
+        }
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/cropbox/jquery.cropbox.js');
         Requirements::css(FORM_EXTRAS_PATH.'/javascript/cropbox/jquery.cropbox.css');
         Requirements::customScript("jQuery( '.cropbox-field' ).each( function () {

@@ -4,6 +4,11 @@ After:
 - 'framework/*'
 - 'cms/*'
 ---
+FormExtraJquery:
+  # Version can be: framework, v1 or v2
+  jquery_version: 'framework'
+  jquery_ui_version: 'framework'
+  jquery_ui_theme: 'default'
 BaseUploadField:
   use_subsite_integration: true
 ImageUploadField:
@@ -29,6 +34,9 @@ SexyPasswordField:
   enable_show_hide: true
 SimpleTinyMceField:
   plugins: 'autolink link lists hr anchor media emoticons'
+CropboxField:
+  use_hammer: true
+  use_mousewheel: true
 Image:
   extensions: 
     - 'CropboxImage'

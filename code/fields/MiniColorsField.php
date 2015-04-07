@@ -33,8 +33,7 @@ class MiniColorsField extends TextField
 
     public function Field($properties = array())
     {
-        // Do NOT require min version otherwise it breaks the cms by default
-        Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.js');
+        FormExtraJquery::include_jquery();
         Requirements::javascript(THIRDPARTY_DIR.'/jquery-entwine/dist/jquery.entwine-dist.js');
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/minicolors/jquery.minicolors.min.js');
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/MiniColorsField.js');

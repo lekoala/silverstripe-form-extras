@@ -22,6 +22,8 @@ class Select2Field extends ListboxField
 
     public function Field($properties = array())
     {
+        FormExtraJquery::include_jquery();
+
         $use_v3 = self::config()->use_v3;
 
         if ($use_v3) {
@@ -141,18 +143,17 @@ class Select2Field extends ListboxField
                 $newIdList = array();
 
                 // Tags will be a list of comma separated tags by title
-                $class = $relation->dataClass();
-                $newList = $class::get()->filter('Title', $idList);
-                $newListMap = $newList->map('Title','ID');
-                
+                $class      = $relation->dataClass();
+                $newList    = $class::get()->filter('Title', $idList);
+                $newListMap = $newList->map('Title', 'ID');
+
                 // Tag will either already exist or need to be created
-                foreach($idList as $title) {
-                    if(isset($newListMap[$title])) {
+                foreach ($idList as $title) {
+                    if (isset($newListMap[$title])) {
                         $newIdList[] = $newListMap[$title];
-                    }
-                    else {
-                        $obj = new $class;
-                        $obj->Title = $title;
+                    } else {
+                        $obj         = new $class;
+                        $obj->Title  = $title;
                         $obj->write();
                         $newIdList[] = $obj->ID;
                     }

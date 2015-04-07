@@ -21,6 +21,7 @@ class ChosenField extends ListboxField
 
     public function Field($properties = array())
     {
+        FormExtraJquery::include_jquery();
         // Use updated version of Chosen
         Requirements::block(FRAMEWORK_ADMIN_DIR.'/thirdparty/chosen/chosen/chosen.css');
         Requirements::block(FRAMEWORK_ADMIN_DIR.'/thirdparty/chosen/chosen/chosen.jquery.js');

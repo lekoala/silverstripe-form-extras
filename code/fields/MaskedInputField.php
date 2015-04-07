@@ -35,6 +35,7 @@ class MaskedInputField extends TextField
 
     public function Field($properties = array())
     {
+        FormExtraJquery::include_jquery();
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/inputmask/jquery.inputmask.bundle.min.js');
 
         // Set default options once
