@@ -57,7 +57,7 @@
 		}
 
 		// Remove a row
-		$('.tablefield-btn-remove').live('click', function (e) {
+		$(document).on('click', '.tablefield-btn-remove', function (e) {
 			e.preventDefault();
 
 			var row = $(this).parents('tr');
@@ -82,7 +82,7 @@
 		});
 
 		// Add a row
-		$('.tablefield-btn-add').live('click', function (e) {
+		$(document).on('click', '.tablefield-btn-add', function (e) {
 			e.preventDefault();
 
 			var row = $(this).parents('tr');
@@ -106,14 +106,14 @@
 				return $(this).data('required') == true;
 			});
 			var invalids = [];
-			requiredRows.each(function() {
+			requiredRows.each(function () {
 				var name = $(this).attr('name');
-				if(!result[name]) {
-					$(this).attr('required','true');
+				if (!result[name]) {
+					$(this).attr('required', 'true');
 					invalids.push(name);
 				}
 			});
-			if(invalids.length) {
+			if (invalids.length) {
 				return;
 			}
 			requiredRows.removeAttr('required');

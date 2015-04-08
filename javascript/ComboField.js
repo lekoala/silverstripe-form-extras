@@ -4,7 +4,7 @@
 (function ($) {
 	$(function () {
 
-		$('.field.combo select').live('change', function () {
+		$(document).on('change', '.field.combo select', function () {
 
 			var $this = $(this);
 			var chosenField = null;
