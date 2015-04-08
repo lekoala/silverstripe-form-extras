@@ -26,6 +26,7 @@ class FormExtraJquery extends Object
     const JQUERY_UI_THEME_DEFAULT = 'default';
 
     protected static $disabled = false;
+    protected static $included = array();
 
     public static function getDisabled()
     {
@@ -63,11 +64,12 @@ class FormExtraJquery extends Object
      */
     public static function include_jquery()
     {
-        if (self::$disabled) {
+        if (self::$disabled || in_array('jquery', self::$included)) {
             return;
         }
         // Avoid conflicts with jquery version of the cms
         if (self::isAdminBackend()) {
+            self::$included[] = 'jquery';
             return;
         }
         switch (self::config()->jquery_version) {
@@ -91,6 +93,7 @@ class FormExtraJquery extends Object
             Requirements::javascript($path.'.min.js');
             Requirements::block($path.'.js');
         }
+        self::$included[] = 'jquery';
     }
 
     /**
@@ -98,7 +101,7 @@ class FormExtraJquery extends Object
      */
     public static function include_jquery_ui()
     {
-        if (self::$disabled) {
+        if (self::$disabled || in_array('jquery_ui', self::$included)) {
             return;
         }
         switch (self::config()->jquery_ui_version) {
@@ -125,6 +128,7 @@ class FormExtraJquery extends Object
         } else {
             Requirements::css(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.css');
         }
+        self::$included[] = 'jquery_ui';
     }
 
     /**
@@ -132,7 +136,7 @@ class FormExtraJquery extends Object
      */
     public static function include_mousewheel()
     {
-        if (self::$disabled) {
+        if (self::$disabled || in_array('mousewheel', self::$included)) {
             return;
         }
         if (Director::isDev()) {
@@ -142,6 +146,7 @@ class FormExtraJquery extends Object
             Requirements::block(FORM_EXTRAS_PATH.'/javascript/jquery-mousewheel/jquery.mousewheel.js');
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/jquery-mousewheel/jquery.mousewheel.min.js');
         }
+        self::$included[] = 'mousewheel';
     }
 
     /**
@@ -149,7 +154,7 @@ class FormExtraJquery extends Object
      */
     public static function include_hammer()
     {
-        if (self::$disabled) {
+        if (self::$disabled || in_array('hammer', self::$included)) {
             return;
         }
         if (Director::isDev()) {
@@ -159,5 +164,6 @@ class FormExtraJquery extends Object
             Requirements::block(FORM_EXTRAS_PATH.'/javascript/hammer/hammer.js');
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/hammer/hammer.min.js');
         }
+        self::$included[] = 'hammer';
     }
 }
