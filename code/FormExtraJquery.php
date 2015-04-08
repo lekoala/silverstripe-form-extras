@@ -86,6 +86,11 @@ class FormExtraJquery extends Object
                 $path = THIRDPARTY_DIR.'/jquery/jquery';
                 break;
         }
+        // If we don't use the default version, block the framework version
+        if($path !== THIRDPARTY_DIR . '/jquery/jquery') {
+             Requirements::block( THIRDPARTY_DIR . '/jquery/jquery.js');
+             Requirements::block( THIRDPARTY_DIR . '/jquery/jquery.min.js');
+        }
         if (Director::isDev()) {
             Requirements::javascript($path.'.js');
             Requirements::block($path.'.min.js');
