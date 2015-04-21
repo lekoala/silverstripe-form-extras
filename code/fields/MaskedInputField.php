@@ -253,7 +253,7 @@ class MaskedInputField extends TextField
 
     public function getRegex()
     {
-        return $this->setAttribute('data-inputmask-regex');
+        return $this->getAttribute('data-inputmask-regex');
     }
 
     public function setRegex($regex)
