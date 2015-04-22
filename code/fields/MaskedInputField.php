@@ -31,7 +31,7 @@ class MaskedInputField extends TextField
     const ALIAS_INTEGER       = 'integer';
     const ALIAS_PHONE         = 'phone';
     const ALIAS_PHONEBE       = 'phonebe';
-    const ALIAS_REGEX         = 'Regex';
+    const ALIAS_REGEX         = 'regex';
 
 	public function extraClass() {
 		return 'text ' . parent::extraClass();

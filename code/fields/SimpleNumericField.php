@@ -32,6 +32,7 @@ class SimpleNumericField extends TextField
     protected function clean($input)
     {
         $nbsp = html_entity_decode('&nbsp;', null, 'UTF-8');
+        $input = str_replace(',', '.', $input);
         return str_replace(' ', $nbsp, trim($input));
     }
 
