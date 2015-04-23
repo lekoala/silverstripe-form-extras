@@ -60,6 +60,13 @@ class FormExtraJquery extends Object
     }
 
     /**
+     * @return bool
+     */
+    public static function use_legacy_jquery() {
+        return self::config()->jquery_version === self::JQUERY_FRAMEWORK;
+    }
+
+    /**
      * Include jquery based on your settings (framework, v1 or v2)
      */
     public static function include_jquery()
@@ -87,9 +94,9 @@ class FormExtraJquery extends Object
                 break;
         }
         // If we don't use the default version, block the framework version
-        if($path !== THIRDPARTY_DIR . '/jquery/jquery') {
-             Requirements::block( THIRDPARTY_DIR . '/jquery/jquery.js');
-             Requirements::block( THIRDPARTY_DIR . '/jquery/jquery.min.js');
+        if ($path !== THIRDPARTY_DIR.'/jquery/jquery') {
+            Requirements::block(THIRDPARTY_DIR.'/jquery/jquery.js');
+            Requirements::block(THIRDPARTY_DIR.'/jquery/jquery.min.js');
         }
         if (Director::isDev()) {
             Requirements::javascript($path.'.js');
@@ -170,5 +177,41 @@ class FormExtraJquery extends Object
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/hammer/hammer.min.js');
         }
         self::$included[] = 'hammer';
+    }
+
+    /**
+     * Include jquery scrollTo
+     */
+    public static function include_scrollTo()
+    {
+        if (self::$disabled || in_array('scrollTo', self::$included)) {
+            return;
+        }
+        if (Director::isDev()) {
+            Requirements::block(FORM_EXTRAS_PATH.'/javascript/scrollTo/jquery.scrollTo.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/scrollTo/jquery.scrollTo.js');
+        } else {
+            Requirements::block(FORM_EXTRAS_PATH.'/javascript/scrollTo/jquery.scrollTo.js');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/scrollTo/jquery.scrollTo.min.js');
+        }
+        self::$included[] = 'scrollTo';
+    }
+
+    /**
+     * Include jquery form
+     */
+    public static function include_form()
+    {
+        if (self::$disabled || in_array('form', self::$included)) {
+            return;
+        }
+        if (Director::isDev()) {
+            Requirements::block(FORM_EXTRAS_PATH.'/javascript/form/jquery.form.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/form/jquery.form.js');
+        } else {
+            Requirements::block(FORM_EXTRAS_PATH.'/javascript/form/jquery.form.js');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/form/jquery.form.min.js');
+        }
+        self::$included[] = 'form';
     }
 }

@@ -24,7 +24,15 @@ class Select2Field extends ListboxField
     {
         FormExtraJquery::include_jquery();
 
-        $use_v3 = self::config()->use_v3;
+        $use_v3 = false;
+        $version = self::config()->version;
+
+        if($version == 'auto') {
+            $use_v3 = FormExtraJquery::use_legacy_jquery();
+        }
+        else if(strpos($version, '3') !== false) {
+            $use_v3 = true;
+        }
 
         if ($use_v3) {
             Requirements::css(FORM_EXTRAS_PATH.'/javascript/select2-v3/select2.css');
