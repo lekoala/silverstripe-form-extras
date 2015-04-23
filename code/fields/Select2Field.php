@@ -13,6 +13,7 @@ class Select2Field extends ListboxField
     protected $allow_max_selected;
     protected $tags;
     protected $token_separators      = array(',', ' ');
+    protected $ajax;
 
     public function __construct($name, $title = null, $source = array(),
                                 $value = '', $form = null, $emptyString = null)
@@ -85,6 +86,9 @@ class Select2Field extends ListboxField
         }
         if (self::config()->rtl && !$use_v3) {
             $opts['dir'] = 'rtl';
+        }
+        if($this->ajax) {
+            $opts['ajax'] = $this->ajax;
         }
         Requirements::customScript('jQuery("#'.$this->ID().'").select2('.json_encode($opts).');');
 
@@ -239,5 +243,15 @@ class Select2Field extends ListboxField
     public function setDefaultText($text)
     {
         return $this->setAttribute('data-placeholder', $text);
+    }
+
+    public function getAjax()
+    {
+        return $this->ajax;
+    }
+
+    public function setAjax($arr)
+    {
+        $this->ajax = $arr;
     }
 }
