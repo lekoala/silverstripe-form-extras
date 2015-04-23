@@ -28,7 +28,7 @@ ChosenField:
   rtl: false
 Select2Field:
   rtl: false
-  version: 'auto'
+  use_v3: false
 SexyPasswordField:
   show_password_constraints: true
   enable_show_hide: true

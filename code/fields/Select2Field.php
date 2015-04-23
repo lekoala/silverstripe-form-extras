@@ -3,7 +3,7 @@
 /**
  * A field that use Select2
  *
- * Use V3 by default since V4 is not compatible with jquery version of Silverstripe
+ * Use V4 by default since it's now compatible with legacy jquery
  *
  * @author Koala
  */
@@ -24,15 +24,7 @@ class Select2Field extends ListboxField
     {
         FormExtraJquery::include_jquery();
 
-        $use_v3 = false;
-        $version = self::config()->version;
-
-        if($version == 'auto') {
-            $use_v3 = FormExtraJquery::use_legacy_jquery();
-        }
-        else if(strpos($version, '3') !== false) {
-            $use_v3 = true;
-        }
+        $use_v3 = self::config()->use_v3;
 
         if ($use_v3) {
             Requirements::css(FORM_EXTRAS_PATH.'/javascript/select2-v3/select2.css');
