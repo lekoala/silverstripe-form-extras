@@ -65,6 +65,9 @@ class ComboField extends DropdownField
 
     public function Field($properties = array())
     {
+		if(empty($this->source) || count($this->source) === 1) {
+			$this->setEmptyString('');
+		}
         return parent::Field($properties);
     }
 }

@@ -5,7 +5,6 @@
 	$(function () {
 
 		$(document).on('change', '.field.combo select', function () {
-
 			var $this = $(this);
 			var chosenField = null;
 			if ($this.hasClass('has-chzn')) {
