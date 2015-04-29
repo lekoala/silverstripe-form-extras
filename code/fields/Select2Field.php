@@ -9,6 +9,8 @@
  */
 class Select2Field extends ListboxField
 {
+    const SEPARATOR = '#';
+
     protected $allow_single_deselect = true;
     protected $allow_max_selected;
     protected $tags;
@@ -134,6 +136,14 @@ class Select2Field extends ListboxField
         );
     }
 
+    public function setValue($val, $obj = null)
+    {
+        if ($val && !is_array($val)) {
+            $val = explode(self::SEPARATOR, $val);
+        }
+        return parent::setValue($val, $obj);
+    }
+
     function saveInto(\DataObjectInterface $record)
     {
         // If tags are enabled, saving into a relation will not work properly
@@ -174,8 +184,9 @@ class Select2Field extends ListboxField
             } elseif ($fieldname && $record) {
                 if ($this->value) {
                     if (is_array($this->value)) {
-                        $record->$fieldname = implode(",", $this->value);
+                        $this->value = implode(self::SEPARATOR, $this->value);
                     }
+                    $record->$fieldname = $this->value;
                 } else {
                     $record->$fieldname = null;
                 }

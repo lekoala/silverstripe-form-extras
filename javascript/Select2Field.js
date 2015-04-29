@@ -6,13 +6,11 @@
 
 		if ($.entwine) {
 			$.entwine('ss', function ($) {
-				console.log('init');
 				$('.field.select2 select').entwine({
 					onmatch: function () {
 						this._super();
-						console.log('match');
+						$(this).parents('.field').find('.chzn-container').hide();
 						opts = window['select2_' + $(this).attr('id')];
-						console.log(opts);
 						$(this).select2(opts);
 					}
 				});
