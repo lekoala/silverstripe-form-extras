@@ -42,6 +42,26 @@ class TableField extends FormField
     }
 
     /**
+     * Get all columns
+     * @return array
+     */
+    function getColumns()
+    {
+        return $this->columns;
+    }
+
+    /**
+     * Set all columns
+     * @param array $columns
+     * @return \TableField
+     */
+    function setColumns($columns)
+    {
+        $this->columns = $columns;
+        return $this;
+    }
+
+    /**
      * Get a property from all columns
      * @param string $property
      */
@@ -220,7 +240,6 @@ class TableField extends FormField
     {
         $list = new ArrayList();
 
-
         foreach ($this->columns as $key => $column) {
 
             $header     = $this->array_get($column, self::KEY_HEADER);
@@ -247,10 +266,66 @@ class TableField extends FormField
         return $list;
     }
 
+    function DataList()
+    {
+        $list = new ArrayList();
+
+        if (!$this->value) {
+            return $list;
+        }
+
+        $val = $this->value;
+        if (!is_array($val)) {
+            $val = json_decode($val);
+        }
+
+        $i = 0;
+        foreach ($val as $data) {
+            $i++;
+            
+            $arr = $data;
+            if (is_object($arr)) {
+                $arr = get_object_vars($arr);
+            }
+
+            $rows = new ArrayList();
+            foreach ($arr as $k => $v) {
+                $rows->push(new ArrayData(array(
+                    'Name' => $k,
+                    'Value' => $v
+                )));
+                echo $v;
+            }
+
+            $list->push(new ArrayData(array(
+                'ID' => $i,
+                'Rows' => $rows
+            )));
+        }
+
+        return $list;
+    }
+
+    public function performReadonlyTransformation()
+    {
+        $copy = $this->castedCopy('TableField_ReadOnly');
+        $copy->setColumns($this->getColumns());
+        $copy->setReadonly(true);
+        return $copy;
+    }
+
     public function Field($properties = array())
     {
-        FormExtraJquery::include_jquery();
-        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/TableField.js');
+        if (!$this->isReadonly()) {
+            FormExtraJquery::include_jquery();
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/TableField.js');
+        }
+
         return parent::Field($properties);
     }
+}
+
+class TableField_ReadOnly extends TableField
+{
+
 }

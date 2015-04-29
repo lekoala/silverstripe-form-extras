@@ -9,7 +9,7 @@
  */
 class Select2Field extends ListboxField
 {
-    const SEPARATOR = '#';
+    const SEPARATOR = ',';
 
     protected $allow_single_deselect = true;
     protected $allow_max_selected;
