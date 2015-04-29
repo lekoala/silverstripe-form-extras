@@ -87,10 +87,17 @@ class Select2Field extends ListboxField
         if (self::config()->rtl && !$use_v3) {
             $opts['dir'] = 'rtl';
         }
-        if($this->ajax) {
+        if ($this->ajax) {
             $opts['ajax'] = $this->ajax;
         }
-        Requirements::customScript('jQuery("#'.$this->ID().'").select2('.json_encode($opts).');');
+
+        if (FormExtraJquery::isAdminBackend()) {
+            Requirements::customScript('var select2_'.$this->ID().' = '.json_encode($opts));
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/Select2Field.js');
+        } else {
+            Requirements::customScript('jQuery("#'.$this->ID().'").select2('.json_encode($opts).');');
+        }
+
 
         if ($use_v3) {
             // If you need to adjust the size, it's better to use the field container instead
