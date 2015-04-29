@@ -53,7 +53,7 @@ class FormExtra extends Form
     {
         $data = $this->getDataFromSession();
         if($data) {
-            $this->loadDataFrom($data);
+            $this->loadDataFrom($data,Form::MERGE_IGNORE_FALSEISH);
         }
     }
 
