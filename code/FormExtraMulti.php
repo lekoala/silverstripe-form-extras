@@ -226,7 +226,13 @@ class FormExtraMulti extends FormExtra
         return $actions;
     }
 
-    protected function saveDataInSession()
+    public static function getDataFromStep($step)
+    {
+        return Session::get(
+                "FormInfo.".self::classNameWithoutNumber().".formData.step".$step);
+    }
+
+    public function saveDataInSession()
     {
         Session::set(
             "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber(),
@@ -234,15 +240,15 @@ class FormExtraMulti extends FormExtra
         );
     }
 
-    public static function getDataFromStep($step)
-    {
-        return Session::get(
-                "FormInfo.".self::classNameWithoutNumber().".formData.step".$step);
-    }
-
-    protected function getDataFromSession()
+    public function getDataFromSession()
     {
         return Session::get(
                 "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber());
+    }
+
+    public function clearDataFromSession()
+    {
+        return Session::clear(
+            "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber());
     }
 }

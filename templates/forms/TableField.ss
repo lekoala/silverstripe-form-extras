@@ -1,5 +1,5 @@
 <input type="hidden" name="$Name" id="$ID" value='$Value' />
-<table class="ss-gridfield-table">
+<table class="ss-gridfield-table $extraClass">
 	<thead>
 		<tr>
 			<% loop ColumnsList %>
@@ -9,7 +9,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<!-- this is filled in by js -->
+		<!-- replaced with js -->
 	</tbody>
 	<tfoot>
 		<tr>

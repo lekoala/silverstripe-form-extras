@@ -36,23 +36,29 @@ class FormExtra extends Form
         $this->restoreDataFromSession();
     }
 
-    protected function saveDataInSession()
+    public function saveDataInSession()
     {
         Session::set(
             "FormInfo.{$this->FormName()}.formData", $this->getData()
         );
     }
 
-    protected function getDataFromSession()
+    public function clearDataFromSession()
+    {
+        return Session::clear(
+                "FormInfo.{$this->FormName()}.formData");
+    }
+
+    public function getDataFromSession()
     {
         return Session::get(
                 "FormInfo.{$this->FormName()}.formData");
     }
 
-    protected function restoreDataFromSession()
+    public function restoreDataFromSession()
     {
         $data = $this->getDataFromSession();
-        if($data) {
+        if ($data) {
             $this->loadDataFrom($data,Form::MERGE_IGNORE_FALSEISH);
         }
     }

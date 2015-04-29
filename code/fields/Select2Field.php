@@ -9,6 +9,8 @@
  */
 class Select2Field extends ListboxField
 {
+    const SEPARATOR = ',';
+
     protected $allow_single_deselect = true;
     protected $allow_max_selected;
     protected $tags;
@@ -87,10 +89,17 @@ class Select2Field extends ListboxField
         if (self::config()->rtl && !$use_v3) {
             $opts['dir'] = 'rtl';
         }
-        if($this->ajax) {
+        if ($this->ajax) {
             $opts['ajax'] = $this->ajax;
         }
-        Requirements::customScript('jQuery("#'.$this->ID().'").select2('.json_encode($opts).');');
+
+        if (FormExtraJquery::isAdminBackend()) {
+            Requirements::customScript('var select2_'.$this->ID().' = '.json_encode($opts));
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/Select2Field.js');
+        } else {
+            Requirements::customScript('jQuery("#'.$this->ID().'").select2('.json_encode($opts).');');
+        }
+
 
         if ($use_v3) {
             // If you need to adjust the size, it's better to use the field container instead
@@ -125,6 +134,14 @@ class Select2Field extends ListboxField
         return array_merge(
             parent::getAttributes(), $attrs
         );
+    }
+
+    public function setValue($val, $obj = null)
+    {
+        if ($val && !is_array($val)) {
+            $val = explode(self::SEPARATOR, $val);
+        }
+        return parent::setValue($val, $obj);
     }
 
     function saveInto(\DataObjectInterface $record)
@@ -167,8 +184,9 @@ class Select2Field extends ListboxField
             } elseif ($fieldname && $record) {
                 if ($this->value) {
                     if (is_array($this->value)) {
-                        $record->$fieldname = implode(",", $this->value);
+                        $this->value = implode(self::SEPARATOR, $this->value);
                     }
+                    $record->$fieldname = $this->value;
                 } else {
                     $record->$fieldname = null;
                 }
