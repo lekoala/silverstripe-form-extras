@@ -13,6 +13,8 @@ fr:
     Edit: 'Editer {name}'
   GridFieldDownloadButton:
     DOWLOAD: Télécharger
+  GridFieldExportAllButton:
+    LABEL: 'Tout exporter'
   MaskedInputField:
     VALIDATION: '''{value}'' ne respecte pas le format'
   RegexTextField:
@@ -44,3 +46,5 @@ fr:
     REMOVEINFO: 'Supprimer ce fichier dmais ne pas effacer de la base de fichier'
     STARTALL: 'Start all'
     UPLOADSINTO: 'Sauvegarder dans /{path}'
+  form-extras:
+    CheckboxSetOtherField: 'Autres (veuillez préciser)'

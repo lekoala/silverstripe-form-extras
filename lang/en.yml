@@ -13,10 +13,10 @@ en:
     Edit: 'Edit {name}'
   GridFieldDownloadButton:
     DOWLOAD: Download
+  GridFieldExportAllButton:
+    LABEL: 'Export all to CSV'
   MaskedInputField:
     VALIDATION: '''{value}'' does not respect the required format'
-  NumericField:
-    VALIDATION: '''{value}'' is not a number, only numbers can be accepted for this field'
   RegexTextField:
     VALIDATE: 'Please enter a valid format for "%s".'
   SexyPasswordField:
@@ -46,3 +46,7 @@ en:
     REMOVEINFO: 'Remove this file from here, but do not delete it from the file store'
     STARTALL: 'Start all'
     UPLOADSINTO: 'saves into /{path}'
+  form-extras:
+    CheckboxSetOtherField: 'Other (please specify)'
+  NumericField:
+    VALIDATION: '''{value}'' is not a number, only numbers can be accepted for this field'
