@@ -100,13 +100,24 @@ class Select2Field extends ListboxField
             Requirements::customScript('jQuery("#'.$this->ID().'").select2('.json_encode($opts).');');
         }
 
-
         if ($use_v3) {
             // If you need to adjust the size, it's better to use the field container instead
             $this->setAttribute('style', 'width:100%');
         }
 
         return parent::Field($properties);
+    }
+
+    public function getSource()
+    {
+        $source = parent::getSource();
+
+        if($this->tags) {
+            $values = array_values($source);
+            $source = array_combine($values, $values);
+        }
+
+        return $source;
     }
 
     public function getAttributes()
@@ -127,7 +138,7 @@ class Select2Field extends ListboxField
                     }
                     $values = $newValues;
                 }
-                $values = implode(',', $values);
+                $values = implode(self::SEPARATOR, $values);
             }
             $attrs['value'] = $values;
         }
@@ -164,17 +175,18 @@ class Select2Field extends ListboxField
                 $newIdList = array();
 
                 // Tags will be a list of comma separated tags by title
-                $class      = $relation->dataClass();
-                $newList    = $class::get()->filter('Title', $idList);
-                $newListMap = $newList->map('Title', 'ID');
+                $class       = $relation->dataClass();
+                $filterField = 'Title';
+                $newList    = $class::get()->filter($filterField, $idList);
+                $newListMap = $newList->map($filterField, 'ID');
 
                 // Tag will either already exist or need to be created
-                foreach ($idList as $title) {
-                    if (isset($newListMap[$title])) {
-                        $newIdList[] = $newListMap[$title];
+                foreach ($idList as $id) {
+                    if (isset($newListMap[$id])) {
+                        $newIdList[] = $newListMap[$id];
                     } else {
                         $obj         = new $class;
-                        $obj->Title  = $title;
+                        $obj->Title  = trim(str_replace(self::SEPARATOR, '',$id));
                         $obj->write();
                         $newIdList[] = $obj->ID;
                     }
@@ -203,7 +215,7 @@ class Select2Field extends ListboxField
 
     function setTags($tags)
     {
-        $this->setMultiple(true);
+        $this->setMultiple($tags);
         $this->tags = $tags;
     }
 
