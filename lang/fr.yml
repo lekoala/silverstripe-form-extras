@@ -46,5 +46,5 @@ fr:
     REMOVEINFO: 'Supprimer ce fichier dmais ne pas effacer de la base de fichier'
     STARTALL: 'Start all'
     UPLOADSINTO: 'Sauvegarder dans /{path}'
-  form-extras:
-    CheckboxSetOtherField: 'Autres (veuillez préciser)'
+  CheckboxSetOtherField:
+    OTHER: 'Autres (veuillez préciser)'

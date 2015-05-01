@@ -13,7 +13,7 @@ class CheckboxSetOtherField extends CheckboxSetField
                                 $value = '', $form = null, $emptyString = null)
     {
         parent::__construct($name, $title, $source, $value, $form, $emptyString);
-        $this->other_text = _t('CheckboxSetOtherField', 'Other (please specify)');
+        $this->other_text = _t('CheckboxSetOtherField.OTHER', 'Other (please specify)');
     }
 
     public function getOther_text()
@@ -64,15 +64,15 @@ class CheckboxSetOtherField extends CheckboxSetField
 
         // Detect a current custom value
         $diff = array_diff($items, $source);
+        $last = '';
         if(count($diff)) {
             $last = end($diff);
-            $this->setAttribute('data-other-value', Convert::raw2htmlatt($last));
         }
+        $this->setAttribute('data-other-value', Convert::raw2htmlatt($last));
 
         $source['_'] = $this->other_text;
 
         $options = array();
-
 
         foreach ($source as $value => $item) {
             $title = $item;

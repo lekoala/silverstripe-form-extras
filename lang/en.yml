@@ -46,7 +46,7 @@ en:
     REMOVEINFO: 'Remove this file from here, but do not delete it from the file store'
     STARTALL: 'Start all'
     UPLOADSINTO: 'saves into /{path}'
-  form-extras:
-    CheckboxSetOtherField: 'Other (please specify)'
+  CheckboxSetOtherField:
+    OTHER: 'Other (please specify)'
   NumericField:
     VALIDATION: '''{value}'' is not a number, only numbers can be accepted for this field'

@@ -114,7 +114,8 @@ class FormExtraMulti extends FormExtra
      */
     public static function setCurrentStep($value)
     {
-        return Session::set(self::classNameWithoutNumber().'.step', (int) $value);
+        Session::set(self::classNameWithoutNumber().'.step', (int) $value);
+        return Session::save();
     }
 
     /**
@@ -127,6 +128,9 @@ class FormExtraMulti extends FormExtra
             return;
         }
         $next = self::getCurrentStep() + 1;
+        if($next == 1) {
+            $next++;
+        }
         return self::setCurrentStep($next);
     }
 

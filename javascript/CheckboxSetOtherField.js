@@ -8,6 +8,9 @@
 			var $this = $(this);
 			
 			var val = $(this).parents('.field').data('other-value');
+			if(val === undefined) {
+				val = '';
+			}
 			
 			if ($this.is(':checked')) {
 				
