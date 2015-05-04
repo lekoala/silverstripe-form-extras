@@ -1,0 +1,1 @@
+<table id="$ID" class="<% if $extraClass %> $extraClass<% end_if %>"></table>

@@ -50,7 +50,7 @@ class FormExtraMulti extends FormExtra
      * Get all steps as an ArrayList. To be used for your templates.
      * @return ArrayList
      */
-    public static function AllSteps()
+    public function AllSteps()
     {
         $n    = 1;
         $curr = self::getCurrentStep();
@@ -74,7 +74,7 @@ class FormExtraMulti extends FormExtra
                 $isCompleted = true;
                 $cssClass .= ' completed';
             }
-            $link  = $c->Link($c->getAction().'?step='.$n);
+            $link  = $this->FormAction().'/gotoStep/?step='.$n;
             $steps->push(new ArrayData(array(
                 'Title' => $class::getStepTitle(),
                 'Number' => $n,
@@ -128,7 +128,7 @@ class FormExtraMulti extends FormExtra
             return;
         }
         $next = self::getCurrentStep() + 1;
-        if($next == 1) {
+        if ($next == 1) {
             $next++;
         }
         return self::setCurrentStep($next);
@@ -167,6 +167,27 @@ class FormExtraMulti extends FormExtra
     {
         // Feel free to implement something nice in your subclass
         return static::classNameWithoutNumber();
+    }
+
+    public function checkAccessAction($action)
+    {
+        if ($action === 'gotoStep') {
+            return true;
+        }
+        return parent::checkAccessAction($action);
+    }
+
+    /**
+     * Goto a step
+     * @return SS_HTTPResponse
+     */
+    public function gotoStep()
+    {
+        $step = $this->Controller()->getRequest()->getVar('step');
+        if ($step > 0 && $step < self::getCurrentStep()) {
+            self::setCurrentStep($step);
+        }
+        return $this->Controller()->redirectBack();
     }
 
     /**
@@ -253,6 +274,6 @@ class FormExtraMulti extends FormExtra
     public function clearDataFromSession()
     {
         return Session::clear(
-            "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber());
+                "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber());
     }
 }

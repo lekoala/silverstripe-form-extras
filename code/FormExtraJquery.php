@@ -24,6 +24,7 @@ class FormExtraJquery extends Object
     const JQUERY_UI_FRAMEWORK     = 'framwework';
     const JQUERY_UI_V1            = 'v1';
     const JQUERY_UI_THEME_DEFAULT = 'default';
+    const JQUERY_UI_THEME_NONE    = 'none';
 
     protected static $disabled = false;
     protected static $included = array();
@@ -62,7 +63,8 @@ class FormExtraJquery extends Object
     /**
      * @return bool
      */
-    public static function use_legacy_jquery() {
+    public static function use_legacy_jquery()
+    {
         return self::config()->jquery_version === self::JQUERY_FRAMEWORK;
     }
 
@@ -134,11 +136,21 @@ class FormExtraJquery extends Object
             Requirements::javascript($path.'.min.js');
             Requirements::block($path.'.js');
         }
-        if (self::config()->jquery_ui_theme == self::JQUERY_UI_THEME_DEFAULT) {
+        if (self::config()->jquery_ui_theme != self::JQUERY_UI_THEME_DEFAULT) {
             Requirements::block(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.css');
-            Requirements::css(self::config()->jquery_ui_theme);
+            Requirements::block(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.min.css');
+
+            $theme = self::config()->jquery_ui_theme;
+            // in case the less styles are used, developer should include it himself
+            if ($theme != self::JQUERY_UI_THEME_NONE) {
+                Requirements::css($theme);
+            }
         } else {
-            Requirements::css(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.css');
+            if (Director::isDev()) {
+                Requirements::css(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.css');
+            } else {
+                Requirements::css(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.min.css');
+            }
         }
         self::$included[] = 'jquery_ui';
     }
