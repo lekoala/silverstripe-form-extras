@@ -61,11 +61,22 @@ class AppendGridField extends FormField
             $opts['maxRowsAllowed'] = $this->maxRowsAllowed;
         }
         if ($this->value) {
-            $opts['initData'] = $this->value;
+            $opts['initData'] = array_values($this->value);
         }
         if ($this->columns) {
             $opts['columns'] = array_values($this->columns);
         }
+
+        $opts['i18n'] = array(
+            'append' => _t('AppendGridField.append', 'Append Row'),
+            'removeLast' => _t('AppendGridField.removeLast', 'Remove Last Row'),
+            'insert' => _t('AppendGridField.insert', 'Insert Row Above'),
+            'remove' => _t('AppendGridField.remove', 'Remove Current Row'),
+            'moveUp' => _t('AppendGridField.moveUp', 'Move Up'),
+            'moveDown' => _t('AppendGridField.moveDown', 'Move Down'),
+            'rowDrag' => _t('AppendGridField.rowDrag', 'Sort Row'),
+            'rowEmpty' => _t('AppendGridField.rowEmpty', 'This Grid Is Empty'),
+        );
 
         if (FormExtraJquery::isAdminBackend()) {
             Requirements::customScript('var appendgrid_'.$this->ID().' = '.json_encode($opts));
@@ -79,39 +90,55 @@ class AppendGridField extends FormField
 
     public function dataValue()
     {
-        if($this->value) {
+        if ($this->value) {
             return $this->value;
         }
         // if no value is set, look for data in the request
-        $id = $this->ID();
+        $id  = $this->ID();
         $arr = array();
-        foreach($_REQUEST as $key => $val) {
-            if(strpos($key, $id) === false) {
+        foreach ($_REQUEST as $key => $val) {
+            if (strpos($key, $id) === false) {
                 continue;
             }
-            $name = str_replace($id . '_','',$key);
+            $name  = str_replace($id.'_', '', $key);
             $parts = explode("_", $name);
-            if(count($parts) !== 2) {
+            if (count($parts) !== 2) {
                 continue;
             }
             $num = $parts[1];
             $col = $parts[0];
-            if(!isset($arr[$num])) {
+            if (!isset($arr[$num])) {
                 $arr[$num] = array();
             }
             $arr[$num][$col] = $val;
         }
-        $this->value = $arr;
+        $this->value = array_values($arr);
         return $this->value;
+    }
+
+    public function setValue($value)
+    {
+        if($value && is_string($value)) {
+            $value = json_decode($value);
+        }
+        parent::setValue($value);
     }
 
     public function saveInto(\DataObjectInterface $record)
     {
-        $name = $this->name;
-        echo '<pre>';
-        var_dump($name);
-        var_dump($_REQUEST);
-        exit();
+        $fieldname = $this->name;
+
+        $relation = ($fieldname && $record && $record->hasMethod($fieldname)) ? $record->$fieldname()
+                : null;
+
+        if ($relation) {
+            // TODO: Save to relation
+        } else {
+            if (is_array($this->value)) {
+                $this->value = json_encode(array_values($this->value));
+            }
+        }
+        parent::saveInto($record);
     }
 
     public function getColumns()

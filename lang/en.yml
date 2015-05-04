@@ -1,6 +1,17 @@
 en:
+  AppendGridField:
+    append: 'Append Row'
+    insert: 'Insert Row Above'
+    moveDown: 'Move Down'
+    moveUp: 'Move Up'
+    remove: 'Remove Current Row'
+    removeLast: 'Remove Last Row'
+    rowDrag: 'Sort Row'
+    rowEmpty: 'This Grid Is Empty'
   AvatarGalleryField:
     FROMGALLERY: 'From the gallery'
+  CheckboxSetOtherField:
+    OTHER: 'Other (please specify)'
   ChosenField:
     NO_RESULTS: 'Oops, nothing found!'
   ComboField:
@@ -46,7 +57,5 @@ en:
     REMOVEINFO: 'Remove this file from here, but do not delete it from the file store'
     STARTALL: 'Start all'
     UPLOADSINTO: 'saves into /{path}'
-  CheckboxSetOtherField:
-    OTHER: 'Other (please specify)'
   NumericField:
     VALIDATION: '''{value}'' is not a number, only numbers can be accepted for this field'

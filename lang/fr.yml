@@ -1,6 +1,17 @@
 fr:
+  AppendGridField:
+    append: 'Append Row'
+    insert: 'Insert Row Above'
+    moveDown: 'Move Down'
+    moveUp: 'Move Up'
+    remove: 'Remove Current Row'
+    removeLast: 'Remove Last Row'
+    rowDrag: 'Sort Row'
+    rowEmpty: 'This Grid Is Empty'
   AvatarGalleryField:
     FROMGALLERY: 'Depuis la gallerie'
+  CheckboxSetOtherField:
+    OTHER: 'Autres (veuillez préciser)'
   ChosenField:
     NO_RESULTS: 'Oups, rien de trouver'
   ComboField:
@@ -46,5 +57,3 @@ fr:
     REMOVEINFO: 'Supprimer ce fichier dmais ne pas effacer de la base de fichier'
     STARTALL: 'Start all'
     UPLOADSINTO: 'Sauvegarder dans /{path}'
-  CheckboxSetOtherField:
-    OTHER: 'Autres (veuillez préciser)'
