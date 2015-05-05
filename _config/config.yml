@@ -35,7 +35,7 @@ SexyPasswordField:
 SimpleTinyMceField:
   menubar: false
   toolbar: 'cut copy paste undo redo | removeformat | nulllist numlist blockquote | alignleft aligncenter alignright | formatselect | bold italic textcolor hr | link image media'
-  plugins: 'autolink link lists hr anchor media emoticons'
+  plugins: 'autolink autoresize link lists hr anchor image media paste textcolor emoticons'
 CropboxField:
   use_hammer: true
   use_mousewheel: true
