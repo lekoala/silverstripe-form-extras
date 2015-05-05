@@ -35,6 +35,7 @@ class SimpleTinyMceField extends TextareaField
         $this->menubar = $menubar;
         return $this;
     }
+
     function getToolbar()
     {
         if ($this->toolbar === null) {
@@ -68,6 +69,7 @@ class SimpleTinyMceField extends TextareaField
         Requirements::customScript('tinymce.init({
     selector: "#'.$this->ID().'",
     statusbar : false,
+    autoresize_bottom_margin : 0,
 	menubar: "'.$this->getMenubar().'",
     toolbar: "'.$this->getToolbar().'",
     plugins: [
