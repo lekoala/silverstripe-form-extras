@@ -7,6 +7,8 @@
  */
 class SimpleTinyMceField extends TextareaField
 {
+    protected $menubar;
+    protected $toolbar;
     protected $plugins;
 
     function __construct($name, $title = null, $value = null)
@@ -20,9 +22,36 @@ class SimpleTinyMceField extends TextareaField
         }
     }
 
+    function getMenubar()
+    {
+        if ($this->menubar === null) {
+            return self::config()->menubar;
+        }
+        return $this->menubar;
+    }
+
+    function setMenubar($menubar)
+    {
+        $this->menubar = $menubar;
+        return $this;
+    }
+    function getToolbar()
+    {
+        if ($this->toolbar === null) {
+            return self::config()->toolbar;
+        }
+        return $this->toolbar;
+    }
+
+    function setToolbar($toolbar)
+    {
+        $this->toolbar = $toolbar;
+        return $this;
+    }
+
     function getPlugins()
     {
-        if (!$this->plugins) {
+        if ($this->plugins === null) {
             return self::config()->plugins;
         }
         return $this->plugins;
@@ -38,7 +67,10 @@ class SimpleTinyMceField extends TextareaField
     {
         Requirements::customScript('tinymce.init({
     selector: "#'.$this->ID().'",
-	 plugins: [
+    statusbar : false,
+	menubar: "'.$this->getMenubar().'",
+    toolbar: "'.$this->getToolbar().'",
+    plugins: [
          "'.$this->getPlugins().'"
    ],
  });');

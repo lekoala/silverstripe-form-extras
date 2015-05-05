@@ -33,6 +33,8 @@ SexyPasswordField:
   show_password_constraints: true
   enable_show_hide: true
 SimpleTinyMceField:
+  menubar: false
+  toolbar: 'cut copy paste undo redo | removeformat | nulllist numlist blockquote | alignleft aligncenter alignright | formatselect | bold italic textcolor hr | link image media'
   plugins: 'autolink link lists hr anchor media emoticons'
 CropboxField:
   use_hammer: true
