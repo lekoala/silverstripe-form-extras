@@ -83,17 +83,23 @@ class FormExtraJquery extends Object
         }
         switch (self::config()->jquery_version) {
             case self::JQUERY_FRAMEWORK:
-                $path = THIRDPARTY_DIR.'/jquery/jquery';
+                $path    = THIRDPARTY_DIR.'/jquery/jquery';
+                $migrate = false;
                 break;
             case self::JQUERY_V1:
-                $path = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-1.11.2';
+                $path    = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-1.11.2';
+                $migrate = true;
                 break;
             case self::JQUERY_V2:
-                $path = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-2.1.3';
+                $path    = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-2.1.3';
+                $migrate = false;
                 break;
             default:
-                $path = THIRDPARTY_DIR.'/jquery/jquery';
+                $path    = THIRDPARTY_DIR.'/jquery/jquery';
                 break;
+        }
+        if (self::config()->jquery_migrate !== 'auto') {
+            $migrate = self::config()->jquery_migrate;
         }
         // If we don't use the default version, block the framework version
         if ($path !== THIRDPARTY_DIR.'/jquery/jquery') {
@@ -107,6 +113,17 @@ class FormExtraJquery extends Object
             Requirements::javascript($path.'.min.js');
             Requirements::block($path.'.js');
         }
+
+        if ($migrate) {
+            if (Director::isDev()) {
+                Requirements::javascript(FORM_EXTRAS_PATH .'/javascript/jquery-migrate/jquery-migrate-1.2.1.js');
+                Requirements::block(FORM_EXTRAS_PATH .'/javascript/jquery-migrate/jquery-migrate-1.2.1.min.js');
+            } else {
+                Requirements::block(FORM_EXTRAS_PATH .'/javascript/jquery-migrate/jquery-migrate-1.2.1.js');
+                Requirements::javascript(FORM_EXTRAS_PATH .'/javascript/jquery-migrate/jquery-migrate-1.2.1.min.js');
+            }
+        }
+
         self::$included[] = 'jquery';
     }
 

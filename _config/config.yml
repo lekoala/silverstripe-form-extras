@@ -7,6 +7,7 @@ After:
 FormExtraJquery:
   # Version can be: framework, v1 or v2
   jquery_version: 'framework'
+  jquery_migrate: 'auto'
   jquery_ui_version: 'framework'
   jquery_ui_theme: 'default'
 BaseUploadField:
