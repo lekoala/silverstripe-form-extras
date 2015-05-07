@@ -13,8 +13,8 @@ class YesNoOptionsetField extends OptionsetField
     {
         if (empty($source)) {
             $source = array(
-                '0' => _t('YesNoOptionsetField.YES', 'Yes'),
-                '1' => _t('YesNoOptionsetField.NO', 'No'),
+                '1' => _t('YesNoOptionsetField.YES', 'Yes'),
+                '0' => _t('YesNoOptionsetField.NO', 'No'),
             );
         }
         parent::__construct($name, $title, $source, $value, $form, $emptyString);
