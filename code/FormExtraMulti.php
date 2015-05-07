@@ -232,16 +232,23 @@ class FormExtraMulti extends FormExtra
             $prevClass = 'FormActionNoValidation';
         }
 
+        $prev = null;
         if (self::getCurrentStep() > 1) {
-            $actions->push(new $prevClass('doPrev',
+            $actions->push($prev = new $prevClass('doPrev',
                 _t('FormExtra.doPrev', 'Previous')));
+            $prev->addExtraClass('step-prev');
         }
 
         $label = _t('FormExtra.doNext', 'Next');
         if (self::isLastStep()) {
             $label = _t('FormExtra.doFinish', 'Finish');
         }
-        $actions->push(new FormAction('doNext', $label));
+        $actions->push($next = new FormAction('doNext', $label));
+        $next->addExtraClass('step-next');
+        if(!$prev) {
+            $next->addExtraClass('step-next-single');
+        }
+        $this->addExtraClass('form-steps');
 
         if (!$doSet) {
             $this->setActions($actions);
