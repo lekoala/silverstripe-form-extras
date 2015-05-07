@@ -237,16 +237,19 @@ class FormExtraMulti extends FormExtra
             $actions->push($prev = new $prevClass('doPrev',
                 _t('FormExtra.doPrev', 'Previous')));
             $prev->addExtraClass('step-prev');
+            $prev->setUseButtonTag(true);
         }
 
         $label = _t('FormExtra.doNext', 'Next');
-        if (self::isLastStep()) {
-            $label = _t('FormExtra.doFinish', 'Finish');
-        }
-        $actions->push($next = new FormAction('doNext', $label));
+        $actions->push($next  = new FormAction('doNext', $label));
+        $next->setUseButtonTag(true);
         $next->addExtraClass('step-next');
-        if(!$prev) {
+        if (!$prev) {
             $next->addExtraClass('step-next-single');
+        }
+        if (self::isLastStep()) {
+            $next->setTitle(_t('FormExtra.doFinish', 'Finish'));
+            $next->addExtraClass('step-last');
         }
         $this->addExtraClass('form-steps');
 
