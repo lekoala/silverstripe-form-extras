@@ -166,7 +166,7 @@ class FormExtraMulti extends FormExtra
     public static function getStepTitle()
     {
         // Feel free to implement something nice in your subclass
-        return static::classNameWithoutNumber();
+        return __CLASS__;
     }
 
     public function checkAccessAction($action)

@@ -40,6 +40,8 @@ fr:
     minScore: 'Doit avoir au moins {v} caractères spéciaux'
     punctuation: 'Doit contenir des ponctuations'
     uppercase: 'Doit contenir des majuscules'
+  URLField:
+    VALIDATION: 'Please enter a valid URL (e.g http://mywebsite.com).'
   UploadField:
     ATTACHFILE: 'Attacher un fichier'
     ATTACHFILES: 'Attacher des fichiers'
@@ -57,3 +59,6 @@ fr:
     REMOVEINFO: 'Supprimer ce fichier dmais ne pas effacer de la base de fichier'
     STARTALL: 'Start all'
     UPLOADSINTO: 'Sauvegarder dans /{path}'
+  YesNoOptionsetField:
+    'NO': 'Non'
+    'YES': 'Oui'

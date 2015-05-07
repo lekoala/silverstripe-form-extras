@@ -40,6 +40,8 @@ en:
     minScore: 'Must have at least {v} special characters'
     punctuation: 'Must contain punctuation'
     uppercase: 'Must contain uppercase characters'
+  URLField:
+    VALIDATION: 'Please enter a valid URL (e.g http://mywebsite.com).'
   UploadField:
     ATTACHFILE: 'Attach a file'
     ATTACHFILES: 'Attach files'
@@ -57,5 +59,8 @@ en:
     REMOVEINFO: 'Remove this file from here, but do not delete it from the file store'
     STARTALL: 'Start all'
     UPLOADSINTO: 'saves into /{path}'
+  YesNoOptionsetField:
+    'NO': 'No'
+    'YES': 'Yes'
   NumericField:
     VALIDATION: '''{value}'' is not a number, only numbers can be accepted for this field'
