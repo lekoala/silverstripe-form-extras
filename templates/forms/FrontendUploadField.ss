@@ -49,13 +49,13 @@
 		</label>
 		<% if canUpload %>
 		<label class="ss-uploadfield-fromcomputer btn" title="<% _t('UploadField.FROMCOMPUTERINFO', 'Upload from your computer') %>">
-			<i class="icon-upload"></i> <% _t('UploadField.FROMCOMPUTER', 'From your computer') %>
+			<i class="$IconUpload"></i> <% _t('UploadField.FROMCOMPUTER', 'From your computer') %>
 			<input $AttributesHTML data-config="$configString"<% if $multiple %> multiple="multiple"<% end_if %>  />
 		</label>
 		<% end_if %>
 		<% if canChooseFromGallery %>
 		<label class="ss-uploadfield-fromgallery btn" title="<% _t('AvatarGalleryField.FROMGALLERY', 'From the gallery') %>" data-mfp-src="$GalleryUrl">
-				<i class="icon-picture"></i> <% _t('AvatarGalleryField.FROMGALLERY', 'From the gallery') %>
+				<i class="$IconPicture"></i> <% _t('AvatarGalleryField.FROMGALLERY', 'From the gallery') %>
 		</label>	
 		<% end_if %>
 

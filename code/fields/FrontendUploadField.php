@@ -40,6 +40,8 @@ class FrontendUploadField extends UploadField
         $this->setTemplate('forms/FrontendUploadField');
         $this->setTemplateFileEdit('forms/FrontendUploadField_FileEdit');
         $this->setTemplateFileButtons('forms/FrontendUploadField_FileButtons');
+        $this->setDownloadTemplateName('ss-frontenduploadfield-downloadtemplate');
+        $this->setUploadTemplateName('ss-frontenduploadfield-uploadtemplate');
 
         // Configure to something more bullet proof
         $this->setCanAttachExisting(false); // Block access to Silverstripe assets library
@@ -56,6 +58,15 @@ jQuery(window).load(function() {
 	jQuery('.ss-uploadfield-item-edit').removeAttr('disabled').removeClass('disabled');
 });
 ", "FrontendUploadFieldFix");
+    }
+
+    public function Field($properties = array())
+    {
+        $res = parent::Field($properties);
+        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/uploadfield/FrontendUploadField_downloadtemplate.js');
+        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/uploadfield/FrontendUploadField_uploadtemplate.js');
+
+        return $res;
     }
 
     public function attach(SS_HTTPRequest $request)
@@ -257,6 +268,49 @@ jQuery(window).load(function() {
     {
         $result = parent::setValue($value, $record);
         return $result;
+    }
+
+    public function UikitIcons()
+    {
+        if (!class_exists('ThemePageControllerExtension')) {
+            return;
+        }
+        $c = ThemePageControllerExtension::config()->uikit;
+        if ($c && !empty($c['enabled'])) {
+            return true;
+        }
+    }
+
+    public function IconUpload()
+    {
+        if ($this->UikitIcons()) {
+            return 'uk-icon-upload';
+        }
+        return 'icon-upload';
+    }
+
+    public function IconEdit()
+    {
+        if ($this->UikitIcons()) {
+            return 'uk-icon-pencil';
+        }
+        return 'icon-pencil';
+    }
+
+    public function IconRemove()
+    {
+        if ($this->UikitIcons()) {
+            return 'uk-icon-remove';
+        }
+        return 'icon-remove';
+    }
+
+    public function IconPicture()
+    {
+        if ($this->UikitIcons()) {
+            return 'uk-icon-picture-o';
+        }
+        return 'icon-picture';
     }
 }
 
