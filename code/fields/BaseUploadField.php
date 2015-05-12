@@ -77,6 +77,16 @@ class BaseUploadField extends UploadField
         return $folderName;
     }
 
+    public function setImageOptions($ext = null, $size = null)
+    {
+        $this->getValidator()->setAllowedExtensions(
+            $ext ? $ext : ImageUploadField::config()->default_allowed_extensions
+        );
+        $sizeInBytes = $size ? $size : ImageUploadField::config()->default_max_file_size
+            * 1024 * 1024;
+        $this->getValidator()->setAllowedMaxFileSize($sizeInBytes);
+    }
+
     public function __construct($name, $title = null, \SS_List $items = null)
     {
         parent::__construct($name, $title, $items);

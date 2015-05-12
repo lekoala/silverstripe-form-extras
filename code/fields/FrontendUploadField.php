@@ -15,7 +15,7 @@
  * @link http://api.silverstripe.org/master/class-UploadField.html
  * @author lekoala
  */
-class FrontendUploadField extends UploadField
+class FrontendUploadField extends BaseUploadField
 {
     /**
      * @var array
