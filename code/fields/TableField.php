@@ -85,6 +85,9 @@ class TableField extends FormField
      */
     function setProperty($property, $arr)
     {
+         if(!ArrayLib::is_associative($arr)) {
+            $arr = array_combine($arr, $arr);
+        }
         // Make sure all columns exists
         foreach ($arr as $colName => $value) {
             if (!isset($this->columns[$colName])) {
