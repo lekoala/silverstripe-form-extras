@@ -1,13 +1,13 @@
 fr:
   AppendGridField:
-    append: 'Append Row'
-    insert: 'Insert Row Above'
-    moveDown: 'Move Down'
-    moveUp: 'Move Up'
-    remove: 'Remove Current Row'
-    removeLast: 'Remove Last Row'
-    rowDrag: 'Sort Row'
-    rowEmpty: 'This Grid Is Empty'
+    append: 'Ajouter une ligne'
+    insert: 'Insérer une ligne au-dessus'
+    moveDown: 'Déplacer vers le bas'
+    moveUp: 'Déplacer vers le haut'
+    remove: 'Enlever cette ligne'
+    removeLast: 'Enlever la dernière ligne'
+    rowDrag: 'Trier cette ligne'
+    rowEmpty: 'Ce tableau est vide'
   AvatarGalleryField:
     FROMGALLERY: 'Depuis la gallerie'
   CheckboxSetOtherField:
