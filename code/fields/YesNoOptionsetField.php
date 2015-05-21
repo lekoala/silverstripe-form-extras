@@ -20,6 +20,15 @@ class YesNoOptionsetField extends OptionsetField
         parent::__construct($name, $title, $source, $value, $form, $emptyString);
     }
 
+    function setValue($value)
+    {
+        // Avoid setting blank as no
+        if($value === '' || $value === null) {
+            return;
+        }
+        parent::setValue($value);
+    }
+
     function extraClass()
     {
         return 'optionset '.parent::extraClass();

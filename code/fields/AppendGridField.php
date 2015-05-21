@@ -28,6 +28,7 @@ class AppendGridField extends FormField
     const TYPE_UI_AUTOCOMPLETE = 'ui-autcomplete';
     const TYPE_UI_SELECTMENU   = 'ui-selectmenu';
     const TYPE_CUSTOM          = 'custom';
+    const TYPE_CURRENCY        = 'currency'; // Custom type specific to this implementation
 
     protected $columns;
     protected $caption;
@@ -38,6 +39,12 @@ class AppendGridField extends FormField
     public function Field($properties = array())
     {
         FormExtraJquery::include_jquery();
+
+        // Check if we are not using legacy
+        if (FormExtraJquery::use_legacy_jquery()) {
+            throw new Exception('AppendGrid is not compatible with jquery 1.7 and requires at least 1.11+');
+        }
+
         FormExtraJquery::include_jquery_ui();
         if (Director::isDev()) {
             Requirements::css(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.5.2.min.css');
@@ -78,11 +85,21 @@ class AppendGridField extends FormField
             'rowEmpty' => _t('AppendGridField.rowEmpty', 'This Grid Is Empty'),
         );
 
+        $jsonOpts = json_encode($opts);
+
+        // Make sure custom functions are interpreted as functions and not as string
+        $jsonOpts = str_replace('"appendGridCurrencyBuilder"',
+            'appendGridCurrencyBuilder', $jsonOpts);
+        $jsonOpts = str_replace('"appendGridCurrencyGetter"',
+            'appendGridCurrencyGetter', $jsonOpts);
+        $jsonOpts = str_replace('"appendGridCurrencySetter"',
+            'appendGridCurrencySetter', $jsonOpts);
+
         if (FormExtraJquery::isAdminBackend()) {
-            Requirements::customScript('var appendgrid_'.$this->ID().' = '.json_encode($opts));
+            Requirements::customScript('var appendgrid_'.$this->ID().' = '.$jsonOpts);
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AppendGridField.js');
         } else {
-            Requirements::customScript('jQuery("#'.$this->ID().'").appendGrid('.json_encode($opts).');');
+            Requirements::customScript('jQuery("#'.$this->ID().'").appendGrid('.$jsonOpts.');');
         }
 
         return parent::Field($properties);
@@ -118,7 +135,7 @@ class AppendGridField extends FormField
 
     public function setValue($value)
     {
-        if($value && is_string($value)) {
+        if ($value && is_string($value)) {
             $value = json_decode($value);
         }
         parent::setValue($value);
@@ -152,11 +169,67 @@ class AppendGridField extends FormField
         return $this;
     }
 
+    /**
+     * Add a column to append grid
+     *
+     * @param string $name
+     * @param string $display
+     * @param string $type
+     * @param int $value
+     * @param array $opts
+     */
     public function addColumn($name, $display = null, $type = 'text',
-                              $value = null, $opts = null)
+                              $value = null, $opts = array())
     {
         if (!$display) {
             $display = $name;
+        }
+
+        // Set a sensible default value for numbers
+        if ($type == self::TYPE_NUMBER && $value === null) {
+            $value = 0;
+        }
+
+        // Replace currency
+        if ($type == self::TYPE_CURRENCY) {
+            $type = self::TYPE_CUSTOM;
+
+            // Create custom functions to handle this type
+            Requirements::customScript(<<<JS
+var appendGridToFixed = function (value) {
+    var res = parseFloat(value).toFixed(2);
+    if(res === 'NaN') {
+        return '0.00';
+    }
+    return res;
+}
+var appendGridCurrencyBuilder = function(parent, idPrefix, name, uniqueIndex) {
+    var ctrlId = idPrefix + '_' + name + '_' + uniqueIndex;
+    var ctrl = document.createElement('input');
+    jQuery(ctrl).attr({ id: ctrlId, name: ctrlId, type: 'text' }).blur(function() { 
+        jQuery(this).val(appendGridToFixed(jQuery(this).val()));
+    }).appendTo(parent);
+                
+    return ctrl;
+}
+var appendGridCurrencyGetter =  function (idPrefix, name, uniqueIndex) {
+    var ctrlId = idPrefix + '_' + name + '_' + uniqueIndex;
+    return jQuery('#' + ctrlId).val();
+}
+var appendGridCurrencySetter =  function (idPrefix, name, uniqueIndex, value) {
+    var ctrlId = idPrefix + '_' + name + '_' + uniqueIndex;
+    return jQuery('#' + ctrlId).val(appendGridToFixed(value,2));
+}
+JS
+                , 'appendGridCurrencyHelper');
+
+            $opts['customBuilder'] = 'appendGridCurrencyBuilder';
+            $opts['customGetter']  = 'appendGridCurrencyGetter';
+            $opts['customSetter']  = 'appendGridCurrencySetter';
+
+            if ($value === null) {
+                $value = '0.00';
+            }
         }
 
         $baseOpts = array(
@@ -169,7 +242,7 @@ class AppendGridField extends FormField
             $baseOpts['value'] = $value;
         }
 
-        if ($opts) {
+        if (!empty($opts)) {
             $baseOpts = array_merge($baseOpts, $opts);
         }
 
