@@ -197,7 +197,7 @@ class AppendGridField extends FormField
             // Create custom functions to handle this type
             Requirements::customScript(<<<JS
 var appendGridToFixed = function (value) {
-    var res = parseFloat(value).toFixed(2);
+    var res = parseFloat(value.replace(',','.')).toFixed(2);
     if(res === 'NaN') {
         return '0.00';
     }
