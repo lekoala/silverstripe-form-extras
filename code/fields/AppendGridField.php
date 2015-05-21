@@ -36,6 +36,11 @@ class AppendGridField extends FormField
     protected $initRows       = 1;
     protected $maxRowsAllowed = 0;
 
+    public function extraClass()
+    {
+        return parent::extraClass() . ' input-wrapper';
+    }
+
     public function Field($properties = array())
     {
         FormExtraJquery::include_jquery();
@@ -175,7 +180,7 @@ class AppendGridField extends FormField
      * @param string $name
      * @param string $display
      * @param string $type
-     * @param int $value
+     * @param string $value
      * @param array $opts
      */
     public function addColumn($name, $display = null, $type = 'text',
@@ -188,6 +193,13 @@ class AppendGridField extends FormField
         // Set a sensible default value for numbers
         if ($type == self::TYPE_NUMBER && $value === null) {
             $value = 0;
+        }
+
+        // Check for options for select
+        if ($type == self::TYPE_SELECT) {
+            if(!isset($opts['ctrlOptions'])) {
+                throw new Exception('Please define a "ctrlOptions" in options');
+            }
         }
 
         // Replace currency
