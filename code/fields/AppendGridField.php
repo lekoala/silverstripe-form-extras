@@ -35,10 +35,11 @@ class AppendGridField extends FormField
     protected $captionTooltip;
     protected $initRows       = 1;
     protected $maxRowsAllowed = 0;
+    protected $initData    = null;
 
     public function extraClass()
     {
-        return parent::extraClass() . ' input-wrapper';
+        return parent::extraClass().' input-wrapper';
     }
 
     public function Field($properties = array())
@@ -72,8 +73,9 @@ class AppendGridField extends FormField
         if ($this->maxRowsAllowed) {
             $opts['maxRowsAllowed'] = $this->maxRowsAllowed;
         }
-        if ($this->value) {
-            $opts['initData'] = array_values($this->value);
+        if ($this->value || $this->initData) {
+            $val = $this->value ? $this->value : $this->initData;
+            $opts['initData'] = array_values($val);
         }
         if ($this->columns) {
             $opts['columns'] = array_values($this->columns);
@@ -197,7 +199,7 @@ class AppendGridField extends FormField
 
         // Check for options for select
         if ($type == self::TYPE_SELECT) {
-            if(!isset($opts['ctrlOptions'])) {
+            if (!isset($opts['ctrlOptions'])) {
                 throw new Exception('Please define a "ctrlOptions" in options');
             }
         }
