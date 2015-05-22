@@ -4,6 +4,9 @@ After:
 - 'framework/*'
 - 'cms/*'
 ---
+FormField:
+  extensions:
+    - 'TooltipFieldExtension'
 FormExtraJquery:
   # Version can be: framework, v1 or v2
   jquery_version: 'framework'
