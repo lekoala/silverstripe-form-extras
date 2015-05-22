@@ -85,6 +85,8 @@ class BaseUploadField extends UploadField
         $sizeInBytes = $size ? $size : ImageUploadField::config()->default_max_file_size
             * 1024 * 1024;
         $this->getValidator()->setAllowedMaxFileSize($sizeInBytes);
+
+        return $this;
     }
 
     public function __construct($name, $title = null, \SS_List $items = null)
