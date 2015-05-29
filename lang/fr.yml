@@ -9,7 +9,7 @@ fr:
     rowDrag: 'Trier cette ligne'
     rowEmpty: 'Ce tableau est vide'
   AvatarGalleryField:
-    FROMGALLERY: 'Depuis la gallerie'
+    FROMGALLERY: 'Depuis la galerie'
   CheckboxSetOtherField:
     OTHER: 'Autres (veuillez préciser)'
   ChosenField:
