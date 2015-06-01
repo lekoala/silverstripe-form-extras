@@ -7,6 +7,9 @@
  *
  * This is not the most robust implementation, but it does the job
  *
+ * Action must be implemented on the controller (ModelAdmin for instance)
+ * The data passed in the content of the form
+ *
  * @author lekoala
  */
 class CmsInlineFormAction extends FormField
