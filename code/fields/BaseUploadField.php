@@ -24,10 +24,10 @@ class BaseUploadField extends UploadField
     public static function createForClass($class, $name, $title = null,
                                           \SS_List $items = null)
     {
-        $folderName = self::getFolderForClass($class);
+        $folderName = self::getFolderForClass($class, $name);
 
         $inst = new static($name, $title, $items);
-        $inst->setFolderName($folderName);
+        $inst->setFolderName($folderName . '/' . $name);
         return $inst;
     }
 
@@ -42,7 +42,10 @@ class BaseUploadField extends UploadField
         $folderName = 'Uploads';
 
         if (is_object($class)) {
-            if ($class instanceof Page) {
+            if($class->hasMethod('BaseFolder')) {
+                $folderName = $class->BaseFolder();
+            }
+            else if ($class instanceof Page) {
                 $folderName = get_class($class);
             } else if ($class instanceof DataObject) {
                 $folderName = $class->baseTable();
