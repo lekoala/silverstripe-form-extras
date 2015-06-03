@@ -66,12 +66,27 @@ class SimpleTinyMceField extends TextareaField
 
     function Field($properties = array())
     {
+        $toolbar = $this->getToolbar();
+        if($toolbar) {
+            $toolbar = "'".$toolbar."'";
+        }
+        else {
+            $toolbar = 'false';
+        }
+        $menubar = $this->getMenubar();
+         if($toolbar) {
+            $menubar = "'".$menubar."'";
+        }
+        else {
+            $menubar = 'false';
+        }
+
         Requirements::customScript('tinymce.init({
     selector: "#'.$this->ID().'",
     statusbar : false,
     autoresize_bottom_margin : 0,
-	menubar: "'.$this->getMenubar().'",
-    toolbar: "'.$this->getToolbar().'",
+	menubar: '.$menubar.',
+    toolbar: '.$toolbar.',
     plugins: [
          "'.$this->getPlugins().'"
    ],
