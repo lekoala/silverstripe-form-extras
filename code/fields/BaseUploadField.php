@@ -42,7 +42,7 @@ class BaseUploadField extends UploadField
         $folderName = 'Uploads';
 
         if (is_object($class)) {
-            if($class->hasMethod('BaseFolder')) {
+            if(method_exists($class, 'hasMethod') && $class->hasMethod('BaseFolder')) {
                 $folderName = $class->BaseFolder();
             }
             else if ($class instanceof Page) {
