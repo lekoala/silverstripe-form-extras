@@ -67,29 +67,35 @@ class SimpleTinyMceField extends TextareaField
     function Field($properties = array())
     {
         $toolbar = $this->getToolbar();
-        if($toolbar) {
+        if ($toolbar) {
             $toolbar = "'".$toolbar."'";
-        }
-        else {
+        } else {
             $toolbar = 'false';
         }
         $menubar = $this->getMenubar();
-         if($toolbar) {
+        if ($toolbar) {
             $menubar = "'".$menubar."'";
-        }
-        else {
+        } else {
             $menubar = 'false';
         }
 
+        // We should update the hidden textarea to make sure validation still works
+        Requirements::customScript('var simpleTinymceSetup = function(editor) {
+    editor.on("change",function(e) {
+        document.getElementById(e.target.id).innerHTML = e.target.contentDocument.innerHTML
+    });
+}',
+            'simpleTinymceSetup');
+        
+        // Init instance
         Requirements::customScript('tinymce.init({
     selector: "#'.$this->ID().'",
     statusbar : false,
+    setup: simpleTinymceSetup,
     autoresize_bottom_margin : 0,
 	menubar: '.$menubar.',
     toolbar: '.$toolbar.',
-    plugins: [
-         "'.$this->getPlugins().'"
-   ],
+    plugins: ["'.$this->getPlugins().'"],
  });');
         return parent::Field($properties);
     }
