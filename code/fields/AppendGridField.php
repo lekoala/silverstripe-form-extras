@@ -36,6 +36,7 @@ class AppendGridField extends FormField
     protected $initRows       = 1;
     protected $maxRowsAllowed = 0;
     protected $initData    = null;
+    protected $totalRow;
 
     public function extraClass()
     {
@@ -163,6 +164,27 @@ class AppendGridField extends FormField
             }
         }
         parent::saveInto($record);
+    }
+
+    public function TotalRow() {
+        if(!$this->totalRow) {
+            return false;
+        }
+        return new ArrayData($this->totalRow);
+    }
+
+    public function addTotalRow($field, $name = null, $label = null) {
+        if($name === null) {
+            $name = $field;
+        }
+        if($label === null) {
+            $label = $name;
+        }
+        $this->totalRow = array('Field' => $field, 'Name' => $name, 'Label' => $label);
+    }
+
+    public function removeTotalRow() {
+        $this->totalRow = null;
     }
 
     public function getColumns()
