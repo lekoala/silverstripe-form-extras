@@ -112,7 +112,7 @@ class Select2Field extends ListboxField
     {
         $source = parent::getSource();
 
-        if($this->tags) {
+        if ($this->tags) {
             $values = array_values($source);
             $source = array_combine($values, $values);
         }
@@ -149,6 +149,18 @@ class Select2Field extends ListboxField
 
     public function setValue($val, $obj = null)
     {
+        if (!$val && $obj && $obj instanceof DataObject && $obj->hasMethod($this->name)) {
+            $funcName = $this->name;
+
+            if ($this->tags) {
+                $val = array();
+                foreach ($obj->$funcName() as $o) {
+                    $val[] = $o->Title;
+                }
+            } else {
+                $val = array_values($obj->$funcName()->getIDList());
+            }
+        }
         if ($val && !is_array($val)) {
             $val = explode(self::SEPARATOR, $val);
         }
@@ -177,8 +189,8 @@ class Select2Field extends ListboxField
                 // Tags will be a list of comma separated tags by title
                 $class       = $relation->dataClass();
                 $filterField = 'Title';
-                $newList    = $class::get()->filter($filterField, $idList);
-                $newListMap = $newList->map($filterField, 'ID');
+                $newList     = $class::get()->filter($filterField, $idList);
+                $newListMap  = $newList->map($filterField, 'ID');
 
                 // Tag will either already exist or need to be created
                 foreach ($idList as $id) {
@@ -186,7 +198,7 @@ class Select2Field extends ListboxField
                         $newIdList[] = $newListMap[$id];
                     } else {
                         $obj         = new $class;
-                        $obj->Title  = trim(str_replace(self::SEPARATOR, '',$id));
+                        $obj->Title  = trim(str_replace(self::SEPARATOR, '', $id));
                         $obj->write();
                         $newIdList[] = $obj->ID;
                     }
