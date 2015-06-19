@@ -46,6 +46,7 @@ class AppendGridField extends FormField
     public function Field($properties = array())
     {
         FormExtraJquery::include_jquery();
+        FormExtraJquery::include_accounting();
 
         // Check if we are not using legacy
         if (FormExtraJquery::use_legacy_jquery()) {

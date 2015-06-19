@@ -11,7 +11,7 @@ var appendGridComputeTotalRow = function (column, ctrl) {
 				totalValue = totalValue + parseFloat(row[column.name]);
 			}
 		}
-		totalValue = appendGridToFixed(totalValue);
+		totalValue = accounting.formatNumber(totalValue,2);
 		$('#' + column.ctrlProp.TotalRowID).val(totalValue);
 	}
 };
@@ -22,7 +22,7 @@ var appendGridCurrencyBuilder = function (parent, idPrefix, name, uniqueIndex) {
 
 	// Format on blur
 	ctrl.attr({id: ctrlId, name: ctrlId, type: 'text'}).blur(function () {
-		ctrl.val(appendGridToFixed(ctrl.val()));
+		ctrl.val(accounting.formatNumber(ctrl.val(),2));
 	}).appendTo(parent);
 
 	return el;
@@ -39,17 +39,7 @@ var appendGridCurrencySetter = function (idPrefix, name, uniqueIndex, value) {
 	ctrl.blur(function (e) {
 		appendGridComputeTotalRow(that, ctrl);
 	});
-	return ctrl.val(appendGridToFixed(value, 2));
-};
-var appendGridToFixed = function (value) {
-	if(!value) {
-		return '0.00';
-	}
-	var res = parseFloat(value.toString().replace(',', '.')).toFixed(2);
-	if (res === 'NaN') {
-		return '0.00';
-	}
-	return res;
+	return ctrl.val(accounting.formatNumber(value, 2));
 };
 (function ($) {
 	$(function () {

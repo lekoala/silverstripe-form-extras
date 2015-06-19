@@ -116,11 +116,11 @@ class FormExtraJquery extends Object
 
         if ($migrate) {
             if (Director::isDev()) {
-                Requirements::javascript(FORM_EXTRAS_PATH .'/javascript/jquery-migrate/jquery-migrate-1.2.1.js');
-                Requirements::block(FORM_EXTRAS_PATH .'/javascript/jquery-migrate/jquery-migrate-1.2.1.min.js');
+                Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/jquery-migrate/jquery-migrate-1.2.1.js');
+                Requirements::block(FORM_EXTRAS_PATH.'/javascript/jquery-migrate/jquery-migrate-1.2.1.min.js');
             } else {
-                Requirements::block(FORM_EXTRAS_PATH .'/javascript/jquery-migrate/jquery-migrate-1.2.1.js');
-                Requirements::javascript(FORM_EXTRAS_PATH .'/javascript/jquery-migrate/jquery-migrate-1.2.1.min.js');
+                Requirements::block(FORM_EXTRAS_PATH.'/javascript/jquery-migrate/jquery-migrate-1.2.1.js');
+                Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/jquery-migrate/jquery-migrate-1.2.1.min.js');
             }
         }
 
@@ -242,5 +242,46 @@ class FormExtraJquery extends Object
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/form/jquery.form.min.js');
         }
         self::$included[] = 'form';
+    }
+
+    public static function include_accounting()
+    {
+        if (self::$disabled || in_array('accouting', self::$included)) {
+            return;
+        }
+
+        // Send default settings according to locale
+        $locale  = i18n::get_locale();
+        $symbols = Zend_Locale_Data::getList($locale, 'symbols');
+        $currency = Currency::config()->currency_symbol;
+        $decimals = $symbols['decimal'];
+        $thousands = ($decimals == ',') ? '.' : ',';
+
+        Requirements::customScript(<<<JS
+accounting.settings = {
+	currency: {
+        symbol : "$currency",
+		format: "%s%v",
+		decimal : "$decimals",
+		thousand: "$thousands",
+		precision : 2
+	},
+	number: {
+		precision : 0,
+		thousand: "$thousands",
+		decimal : "$decimals"
+	}
+}
+JS
+        );
+
+        if (Director::isDev()) {
+            Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.js');
+        } else {
+            Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.js');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
+        }
+        self::$included[] = 'accouting';
     }
 }
