@@ -255,7 +255,7 @@ class FormExtraJquery extends Object
         $symbols = Zend_Locale_Data::getList($locale, 'symbols');
         $currency = Currency::config()->currency_symbol;
         $decimals = $symbols['decimal'];
-        $thousands = ($decimals == ',') ? '.' : ',';
+        $thousands = ($decimals == ',') ? ' ' : ',';
 
         Requirements::customScript(<<<JS
 accounting.settings = {

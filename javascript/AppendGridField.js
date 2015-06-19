@@ -8,7 +8,7 @@ var appendGridComputeTotalRow = function (column, ctrl) {
 		for (var i = 0; i < data.length; i++) {
 			var row = data[i];
 			if(row[column.name]) {
-				totalValue = totalValue + parseFloat(row[column.name]);
+				totalValue = totalValue + accounting.unformat(row[column.name]);
 			}
 		}
 		totalValue = accounting.formatNumber(totalValue,2);
