@@ -12,7 +12,7 @@ var appendGridComputeTotalRow = function (column, ctrl) {
 			}
 		}
 		totalValue = accounting.formatNumber(totalValue,2);
-		$('#' + column.ctrlProp.TotalRowID).val(totalValue);
+		$('#' + column.ctrlProp.TotalRowID).val(totalValue).trigger('change');
 	}
 };
 var appendGridCurrencyBuilder = function (parent, idPrefix, name, uniqueIndex) {
