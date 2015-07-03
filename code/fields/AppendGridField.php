@@ -29,8 +29,10 @@ class AppendGridField extends FormField
     const TYPE_UI_SELECTMENU   = 'ui-selectmenu';
     const TYPE_CUSTOM          = 'custom';
     const TYPE_CURRENCY        = 'currency'; // Custom type specific to this implementation
+    const TYPE_TEXTAREA        = 'textarea'; // Custom type specific to this implementation
 
-    protected $columns;
+    protected $columns        = array();
+    protected $subColumns     = array();
     protected $caption;
     protected $captionTooltip;
     protected $initRows       = 1;
@@ -88,9 +90,16 @@ class AppendGridField extends FormField
                     continue;
                 }
                 if (empty($col['ctrlProp'])) {
-                    $col['ctrlProp'] = array('TotalRowID' => $this->ID() . 'TotalRow');
+                    $col['ctrlProp'] = array('TotalRowID' => $this->ID().'TotalRow');
                 }
             }
+        }
+        if (!empty($this->subColumns)) {
+            $opts['useSubPanel']     = true;
+            $opts['subColumns']      = $this->subColumns;
+            $opts['subPanelBuilder'] = 'appendGridSubPanelBuilder';
+            $opts['subPanelGetter']  = 'appendGridSubPanelGetter';
+            $opts['rowDataLoaded']   = 'appendGridRowDataLoaded';
         }
 
         $opts['i18n'] = array(
@@ -107,12 +116,17 @@ class AppendGridField extends FormField
         $jsonOpts = json_encode($opts);
 
         // Make sure custom functions are interpreted as functions and not as string
-        $jsonOpts = str_replace('"appendGridCurrencyBuilder"',
-            'appendGridCurrencyBuilder', $jsonOpts);
-        $jsonOpts = str_replace('"appendGridCurrencyGetter"',
-            'appendGridCurrencyGetter', $jsonOpts);
-        $jsonOpts = str_replace('"appendGridCurrencySetter"',
-            'appendGridCurrencySetter', $jsonOpts);
+        $fcts = array(
+            'appendGridCurrencyBuilder',
+            'appendGridCurrencyGetter',
+            'appendGridCurrencySetter',
+            'appendGridSubPanelBuilder',
+            'appendGridSubPanelGetter',
+            'appendGridRowDataLoaded',
+        );
+        foreach ($fcts as $fct) {
+            $jsonOpts = str_replace('"'.$fct.'"', $fct, $jsonOpts);
+        }
 
         Requirements::customScript('var appendgrid_'.$this->ID().' = '.$jsonOpts);
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AppendGridField.js');
@@ -236,6 +250,10 @@ class AppendGridField extends FormField
             $value = 0;
         }
 
+        if($type == self::TYPE_TEXTAREA) {
+            throw new Exception('Only use textarea in sub columns');
+        }
+
         // Check for options for select
         if ($type == self::TYPE_SELECT) {
             if (!isset($opts['ctrlOptions'])) {
@@ -284,6 +302,71 @@ class AppendGridField extends FormField
     {
         if (isset($this->columns[$name])) {
             unset($this->columns[$name]);
+            return true;
+        }
+        return false;
+    }
+
+    public function getSubColumns()
+    {
+        return $this->subColumns;
+    }
+
+    public function setSubColumns($columns)
+    {
+        $this->subColumns = $columns;
+        return $this;
+    }
+
+    /**
+     * Add a column to append grid
+     *
+     * @param string $name
+     * @param string $display
+     * @param string $type
+     * @param string $value
+     * @param array $opts
+     */
+    public function addSubColumn($name, $display = null, $type = 'text',
+                                 $value = null, $opts = array())
+    {
+        if (!$display) {
+            $display = $name;
+        }
+
+        // Set a sensible default value for numbers
+        if ($type == self::TYPE_NUMBER && $value === null) {
+            $value = 0;
+        }
+
+        $baseOpts = array(
+            'name' => $name,
+            'display' => $display,
+            'type' => $type
+        );
+
+        if ($value !== null) {
+            $baseOpts['value'] = $value;
+        }
+
+        if (!empty($opts)) {
+            $baseOpts = array_merge($baseOpts, $opts);
+        }
+
+        $this->subColumns[$name] = $baseOpts;
+    }
+
+    public function getSubColumn($name)
+    {
+        if (isset($this->subColumns[$name])) {
+            return $this->subColumns[$name];
+        }
+    }
+
+    public function removeSubColumn($name)
+    {
+        if (isset($this->subColumns[$name])) {
+            unset($this->subColumns[$name]);
             return true;
         }
         return false;
