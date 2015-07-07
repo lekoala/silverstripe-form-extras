@@ -12,10 +12,52 @@ class TableField extends FormField
     const TYPE_NUMBER  = 'number';
     const KEY_HEADER   = 'header';
     const KEY_VALUES   = 'values';
+    const KEY_VALUE    = 'value';
     const KEY_TYPE     = 'type';
     const KEY_REQUIRED = 'required';
 
     protected $columns = array();
+
+    public function addColumn($name, $display = null, $type = 'text',
+                              $value = null, $opts = array())
+    {
+        if (!$display) {
+            $display = $name;
+        }
+
+        $baseOpts = array(
+            'name' => $name,
+            'header' => $display,
+            'type' => $type
+        );
+
+        if ($value !== null) {
+            $baseOpts['value'] = $value;
+        }
+
+        if (!empty($opts)) {
+            $baseOpts = array_merge($baseOpts, $opts);
+        }
+
+        $this->columns[$name] = $baseOpts;
+    }
+
+    public function setValue($value)
+    {
+        if (empty($this->columns)) {
+            $dataValue = $value;
+            if (!is_array($value)) {
+                $dataValue = json_decode($value);
+            }
+            if (count($dataValue)) {
+                $firstValue = (array) $dataValue[0];
+                foreach(array_keys($firstValue) as $header) {
+                    $this->addColumn($header);
+                }
+            }
+        }
+        return parent::setValue($value);
+    }
 
     /**
      * Get column details
@@ -85,7 +127,7 @@ class TableField extends FormField
      */
     function setProperty($property, $arr)
     {
-         if(!ArrayLib::is_associative($arr)) {
+        if (!ArrayLib::is_associative($arr)) {
             $arr = array_combine($arr, $arr);
         }
         // Make sure all columns exists
@@ -285,7 +327,7 @@ class TableField extends FormField
         $i = 0;
         foreach ($val as $data) {
             $i++;
-            
+
             $arr = $data;
             if (is_object($arr)) {
                 $arr = get_object_vars($arr);
