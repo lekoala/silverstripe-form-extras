@@ -82,11 +82,12 @@ var appendGridCurrencySetter = function (idPrefix, name, uniqueIndex, value) {
 	var ctrlId = idPrefix + '_' + name + '_' + uniqueIndex;
 	var ctrl = jQuery('#' + ctrlId);
 	var that = this;
-	appendGridComputeTotalRow(this, ctrl);
 	ctrl.blur(function (e) {
 		appendGridComputeTotalRow(that, ctrl);
 	});
-	return ctrl.val(accounting.formatNumber(value, 2));
+	res = ctrl.val(accounting.formatNumber(value, 2));
+	appendGridComputeTotalRow(this, ctrl);
+	return res;
 };
 (function ($) {
 	$(function () {
