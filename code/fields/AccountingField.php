@@ -54,8 +54,8 @@ class AccountingField extends TextField
             $value = 0;
         }
 
-        $cleanString       = preg_replace('/([^0-9\.,])/i', '', $money);
-        $onlyNumbersString = preg_replace('/([^0-9])/i', '', $money);
+        $cleanString       = preg_replace('/([^0-9\.,])/i', '', $value);
+        $onlyNumbersString = preg_replace('/([^0-9])/i', '', $value);
 
         $separatorsCountToBeErased = strlen($cleanString) - strlen($onlyNumbersString)
             - 1;
