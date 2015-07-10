@@ -31,4 +31,22 @@ class AccountingField extends TextField
     {
         return $this->setAttribute('data-precision', $value);
     }
+
+    /**
+     * Similar implementation than accounting.js unformat method
+     * @param string $value
+     */
+    public static function unformat($value)
+    {
+        if (is_array($value)) {
+            foreach ($value as &$val) {
+                $val = self::unformat($val);
+            }
+            return $value;
+        }
+
+        if (!$value) {
+            $value = 0;
+        }
+    }
 }
