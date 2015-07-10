@@ -73,11 +73,13 @@ class SimpleTinyMceField extends TextareaField
             $toolbar = 'false';
         }
         $menubar = $this->getMenubar();
-        if ($toolbar) {
+        if ($menubar) {
             $menubar = "'".$menubar."'";
         } else {
             $menubar = 'false';
         }
+
+        $skin = $this->config()->skin;
 
         // We should update the hidden textarea to make sure validation still works
         Requirements::customScript('var simpleTinymceSetup = function(editor) {
@@ -91,6 +93,7 @@ class SimpleTinyMceField extends TextareaField
         Requirements::customScript('tinymce.init({
     selector: "#'.$this->ID().'",
     statusbar : false,
+    skin: "'.$skin.'",
     setup: simpleTinymceSetup,
     autoresize_bottom_margin : 0,
 	menubar: '.$menubar.',
