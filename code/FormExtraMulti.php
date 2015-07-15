@@ -52,14 +52,22 @@ class FormExtraMulti extends FormExtra
      */
     public function AllSteps()
     {
+        $num = self::classNameNumber();
+        if (!$num) {
+            return;
+        }
         $n    = 1;
         $curr = self::getCurrentStep();
         if (!$curr) {
             $curr = 1;
         }
+        if (!Controller::has_curr()) {
+            return;
+        }
         $c     = Controller::curr();
-        $class = str_replace(self::classNameNumber(), $n, get_called_class());
+        $class = str_replace($num, $n, get_called_class());
         $steps = new ArrayList();
+
         while (class_exists($class)) {
             $isCurrent   = $isCompleted = false;
             $cssClass    = $n == $curr ? 'current' : 'link';
