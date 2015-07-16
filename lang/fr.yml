@@ -34,7 +34,7 @@ fr:
     SHOW: Visualiser
     digits: 'Doit contenir des chiffres'
     historicalPasswordCount: 'Doit être différent de vos {v} derniers mots de passe'
-    historicalPasswordCountOne: 'Doit être différent de votre derneir mot de passe'
+    historicalPasswordCountOne: 'Doit être différent de votre dernier mot de passe'
     lowercase: 'Doit contenir des minuscules'
     minLength: 'Doit avoir au moins {v} caractères'
     minScore: 'Doit avoir au moins {v} caractères spéciaux'
