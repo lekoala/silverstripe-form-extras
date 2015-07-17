@@ -49,7 +49,7 @@ var appendGridRowDataLoaded = function (caller, record, rowIndex, uniqueIndex) {
 	});
 };
 var appendGridComputeTotalRow = function (column, ctrl) {
-	if (column.ctrlProp && column.ctrlProp.TotalRowID) {
+	if (column.totalRow && column.totalRow.TotalRowID) {
 		totalValue = 0;
 		var data = ctrl.parents('table').appendGrid('getAllValue');
 		for (var i = 0; i < data.length; i++) {
@@ -59,7 +59,7 @@ var appendGridComputeTotalRow = function (column, ctrl) {
 			}
 		}
 		totalValue = accounting.formatNumber(totalValue, 2);
-		$('#' + column.ctrlProp.TotalRowID).val(totalValue).trigger('change');
+		jQuery('#' + column.totalRow.TotalRowID).val(totalValue).trigger('change');
 	}
 };
 var appendGridCurrencyBuilder = function (parent, idPrefix, name, uniqueIndex) {

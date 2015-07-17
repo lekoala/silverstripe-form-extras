@@ -89,8 +89,8 @@ class AppendGridField extends FormField
                 if ($col['name'] != $this->totalRow['Field']) {
                     continue;
                 }
-                if (empty($col['ctrlProp'])) {
-                    $col['ctrlProp'] = array('TotalRowID' => $this->ID().'TotalRow');
+                if (empty($col['totalRow'])) {
+                    $col['totalRow'] = array('TotalRowID' => $this->ID().'TotalRow');
                 }
             }
         }
