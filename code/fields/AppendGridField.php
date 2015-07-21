@@ -124,6 +124,15 @@ class AppendGridField extends FormField
             'appendGridSubPanelGetter',
             'appendGridRowDataLoaded',
         );
+        // Escape custom columns event handler
+        foreach($this->columns as $col) {
+            if(!empty($col['onChange'])) {
+                $fcts[] = $col['onChange'];
+            }
+            if(!empty($col['onClick'])) {
+                $fcts[] = $col['onClick'];
+            }
+        }
         foreach ($fcts as $fct) {
             $jsonOpts = str_replace('"'.$fct.'"', $fct, $jsonOpts);
         }
