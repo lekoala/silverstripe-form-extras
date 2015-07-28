@@ -246,7 +246,7 @@ class FormExtraJquery extends Object
 
     public static function include_accounting()
     {
-        if (self::$disabled || in_array('accouting', self::$included)) {
+        if (self::$disabled || in_array('accounting', self::$included)) {
             return;
         }
 
@@ -282,6 +282,6 @@ JS
             Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.js');
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
         }
-        self::$included[] = 'accouting';
+        self::$included[] = 'accounting';
     }
 }
