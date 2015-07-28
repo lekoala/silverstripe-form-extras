@@ -22,7 +22,12 @@ class TooltipFieldExtension extends Extension
 
         $t = $this->owner->Title();
 
-        $t .= ' <i class="'.Config::inst()->get(__CLASS__,'icon').' tooltip" title="'.$tooltip.'"></i>';
+        if(Controller::curr() instanceof LeftAndMain) {
+            $t .= ' <span title="'.$tooltip.'" class="ui-icon ui-icon-help" style="display:inline-block;"></span>';
+        }
+        else {
+            $t .= ' <i class="'.Config::inst()->get(__CLASS__,'icon').' tooltip" title="'.$tooltip.'"></i>';
+        }
         
         $this->owner->setTitle($t);
 
