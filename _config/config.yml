@@ -47,3 +47,6 @@ CropboxField:
 Image:
   extensions: 
     - 'CropboxImage'
+LeftAndMain:
+  extensions:
+    - FormExtraLeftAndMainExtension

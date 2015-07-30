@@ -251,10 +251,10 @@ class FormExtraJquery extends Object
         }
 
         // Send default settings according to locale
-        $locale  = i18n::get_locale();
-        $symbols = Zend_Locale_Data::getList($locale, 'symbols');
-        $currency = Currency::config()->currency_symbol;
-        $decimals = $symbols['decimal'];
+        $locale    = i18n::get_locale();
+        $symbols   = Zend_Locale_Data::getList($locale, 'symbols');
+        $currency  = Currency::config()->currency_symbol;
+        $decimals  = $symbols['decimal'];
         $thousands = ($decimals == ',') ? ' ' : ',';
 
         Requirements::customScript(<<<JS
@@ -273,7 +273,7 @@ accounting.settings = {
 	}
 }
 JS
-        );
+            , 'AccountingInit');
 
         if (Director::isDev()) {
             Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
