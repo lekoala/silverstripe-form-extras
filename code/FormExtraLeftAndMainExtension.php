@@ -17,22 +17,31 @@ class FormExtraLeftAndMainExtension extends LeftAndMainExtension
         $decimals  = $symbols['decimal'];
         $thousands = ($decimals == ',') ? ' ' : ',';
 
-        Requirements::customScript(<<<JS
-accounting.settings = {
-	currency: {
-        symbol : "$currency",
-		format: "%s%v",
-		decimal : "$decimals",
-		thousand: "$thousands",
-		precision : 2
-	},
-	number: {
-		precision : 0,
-		thousand: "$thousands",
-		decimal : "$decimals"
-	}
+        // Call this in whatever script using accouting to make sure it's properly initialized
+        Requirements::insertHeadTags(<<<EOT
+<script type="text/javascript">
+//<![CDATA[
+function applyAccountingSettings() {
+    window.accounting.settings = {
+        currency: {
+            symbol : "$currency",
+            format: "%s%v",
+            decimal : "$decimals",
+            thousand: "$thousands",
+            precision : 2
+        },
+        number: {
+            precision : 0,
+            thousand: "$thousands",
+            decimal : "$decimals"
+        }
+    }
 }
-JS
-        , 'AccountingInit');
+applyAccountingSettings();
+//]]>
+</script>
+EOT
+            , 'applyAccountingSettings'
+        );
     }
 }

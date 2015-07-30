@@ -3,6 +3,8 @@
  */
 (function ($) {
 	$(function () {
+		applyAccountingSettings();
+		
 		$(document).on('blur', '.field.accounting input', function () {
 			var $this = $(this);
 			var precision = 2;

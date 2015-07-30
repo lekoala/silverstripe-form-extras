@@ -250,6 +250,20 @@ class FormExtraJquery extends Object
             return;
         }
 
+        if (Director::isDev()) {
+            Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.js');
+        } else {
+            Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.js');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
+        }
+
+        if (Controller::has_curr() && Controller::curr() instanceof LeftAndMain) {
+            // In admin we rely on extension because of ajax architecture
+            self::$included[] = 'accounting';
+            return;
+        }
+
         // Send default settings according to locale
         $locale    = i18n::get_locale();
         $symbols   = Zend_Locale_Data::getList($locale, 'symbols');
@@ -258,30 +272,25 @@ class FormExtraJquery extends Object
         $thousands = ($decimals == ',') ? ' ' : ',';
 
         Requirements::customScript(<<<JS
-accounting.settings = {
-	currency: {
-        symbol : "$currency",
-		format: "%s%v",
-		decimal : "$decimals",
-		thousand: "$thousands",
-		precision : 2
-	},
-	number: {
-		precision : 0,
-		thousand: "$thousands",
-		decimal : "$decimals"
-	}
-}
-JS
-            , 'AccountingInit');
-
-        if (Director::isDev()) {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.js');
-        } else {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
+function applyAccountingSettings() {
+    window.accounting.settings = {
+        currency: {
+            symbol : "$currency",
+            format: "%s%v",
+            decimal : "$decimals",
+            thousand: "$thousands",
+            precision : 2
+        },
+        number: {
+            precision : 0,
+            thousand: "$thousands",
+            decimal : "$decimals"
         }
+    }
+}
+applyAccountingSettings();
+JS
+            , 'applyAccountingSettings');
         self::$included[] = 'accounting';
     }
 }
