@@ -18,11 +18,9 @@ class AccountingField extends TextField
 
     public function Field($properties = array())
     {
-       if (!$this->disabled && !$this->readonly) {
-            FormExtraJquery::include_jquery();
-            FormExtraJquery::include_accounting();
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AccountingField.js');
-        }
+        FormExtraJquery::include_jquery();
+        FormExtraJquery::include_accounting();
+        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AccountingField.js');
 
         return parent::Field($properties);
     }
@@ -41,7 +39,7 @@ class AccountingField extends TextField
     {
         return self::unformat($this->value);
     }
-    
+
     public function setValue($value)
     {
         $value = self::unformat($value);
