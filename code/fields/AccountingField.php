@@ -18,9 +18,11 @@ class AccountingField extends TextField
 
     public function Field($properties = array())
     {
-        FormExtraJquery::include_jquery();
-        FormExtraJquery::include_accounting();
-        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AccountingField.js');
+       if (!$this->disabled && !$this->readonly) {
+            FormExtraJquery::include_jquery();
+            FormExtraJquery::include_accounting();
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AccountingField.js');
+        }
 
         return parent::Field($properties);
     }
