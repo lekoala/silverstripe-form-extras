@@ -20,7 +20,8 @@ class HasOneButtonField extends GridField{
 		$this->parent = $parent;
 		$config = GridFieldConfig::create()
 					->addComponent(new GridFieldDetailForm())
-					->addComponent(new GridFieldHasOneEditButton());
+					->addComponent($button = new GridFieldHasOneEditButton());
+        $button->setButtonName($title);
 		$list = new HasOneButtonRelationList($this->record, $name, $parent);
 		parent::__construct($name, $title, $list, $config);
 	}
