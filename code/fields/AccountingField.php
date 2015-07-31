@@ -39,6 +39,13 @@ class AccountingField extends TextField
     {
         return self::unformat($this->value);
     }
+    
+    public function setValue($value)
+    {
+        $value = self::unformat($value);
+        $value = self::format($value);
+        parent::setValue($value);
+    }
 
     public static function initVariables()
     {
