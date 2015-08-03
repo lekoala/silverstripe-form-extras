@@ -1,15 +1,14 @@
 <?php
 
 /**
- * AppendGridField
+ * Implements a AppendGrid table
+ *
+ * Two new types have been added : 'currency' and 'textarea'
  *
  * @author lekoala
  */
-class AppendGridField extends FormField
+class AppendGridField extends TableField
 {
-    const TYPE_TEXT            = 'text';
-    const TYPE_SELECT          = 'select';
-    const TYPE_CHECKBOX        = 'checkbox';
     const TYPE_COLOR           = 'color';
     const TYPE_DATE            = 'date';
     const TYPE_DATETIME        = 'datetime';
@@ -28,22 +27,6 @@ class AppendGridField extends FormField
     const TYPE_UI_AUTOCOMPLETE = 'ui-autcomplete';
     const TYPE_UI_SELECTMENU   = 'ui-selectmenu';
     const TYPE_CUSTOM          = 'custom';
-    const TYPE_CURRENCY        = 'currency'; // Custom type specific to this implementation
-    const TYPE_TEXTAREA        = 'textarea'; // Custom type specific to this implementation
-
-    protected $columns        = array();
-    protected $subColumns     = array();
-    protected $caption;
-    protected $captionTooltip;
-    protected $initRows       = 1;
-    protected $maxRowsAllowed = 0;
-    protected $initData       = null;
-    protected $totalRow;
-
-    public function extraClass()
-    {
-        return parent::extraClass().' input-wrapper';
-    }
 
     public function Field($properties = array())
     {
@@ -125,11 +108,11 @@ class AppendGridField extends FormField
             'appendGridRowDataLoaded',
         );
         // Escape custom columns event handler
-        foreach($this->columns as $col) {
-            if(!empty($col['onChange'])) {
+        foreach ($this->columns as $col) {
+            if (!empty($col['onChange'])) {
                 $fcts[] = $col['onChange'];
             }
-            if(!empty($col['onClick'])) {
+            if (!empty($col['onClick'])) {
                 $fcts[] = $col['onClick'];
             }
         }
@@ -171,14 +154,6 @@ class AppendGridField extends FormField
         return $this->value;
     }
 
-    public function setValue($value)
-    {
-        if ($value && is_string($value)) {
-            $value = json_decode($value);
-        }
-        parent::setValue($value);
-    }
-
     public function saveInto(\DataObjectInterface $record)
     {
         $fieldname = $this->name;
@@ -196,48 +171,6 @@ class AppendGridField extends FormField
         parent::saveInto($record);
     }
 
-    public function TotalRow()
-    {
-        if (!$this->totalRow) {
-            return false;
-        }
-        return new ArrayData($this->totalRow);
-    }
-
-    /**
-     * Add a total row at the end of the table.
-     *
-     * @param string $field Field to compute (must be of type currency)
-     * @param string $name Name of the html input
-     * @param string $label Label of the total
-     */
-    public function addTotalRow($field, $name = null, $label = null)
-    {
-        if ($name === null) {
-            $name = $field;
-        }
-        if ($label === null) {
-            $label = $name;
-        }
-        $this->totalRow = array('Field' => $field, 'Name' => $name, 'Label' => $label);
-    }
-
-    public function removeTotalRow()
-    {
-        $this->totalRow = null;
-    }
-
-    public function getColumns()
-    {
-        return $this->columns;
-    }
-
-    public function setColumns($columns)
-    {
-        $this->columns = $columns;
-        return $this;
-    }
-
     /**
      * Add a column to append grid
      *
@@ -250,26 +183,6 @@ class AppendGridField extends FormField
     public function addColumn($name, $display = null, $type = 'text',
                               $value = null, $opts = array())
     {
-        if (!$display) {
-            $display = $name;
-        }
-
-        // Set a sensible default value for numbers
-        if ($type == self::TYPE_NUMBER && $value === null) {
-            $value = 0;
-        }
-
-        if($type == self::TYPE_TEXTAREA) {
-            throw new Exception('Only use textarea in sub columns');
-        }
-
-        // Check for options for select
-        if ($type == self::TYPE_SELECT) {
-            if (!isset($opts['ctrlOptions'])) {
-                throw new Exception('Please define a "ctrlOptions" in options');
-            }
-        }
-
         // Replace currency
         if ($type == self::TYPE_CURRENCY) {
             $type = self::TYPE_CUSTOM;
@@ -283,156 +196,6 @@ class AppendGridField extends FormField
             }
         }
 
-        $baseOpts = array(
-            'name' => $name,
-            'display' => $display,
-            'type' => $type
-        );
-
-        if ($value !== null) {
-            $baseOpts['value'] = $value;
-        }
-
-        if (!empty($opts)) {
-            $baseOpts = array_merge($baseOpts, $opts);
-        }
-
-        $this->columns[$name] = $baseOpts;
-    }
-
-    public function getColumn($name)
-    {
-        if (isset($this->columns[$name])) {
-            return $this->columns[$name];
-        }
-    }
-
-    public function removeColumn($name)
-    {
-        if (isset($this->columns[$name])) {
-            unset($this->columns[$name]);
-            return true;
-        }
-        return false;
-    }
-
-    public function getSubColumns()
-    {
-        return $this->subColumns;
-    }
-
-    public function setSubColumns($columns)
-    {
-        $this->subColumns = $columns;
-        return $this;
-    }
-
-    /**
-     * Add a column to append grid
-     *
-     * @param string $name
-     * @param string $display
-     * @param string $type
-     * @param string $value
-     * @param array $opts
-     */
-    public function addSubColumn($name, $display = null, $type = 'text',
-                                 $value = null, $opts = array())
-    {
-        if (!$display) {
-            $display = $name;
-        }
-
-        // Set a sensible default value for numbers
-        if ($type == self::TYPE_NUMBER && $value === null) {
-            $value = 0;
-        }
-
-        $baseOpts = array(
-            'name' => $name,
-            'display' => $display,
-            'type' => $type
-        );
-
-        if ($value !== null) {
-            $baseOpts['value'] = $value;
-        }
-
-        if (!empty($opts)) {
-            $baseOpts = array_merge($baseOpts, $opts);
-        }
-
-        $this->subColumns[$name] = $baseOpts;
-    }
-
-    public function getSubColumn($name)
-    {
-        if (isset($this->subColumns[$name])) {
-            return $this->subColumns[$name];
-        }
-    }
-
-    public function removeSubColumn($name)
-    {
-        if (isset($this->subColumns[$name])) {
-            unset($this->subColumns[$name]);
-            return true;
-        }
-        return false;
-    }
-
-    public function getCaption()
-    {
-        return $this->caption;
-    }
-
-    public function setCaption($caption)
-    {
-        $this->caption = $caption;
-        return $this;
-    }
-
-    public function getCaptionTooltip()
-    {
-        return $this->captionTooltip;
-    }
-
-    public function setCaptionTooltip($captionTooltip)
-    {
-        $this->captionTooltip = $captionTooltip;
-        return $this;
-    }
-
-    public function getInitRows()
-    {
-        return $this->initRows;
-    }
-
-    public function setInitRows($initRows)
-    {
-        $this->initRows = $initRows;
-        return $this;
-    }
-
-    public function getMaxRowsAllowed()
-    {
-        return $this->maxRowsAllowed;
-    }
-
-    public function setMaxRowsAllowed($maxRowsAllowed)
-    {
-        $this->maxRowsAllowed = $maxRowsAllowed;
-        return $this;
-    }
-
-    public function getInitData()
-    {
-        return $this->initData;
-    }
-
-    public function setInitData($initData)
-    {
-        $this->initData = $initData;
-        return $this;
+        parent::addColumn($name, $display, $type, $value, $opts);
     }
 }

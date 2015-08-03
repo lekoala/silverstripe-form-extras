@@ -80,8 +80,14 @@ class AccountingField extends TextField
 
         $rawValue = self::unformat($value);
 
-        return number_format($rawValue, $precision, self::$_decimals,
+        $formattedValue = number_format($rawValue, $precision, self::$_decimals,
             self::$_thousands);
+
+        if ($value < 0) {
+            $formattedValue = '-' . $formattedValue;
+        }
+        
+        return $formattedValue;
     }
 
     /**

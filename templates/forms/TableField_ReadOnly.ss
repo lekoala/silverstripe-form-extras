@@ -1,4 +1,4 @@
-<table class="ss-gridfield-table $extraClass">
+<table class="ss-gridfield-table">
 	<thead>
 		<tr>
 			<% loop ColumnsList %>
