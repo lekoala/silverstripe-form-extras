@@ -83,9 +83,6 @@ class TableField extends TableFieldCommon
         }
 
         $val = $this->value;
-        if (is_string($val) && strpos($val, '{') === 0) {
-            $val = json_decode($val);
-        }
 
         $cols = array_keys($this->columns);
 

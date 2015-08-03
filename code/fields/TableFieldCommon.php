@@ -52,13 +52,12 @@ class TableFieldCommon extends FormField
         return $v;
     }
 
-    public function setValue($value)
+    /**
+     * Autoset columns for simple structures based on current data
+     */
+    public function autosetColumns()
     {
-        // Allow set raw json as value
-        if ($value && is_string($value) && strpos($value, '{') === 0) {
-            $value = json_decode($value);
-        }
-        // Autoset columns for simple structures
+        $value = $this->value;
         if (empty($this->columns)) {
             $dataValue = $value;
             if (count($dataValue)) {
@@ -67,6 +66,14 @@ class TableFieldCommon extends FormField
                     $this->addColumn($header);
                 }
             }
+        }
+    }
+
+    public function setValue($value)
+    {
+        // Allow set raw json as value
+        if ($value && is_string($value) && strpos($value, '[') === 0) {
+            $value = json_decode($value);
         }
         parent::setValue($value);
     }
