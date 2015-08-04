@@ -16,7 +16,7 @@
 			<% loop ColumnsList %>
 			<th>
 				<% if Values %>
-				<select name="$Key" data-required="$Required">
+				<select name="$Key" data-required="$Required" style="margin:0">
 					<% loop Values %>
 					<option value="$Name">$Value</option>
 					<% end_loop %>
