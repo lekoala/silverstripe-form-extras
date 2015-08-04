@@ -87,11 +87,11 @@ class FormExtraJquery extends Object
                 $migrate = false;
                 break;
             case self::JQUERY_V1:
-                $path    = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-1.11.2';
+                $path    = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-1.11.3';
                 $migrate = true;
                 break;
             case self::JQUERY_V2:
-                $path    = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-2.1.3';
+                $path    = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-2.1.4';
                 $migrate = false;
                 break;
             default:
