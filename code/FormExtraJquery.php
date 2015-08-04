@@ -272,7 +272,6 @@ class FormExtraJquery extends Object
         $thousands = ($decimals == ',') ? ' ' : ',';
 
         Requirements::customScript(<<<JS
-function applyAccountingSettings() {
     window.accounting.settings = {
         currency: {
             symbol : "$currency",
@@ -288,9 +287,8 @@ function applyAccountingSettings() {
         }
     }
 }
-applyAccountingSettings();
 JS
-            , 'applyAccountingSettings');
+            , 'accountingInit');
         self::$included[] = 'accounting';
     }
 }

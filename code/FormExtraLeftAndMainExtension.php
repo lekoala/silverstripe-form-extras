@@ -17,11 +17,9 @@ class FormExtraLeftAndMainExtension extends LeftAndMainExtension
         $decimals  = $symbols['decimal'];
         $thousands = ($decimals == ',') ? ' ' : ',';
 
-        // Call this in whatever script using accouting to make sure it's properly initialized
-        Requirements::insertHeadTags(<<<EOT
-<script type="text/javascript">
-//<![CDATA[
-function applyAccountingSettings() {
+        // Accouting needs to be initialized globally
+        FormExtraJquery::include_accounting();
+        Requirements::customScript(<<<EOT
     window.accounting.settings = {
         currency: {
             symbol : "$currency",
@@ -36,12 +34,8 @@ function applyAccountingSettings() {
             decimal : "$decimals"
         }
     }
-}
-applyAccountingSettings();
-//]]>
-</script>
 EOT
-            , 'applyAccountingSettings'
+            , 'accountingInit'
         );
     }
 }
