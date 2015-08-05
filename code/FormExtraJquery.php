@@ -272,19 +272,18 @@ class FormExtraJquery extends Object
         $thousands = ($decimals == ',') ? ' ' : ',';
 
         Requirements::customScript(<<<JS
-    window.accounting.settings = {
-        currency: {
-            symbol : "$currency",
-            format: "%s%v",
-            decimal : "$decimals",
-            thousand: "$thousands",
-            precision : 2
-        },
-        number: {
-            precision : 0,
-            thousand: "$thousands",
-            decimal : "$decimals"
-        }
+window.accounting.settings = {
+    currency: {
+        symbol : "$currency",
+        format: "%s%v",
+        decimal : "$decimals",
+        thousand: "$thousands",
+        precision : 2
+    },
+    number: {
+        precision : 0,
+        thousand: "$thousands",
+        decimal : "$decimals"
     }
 }
 JS
