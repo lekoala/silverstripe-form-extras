@@ -118,6 +118,6 @@ class AccountingField extends TextField
         $removedThousendSeparator = preg_replace('/(\.|,)(?=[0-9]{3,}$)/', '',
             $stringWithCommaOrDot);
 
-        return (float) str_replace(',', '.', $removedThousendSeparator);
+        return str_replace(',', '.', $removedThousendSeparator);
     }
 }
