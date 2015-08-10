@@ -20,6 +20,7 @@ fr:
     doFinish: Terminer
     doNext: Suivant
     doPrev: Précédent
+    doSave: Sauvegarder
   GridField:
     Edit: 'Editer {name}'
   GridFieldDownloadButton:
@@ -60,5 +61,5 @@ fr:
     STARTALL: 'Start all'
     UPLOADSINTO: 'Sauvegarder dans /{path}'
   YesNoOptionsetField:
-    'NO': 'Non'
-    'YES': 'Oui'
+    'NO': Non
+    'YES': Oui

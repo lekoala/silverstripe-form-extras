@@ -20,6 +20,7 @@ en:
     doFinish: Finish
     doNext: Next
     doPrev: Previous
+    doSave: Save
   GridField:
     Edit: 'Edit {name}'
   GridFieldDownloadButton:

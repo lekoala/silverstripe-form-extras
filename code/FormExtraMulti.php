@@ -199,10 +199,22 @@ class FormExtraMulti extends FormExtra
     }
 
     /**
-     * A basic previous action that decrements the current step
+     * A basic previous action that saves the current step
+     * @param array $data
      * @return SS_HTTPResponse
      */
-    public function doPrev()
+    public function doSave($data)
+    {
+        $this->saveDataInSession();
+        return $this->Controller()->redirectBack();
+    }
+
+    /**
+     * A basic previous action that decrements the current step
+     * @param array $data
+     * @return SS_HTTPResponse
+     */
+    public function doPrev($data)
     {
         self::decrementStep();
         return $this->Controller()->redirectBack();
@@ -260,6 +272,33 @@ class FormExtraMulti extends FormExtra
             $next->addExtraClass('step-last');
         }
         $this->addExtraClass('form-steps');
+
+        if (!$doSet) {
+            $this->setActions($actions);
+            $actions->setForm($this);
+        }
+
+        return $actions;
+    }
+
+    /**
+     * Same as definePrevNext + a save button
+     *
+     * @param bool $doSet
+     * @return FieldList
+     */
+    protected function definePrevNextSaveActions($doSet = false) {
+        $actions = $this->definePrevNextActions($doSet);
+
+           $cls = 'FormAction';
+
+        // do not validate if used in conjonction with zenvalidator
+        if (class_exists('FormActionNoValidation')) {
+            $cls = 'FormActionNoValidation';
+        }
+        $save = new $cls('doSave',_t('FormExtra.doSave','Save'));
+        $save->addExtraClass('step-save');
+        $actions->push($save);
 
         if (!$doSet) {
             $this->setActions($actions);
