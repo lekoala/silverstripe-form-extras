@@ -340,4 +340,14 @@ class FormExtraMulti extends FormExtra
         return Session::clear(
                 "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber());
     }
+
+    /**
+     * Clear all infos stored in the session from all steps
+     */
+    public function clearAllDataFromSession()
+    {
+        self::clearCurrentStep();
+        Session::clear(
+                "FormInfo.".self::classNameWithoutNumber());
+    }
 }
