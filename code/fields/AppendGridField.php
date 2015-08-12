@@ -7,7 +7,7 @@
  *
  * @author lekoala
  */
-class AppendGridField extends TableField
+class AppendGridField extends TableFieldCommon
 {
     const TYPE_COLOR           = 'color';
     const TYPE_DATE            = 'date';
