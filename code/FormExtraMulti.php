@@ -287,19 +287,26 @@ class FormExtraMulti extends FormExtra
      * @param bool $doSet
      * @return FieldList
      */
-    protected function definePrevNextSaveActions($doSet = false) {
+    protected function definePrevNextSaveActions($doSet = false)
+    {
         $actions = $this->definePrevNextActions($doSet);
 
-           $cls = 'FormAction';
+        $cls = 'FormAction';
 
         // do not validate if used in conjonction with zenvalidator
         if (class_exists('FormActionNoValidation')) {
             $cls = 'FormActionNoValidation';
         }
-        $save = new $cls('doSave',_t('FormExtra.doSave','Save'));
+        $save = new $cls('doSave', _t('FormExtra.doSave', 'Save'));
         $save->addExtraClass('step-save');
         $actions->push($save);
 
+        // remove single class
+        $next = $actions->fieldByName('action_doNext');
+        if ($next) {
+            $next->removeExtraClass('step-next-single');
+        }
+        
         if (!$doSet) {
             $this->setActions($actions);
             $actions->setForm($this);
