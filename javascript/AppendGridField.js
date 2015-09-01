@@ -67,8 +67,13 @@ var appendGridCurrencyBuilder = function (parent, idPrefix, name, uniqueIndex) {
 	var el = document.createElement('input');
 	var ctrl = jQuery(el);
 
+	var attrs = {id: ctrlId, name: ctrlId, type: 'text', class: this.ctrlClass};
+	if (this.ctrlAttr) {
+		attrs = jQuery.extend(attrs, this.ctrlAttr);
+	}
+	
 	// Format on blur
-	ctrl.attr({id: ctrlId, name: ctrlId, type: 'text'}).blur(function () {
+	ctrl.attr(attrs).blur(function () {
 		ctrl.val(accounting.formatNumber(ctrl.val(), 2));
 	}).appendTo(parent);
 
