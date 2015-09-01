@@ -240,14 +240,25 @@ class TableFieldCommon extends FormField
         return $this;
     }
 
+    /**
+     * Get base number of rows
+     * 
+     * @return int
+     */
     public function getInitRows()
     {
         return $this->initRows;
     }
 
+    /**
+     * Set base number of rows
+     *
+     * @param int $initRows
+     * @return \TableFieldCommon
+     */
     public function setInitRows($initRows)
     {
-        $this->initRows = $initRows;
+        $this->initRows = (int) $initRows;
         return $this;
     }
 
