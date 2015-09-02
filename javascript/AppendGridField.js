@@ -9,10 +9,12 @@ var appendGridSubPanelBuilder = function (cell, uniqueIndex) {
 	this.htmlID = id;
 	jQuery.each(this.subColumns, function (index, value) {
 		var tag = jQuery('<input type="text" />');
-		var holder = jQuery('<div class="field appendgrid-sub-field"></div>');
-		holder.appendTo(cell);
+		var table = jQuery('<table class="field appendgrid-sub-field"></table>');
+		var holder = jQuery('<tr></tr>');
+		table.appendTo(cell);
+		holder.appendTo(table);
 
-		jQuery('<span></span>').text(value.display + ': ').appendTo(holder);
+		jQuery('<td class="appendgrid-sub-field-label"></td>').text(value.display + ': ').appendTo(holder);
 
 		if (value.type === 'textarea') {
 			tag = jQuery('<textarea></textarea').css('vertical-align', 'top');
@@ -21,7 +23,9 @@ var appendGridSubPanelBuilder = function (cell, uniqueIndex) {
 		tag.attr({
 			id: id + '_' + value.name + '_' + uniqueIndex,
 			name: id + '_' + value.name + '_' + uniqueIndex
-		}).appendTo(holder);
+		});
+				
+		jQuery('<td class="appendgrid-sub-field-input"></td>').append(tag).appendTo(holder);
 	});
 };
 // Return the element value inside sub panel for `getAllValue` and `getRowValue` methods
