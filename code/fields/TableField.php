@@ -38,7 +38,6 @@ class TableField extends TableFieldCommon
         return $this->setProperty(self::KEY_REQUIRED, $req);
     }
 
-   
     /**
      * Return an array list of columns
      * 
@@ -84,7 +83,8 @@ class TableField extends TableFieldCommon
 
         $val = $this->value;
 
-        $cols = array_keys($this->columns);
+        $cols    = array_keys($this->columns);
+        $subcols = array_keys($this->subColumns);
 
         $i = 0;
         foreach ($val as $data) {
@@ -95,10 +95,20 @@ class TableField extends TableFieldCommon
                 $arr = get_object_vars($arr);
             }
 
-            $rows = new ArrayList();
+            $rows            = new ArrayList();
+            $subcolumnsToAdd = array();
             foreach ($arr as $k => $v) {
+
+                if (in_array($k, $subcols)) {
+                    $subcolumnsToAdd[] = array(
+                        'Name' => $k,
+                        'Label' => $this->subColumns[$k][self::KEY_HEADER],
+                        'Value' => $v
+                    );
+                }
+
                 // Ignore unknown columns
-                if(!in_array($k, $cols)) {
+                if (!in_array($k, $cols)) {
                     continue;
                 }
 
@@ -112,6 +122,15 @@ class TableField extends TableFieldCommon
                 'ID' => $i,
                 'Rows' => $rows
             )));
+
+            foreach ($subcolumnsToAdd as $subcolumnToAdd) {
+                $list->push(new ArrayData(array(
+                    'ID' => $i,
+                    'SubColumn' => 1,
+                    'ColSpan' => $rows->count(),
+                    'Rows' => new ArrayData($subcolumnToAdd)
+                )));
+            }
         }
 
         return $list;
