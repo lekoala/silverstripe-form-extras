@@ -31,24 +31,18 @@ class CropboxField extends FormField
 			x       = jQuery('[name=CropX]', t),
             y       = jQuery('[name=CropY]', t),
             w       = jQuery('[name=CropWidth]', t),
-            h       = jQuery('[name=CropHeight]', t),
-            p       = jQuery('[name=CropPercent]', t),
-            l       = jQuery('[name=CropLeft]', t),
-            t       = jQuery('[name=CropTop]', t)
+            h       = jQuery('[name=CropHeight]', t)
 		;
 
-          image.cropbox( {width: cropwidth, height: cropheight, percent: p.val(), left: l.val(), top: t.val() } )
+          image.cropbox( {width: cropwidth, height: cropheight, result: {cropX:x.val(), cropY:y.val(), cropW:w.val(), cropH:h.val()} })
             .on('cropbox', function( event, results, img ) {
 				x.val(results.cropX);
 				y.val(results.cropY);
 				w.val(results.cropW);
 				h.val(results.cropH);
-				p.val(results.percent);
-				l.val(results.left);
-				t.val(results.top);
             })
 			;
-      } );",'cropboxFieldInit');
+      } );", 'cropboxFieldInit');
 
         parent::__construct($name, ($title === null) ? $name : $title, $value,
             $form);
@@ -99,6 +93,9 @@ class CropboxField extends FormField
         }
     }
 
+    /**
+     * @return Image
+     */
     public function getImage()
     {
         if ($this->ImageID) {
@@ -114,10 +111,6 @@ class CropboxImage extends DataExtension
         'CropY' => 'Int',
         'CropWidth' => 'Int',
         'CropHeight' => 'Int',
-        //the three following are required to restore plugin to original state
-        'CropPercent' => 'Varchar(255)',
-        'CropLeft' => 'Varchar',
-        'CropTop' => 'Varchar',
     );
     private static $defaults = array(
         'CropX' => '0',
@@ -138,20 +131,14 @@ class CropboxImage extends DataExtension
     {
         if (isset($_POST['CropX'])) {
             //Save coords
-            $this->owner->CropX       = isset($_POST['CropX']) ? (int) $_POST['CropX']
+            $this->owner->CropX      = isset($_POST['CropX']) ? (int) $_POST['CropX']
                     : 0;
-            $this->owner->CropY       = isset($_POST['CropX']) ? (int) $_POST['CropY']
+            $this->owner->CropY      = isset($_POST['CropY']) ? (int) $_POST['CropY']
                     : 0;
-            $this->owner->CropWidth   = isset($_POST['CropX']) ? (int) $_POST['CropWidth']
+            $this->owner->CropWidth  = isset($_POST['CropWidth']) ? (int) $_POST['CropWidth']
                     : 0;
-            $this->owner->CropHeight  = isset($_POST['CropX']) ? (int) $_POST['CropHeight']
+            $this->owner->CropHeight = isset($_POST['CropHeight']) ? (int) $_POST['CropHeight']
                     : 0;
-            $this->owner->CropPercent = isset($_POST['CropPercent']) ? (float) $_POST['CropPercent']
-                    : 0;
-            $this->owner->CropLeft    = isset($_POST['CropLeft']) ? Convert::raw2sql($_POST['CropLeft'])
-                    : '';
-            $this->owner->CropTop     = isset($_POST['CropTop']) ? Convert::raw2sql($_POST['CropTop'])
-                    : '';
             //Flush images if crop has changed
             if ($this->owner->isChanged('CropX') || $this->owner->isChanged('CropY')
                 || $this->owner->isChanged('CropWidth') || $this->owner->isChanged('CropHeight')

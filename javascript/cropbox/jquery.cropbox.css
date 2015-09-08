@@ -94,11 +94,3 @@
 	display        : block;
 	text-align:center;
 }
-
-/* jquery ui */
-.cropZoomOut .ui-button-text, .cropZoomIn .ui-button-text {
-	margin:0;
-	padding:0;
-	display:block;
-	text-align:center;
-}
