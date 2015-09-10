@@ -104,4 +104,12 @@ class FormExtra extends Form
         }
         return $this->Controller()->redirectBack();
     }
+
+    /**
+     * @return ZenValidator
+     */
+    public function getValidator()
+    {
+        return parent::getValidator();
+    }
 }

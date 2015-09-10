@@ -24,7 +24,7 @@ var appendGridSubPanelBuilder = function (cell, uniqueIndex) {
 			id: id + '_' + value.name + '_' + uniqueIndex,
 			name: id + '_' + value.name + '_' + uniqueIndex
 		});
-				
+
 		jQuery('<td class="appendgrid-sub-field-input"></td>').append(tag).appendTo(holder);
 	});
 };
@@ -75,7 +75,14 @@ var appendGridCurrencyBuilder = function (parent, idPrefix, name, uniqueIndex) {
 	if (this.ctrlAttr) {
 		attrs = jQuery.extend(attrs, this.ctrlAttr);
 	}
-	
+
+	// Format on focus
+	ctrl.attr(attrs).focus(function () {
+		var options = ['0', '0.00', '0,00'];
+		if (options.indexOf(ctrl.val()) > -1) {
+			ctrl.val('');
+		}
+	}).appendTo(parent);
 	// Format on blur
 	ctrl.attr(attrs).blur(function () {
 		ctrl.val(accounting.formatNumber(ctrl.val(), 2));

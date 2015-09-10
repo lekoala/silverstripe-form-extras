@@ -3,6 +3,13 @@
  */
 (function ($) {
 	$(function () {
+		$(document).on('focus', '.field.accounting input', function () {
+			var $this = $(this);
+			var options = ['0','0.00','0,00'];
+			if(options.indexOf($this.val()) > -1) {
+				$this.val('');
+			}
+		});
 		$(document).on('blur', '.field.accounting input', function () {
 			var $this = $(this);
 			var precision = 2;
