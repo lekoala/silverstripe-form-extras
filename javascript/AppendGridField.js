@@ -75,6 +75,9 @@ var appendGridCurrencyBuilder = function (parent, idPrefix, name, uniqueIndex) {
 	if (this.ctrlAttr) {
 		attrs = jQuery.extend(attrs, this.ctrlAttr);
 	}
+	if(this.onChange) {
+		ctrl.change(this.onChange);
+	}
 
 	// Format on focus
 	ctrl.attr(attrs).focus(function () {
