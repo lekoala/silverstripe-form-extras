@@ -116,13 +116,37 @@ class FormExtraMulti extends FormExtra
     }
 
     /**
+     * Set max step
+     * @param int $value
+     * @return string
+     */
+    public static function setMaxStep($value)
+    {
+        Session::set(self::classNameWithoutNumber().'.maxStep', (int) $value);
+        return Session::save();
+    }
+
+    /**
+     * Get max step (defined in session). 0 if not started yet.
+     * @return int
+     */
+    public static function getMaxStep()
+    {
+        return (int) Session::get(self::classNameWithoutNumber().'.maxStep');
+    }
+
+    /**
      * Set current step
      * @param int $value
      * @return string
      */
     public static function setCurrentStep($value)
     {
-        Session::set(self::classNameWithoutNumber().'.step', (int) $value);
+        $value = (int) $value;
+        if($value > self::getMaxStep()) {
+            self::setMaxStep($value);
+        }
+        Session::set(self::classNameWithoutNumber().'.step', $value);
         return Session::save();
     }
 
@@ -192,7 +216,7 @@ class FormExtraMulti extends FormExtra
     public function gotoStep()
     {
         $step = $this->Controller()->getRequest()->getVar('step');
-        if ($step > 0 && $step < self::getCurrentStep()) {
+        if ($step > 0 && $step <= self::getMaxStep()) {
             self::setCurrentStep($step);
         }
         return $this->Controller()->redirectBack();
