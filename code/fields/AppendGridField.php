@@ -154,23 +154,6 @@ class AppendGridField extends TableFieldCommon
         return $this->value;
     }
 
-    public function saveInto(\DataObjectInterface $record)
-    {
-        $fieldname = $this->name;
-
-        $relation = ($fieldname && $record && $record->hasMethod($fieldname)) ? $record->$fieldname()
-                : null;
-
-        if ($relation) {
-            // TODO: Save to relation
-        } else {
-            if (is_array($this->value)) {
-                $this->value = json_encode(array_values($this->value));
-            }
-        }
-        parent::saveInto($record);
-    }
-
     /**
      * Add a column to append grid
      *

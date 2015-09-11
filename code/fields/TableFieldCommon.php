@@ -43,11 +43,31 @@ class TableFieldCommon extends FormField
         return parent::extraClass().' input-wrapper';
     }
 
+    public function saveInto(\DataObjectInterface $record)
+    {
+        $fieldname = $this->name;
+
+        $relation = ($fieldname && $record && $record->hasMethod($fieldname)) ? $record->$fieldname()
+                : null;
+
+        if ($relation) {
+            // TODO: Save to relation
+        } else {
+            if (is_array($this->value)) {
+                $this->value = json_encode(array_values($this->value));
+            }
+        }
+        parent::saveInto($record);
+    }
+
     public function getValueJson()
     {
         $v = $this->value;
         if (is_array($v)) {
             $v = json_encode($v);
+        }
+        if (strpos($v, '[') !== 0) {
+            return '[]';
         }
         return $v;
     }
