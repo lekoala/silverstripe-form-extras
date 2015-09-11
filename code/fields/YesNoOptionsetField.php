@@ -3,60 +3,61 @@
 /**
  * YesNoOptionsetField
  *
+ * Boolean defaults to 0, meaning the loadDataFrom dataobject will always
+ * set default to "NO" on a Yes/No field because there is no null state
+ *
+ * To circumvent this, it's easier to store an Enum('YES,NO','NO') in the
+ * db
+ *
  * @author Koala
  */
 class YesNoOptionsetField extends OptionsetField
 {
+    const VALUE_YES = 'YES';
+    const VALUE_NO  = 'NO';
 
     function __construct($name, $title = null, $source = array(), $value = '',
                          $form = null, $emptyString = null)
     {
         if (empty($source)) {
             $source = array(
-                '1' => _t('YesNoOptionsetField.YES', 'Yes'),
-                '0' => _t('YesNoOptionsetField.NO', 'No'),
+                self::VALUE_YES => _t('YesNoOptionsetField.YES', 'Yes'),
+                self::VALUE_NO => _t('YesNoOptionsetField.NO', 'No'),
             );
         }
         parent::__construct($name, $title, $source, $value, $form, $emptyString);
     }
 
-    public function Field($properties = array())
+    function saveInto(\DataObjectInterface $record)
     {
-        $source  = $this->getSource();
-        $odd     = 0;
-        $options = array();
-
-        if ($source) {
-            foreach ($source as $value => $title) {
-                $itemID     = $this->ID().'_'.preg_replace('/[^a-zA-Z0-9]/', '',
-                        $value);
-                $odd        = ($odd + 1) % 2;
-                $extraClass = $odd ? 'odd' : 'even';
-                $extraClass .= ' val'.preg_replace('/[^a-zA-Z0-9\-\_]/', '_',
-                        $value);
-
-                $options[] = new ArrayData(array(
-                    'ID' => $itemID,
-                    'Class' => $extraClass,
-                    'Name' => $this->name,
-                    'Value' => $value,
-                    'Title' => $title,
-                    // make a stricter comparison
-                    'isChecked' => (string) $value === (string) $this->value,
-                    'isDisabled' => $this->disabled || in_array($value,
-                        $this->disabledItems),
-                ));
+        if ($this->name) {
+            $castingHelper = $record->castingHelper($this->name);
+            if ($castingHelper == 'Boolean') {
+                $record->setCastedField($this->name, $this->getBooleanValue());
+            } else {
+                $record->setCastedField($this->name, $this->dataValue());
             }
         }
+    }
 
-        $properties = array_merge($properties,
-            array(
-            'Options' => new ArrayList($options)
-        ));
+    function getBooleanValue()
+    {
+        switch ($this->value) {
+            case self::VALUE_NO:
+                return false;
+            case self::VALUE_YES:
+                return true;
+        }
+    }
 
-        return $this->customise($properties)->renderWith(
-                $this->getTemplates()
-        );
+    function setYes()
+    {
+        return $this->setValue(self::VALUE_YES);
+    }
+
+    function setNo()
+    {
+        return $this->setValue(self::VALUE_NO);
     }
 
     function setValue($value)
@@ -64,6 +65,13 @@ class YesNoOptionsetField extends OptionsetField
         // Avoid setting blank as no
         if ($value === '' || $value === null) {
             return;
+        }
+        if ($value !== self::VALUE_YES && $value !== self::VALUE_NO) {
+            if ((int) $value) {
+                $value = self::VALUE_YES;
+            } else {
+                $value = self::VALUE_NO;
+            }
         }
         parent::setValue($value);
     }
