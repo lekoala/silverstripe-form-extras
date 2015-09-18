@@ -17,7 +17,7 @@ class ExpandableTextareaField extends TextareaField
     function Field($properties = array())
     {
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/expandable/jquery.expandable.js');
-        Requirements::customScript('jQuery("#'.$this->ID().'").expandable();');
+        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/ExpandableTextareaField.js');
         return parent::Field($properties);
     }
 }
