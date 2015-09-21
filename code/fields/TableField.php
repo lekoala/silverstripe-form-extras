@@ -55,6 +55,14 @@ class TableField extends TableFieldCommon
                 self::TYPE_TEXT);
             $values     = $this->array_get($column, self::KEY_OPTIONS);
             $valuesList = null;
+
+            $size = 12;
+            
+            if($type == self::TYPE_CURRENCY) {
+                $type = 'text';
+                $size = 7;
+            }
+
             if ($values && is_array($values)) {
                 $valuesList = new ArrayList();
                 foreach ($values as $k => $v) {
@@ -62,13 +70,15 @@ class TableField extends TableFieldCommon
                 }
             }
 
-            $list->push(new ArrayData(array(
+            $rowData = array(
                 'Key' => $key,
+                'Size' => $size,
                 'Header' => $header,
                 'Values' => $valuesList,
                 'Type' => $type,
                 'Required' => $required ? 'true' : 'false'
-            )));
+            );
+            $list->push(new ArrayData($rowData));
         }
         return $list;
     }
