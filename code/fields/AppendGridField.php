@@ -46,9 +46,8 @@ class AppendGridField extends TableFieldCommon
 
         if (!FormExtraJquery::isAdminBackend()) {
             Requirements::customScript('var appendgrid_'.$this->ID().' = '.$this->buildJsonOpts(true));
-        }
-        else {
-            Requirements::css(FORM_EXTRAS_PATH . '/javascript/appendgrid/silverstripe.css');
+        } else {
+            Requirements::css(FORM_EXTRAS_PATH.'/javascript/appendgrid/silverstripe.css');
         }
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AppendGridField.js');
 
@@ -188,6 +187,8 @@ class AppendGridField extends TableFieldCommon
             if ($value === null) {
                 $value = '0.00';
             }
+
+            $this->requireAccounting = true;
         }
 
         parent::addColumn($name, $display, $type, $value, $opts);
