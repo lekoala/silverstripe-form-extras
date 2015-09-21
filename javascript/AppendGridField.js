@@ -141,7 +141,6 @@ var appendGridCurrencySetter = function (idPrefix, name, uniqueIndex, value) {
 									col[fcts[j]] = window[col[fcts[j]]];
 								}
 							}
-							console.log(col);
 						}
 						
 						$(this).appendGrid(opts);
