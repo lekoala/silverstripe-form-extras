@@ -114,6 +114,16 @@ var appendGridCurrencySetter = function (idPrefix, name, uniqueIndex, value) {
 	$(function () {
 		if ($.entwine) {
 			$.entwine('ss', function ($) {
+				$('.field.appendgrid table.appendgrid input').entwine({
+					onkeydown: function (e) {
+						var code = e.keyCode || e.which;
+						if (code == 13) { //Enter keycode
+							e.preventDefault();
+							e.stopPropagation();
+							return false;
+						}
+					}
+				});
 				$('.field.appendgrid table.appendgrid').entwine({
 					onmatch: function () {
 						this._super();
@@ -142,7 +152,7 @@ var appendGridCurrencySetter = function (idPrefix, name, uniqueIndex, value) {
 								}
 							}
 						}
-						
+
 						$(this).appendGrid(opts);
 					}
 				});
