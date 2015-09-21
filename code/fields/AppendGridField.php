@@ -31,21 +31,32 @@ class AppendGridField extends TableFieldCommon
     public function Field($properties = array())
     {
         FormExtraJquery::include_jquery();
-        FormExtraJquery::include_accounting();
-
-        // Check if we are not using legacy
-        if (FormExtraJquery::use_legacy_jquery()) {
-            throw new Exception('AppendGrid is not compatible with jquery 1.7 and requires at least 1.11+');
+        if ($this->requireAccounting) {
+            FormExtraJquery::include_accounting();
         }
 
         FormExtraJquery::include_jquery_ui();
         if (Director::isDev()) {
-            Requirements::css(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.min.css');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.min.js');
-        } else {
             Requirements::css(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.css');
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.js');
+        } else {
+            Requirements::css(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.min.css');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.min.js');
         }
+
+        if (!FormExtraJquery::isAdminBackend()) {
+            Requirements::customScript('var appendgrid_'.$this->ID().' = '.$this->buildJsonOpts(true));
+        }
+        else {
+            Requirements::css(FORM_EXTRAS_PATH . '/javascript/appendgrid/silverstripe.css');
+        }
+        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AppendGridField.js');
+
+        return parent::Field($properties);
+    }
+
+    public function buildJsonOpts($escape = false)
+    {
 
         $opts = array();
         if ($this->caption) {
@@ -98,32 +109,32 @@ class AppendGridField extends TableFieldCommon
 
         $jsonOpts = json_encode($opts);
 
-        // Make sure custom functions are interpreted as functions and not as string
-        $fcts = array(
-            'appendGridCurrencyBuilder',
-            'appendGridCurrencyGetter',
-            'appendGridCurrencySetter',
-            'appendGridSubPanelBuilder',
-            'appendGridSubPanelGetter',
-            'appendGridRowDataLoaded',
-        );
-        // Escape custom columns event handler
-        foreach ($this->columns as $col) {
-            if (!empty($col['onChange'])) {
-                $fcts[] = $col['onChange'];
+        // Please be aware that this will make the json invalid
+        if ($escape) {
+            // Make sure custom functions are interpreted as functions and not as string
+            $fcts = array(
+                'appendGridCurrencyBuilder',
+                'appendGridCurrencyGetter',
+                'appendGridCurrencySetter',
+                'appendGridSubPanelBuilder',
+                'appendGridSubPanelGetter',
+                'appendGridRowDataLoaded',
+            );
+            // Escape custom columns event handler
+            foreach ($this->columns as $col) {
+                if (!empty($col['onChange'])) {
+                    $fcts[] = $col['onChange'];
+                }
+                if (!empty($col['onClick'])) {
+                    $fcts[] = $col['onClick'];
+                }
             }
-            if (!empty($col['onClick'])) {
-                $fcts[] = $col['onClick'];
+            foreach ($fcts as $fct) {
+                $jsonOpts = str_replace('"'.$fct.'"', $fct, $jsonOpts);
             }
         }
-        foreach ($fcts as $fct) {
-            $jsonOpts = str_replace('"'.$fct.'"', $fct, $jsonOpts);
-        }
 
-        Requirements::customScript('var appendgrid_'.$this->ID().' = '.$jsonOpts);
-        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AppendGridField.js');
-
-        return parent::Field($properties);
+        return $jsonOpts;
     }
 
     public function dataValue()

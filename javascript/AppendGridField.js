@@ -6,18 +6,18 @@ var appendGridSubPanelBuilder = function (cell, uniqueIndex) {
 		return;
 	}
 	var id = jQuery(cell).parents('table').attr('id');
+	var table = jQuery('<table class="field appendgrid-sub-field"></table>');
+	table.appendTo(cell);
 	this.htmlID = id;
 	jQuery.each(this.subColumns, function (index, value) {
 		var tag = jQuery('<input type="text" />');
-		var table = jQuery('<table class="field appendgrid-sub-field"></table>');
 		var holder = jQuery('<tr></tr>');
-		table.appendTo(cell);
 		holder.appendTo(table);
 
 		jQuery('<td class="appendgrid-sub-field-label"></td>').text(value.display + ': ').appendTo(holder);
 
 		if (value.type === 'textarea') {
-			tag = jQuery('<textarea></textarea').css('vertical-align', 'top');
+			tag = jQuery('<textarea rows="5"></textarea').css('vertical-align', 'top');
 		}
 
 		tag.attr({
@@ -75,19 +75,21 @@ var appendGridCurrencyBuilder = function (parent, idPrefix, name, uniqueIndex) {
 	if (this.ctrlAttr) {
 		attrs = jQuery.extend(attrs, this.ctrlAttr);
 	}
-	if(this.onChange) {
+	if (this.onChange) {
 		ctrl.change(this.onChange);
 	}
 
+	ctrl.attr(attrs);
+
 	// Format on focus
-	ctrl.attr(attrs).focus(function () {
+	ctrl.focus(function () {
 		var options = ['0', '0.00', '0,00'];
 		if (options.indexOf(ctrl.val()) > -1) {
 			ctrl.val('');
 		}
 	}).appendTo(parent);
 	// Format on blur
-	ctrl.attr(attrs).blur(function () {
+	ctrl.blur(function () {
 		ctrl.val(accounting.formatNumber(ctrl.val(), 2));
 	}).appendTo(parent);
 
@@ -112,10 +114,36 @@ var appendGridCurrencySetter = function (idPrefix, name, uniqueIndex, value) {
 	$(function () {
 		if ($.entwine) {
 			$.entwine('ss', function ($) {
-				$('.field.appendgrid table').entwine({
+				$('.field.appendgrid table.appendgrid').entwine({
 					onmatch: function () {
 						this._super();
-						opts = window['appendgrid_' + $(this).attr('id')];
+						var configId = $(this).attr('id') + 'Config';
+						var opts = $.parseJSON($('#' + configId).text());
+
+						// replace functions name by references
+						var fcts = [
+							'customBuilder',
+							'customGetter',
+							'customSetter',
+							'onChange',
+							'onClick'
+						];
+
+						if (opts.useSubPanel) {
+							opts.subPanelBuilder = appendGridSubPanelBuilder;
+							opts.subPanelGetter = appendGridSubPanelGetter;
+							opts.rowDataLoaded = appendGridRowDataLoaded;
+						}
+						for (var i = 0; i < opts.columns.length; i++) {
+							var col = opts.columns[i];
+							for (var j = 0; j < fcts.length; j++) {
+								if (col[fcts[j]] && window[col[fcts[j]]] !== undefined) {
+									col[fcts[j]] = window[col[fcts[j]]];
+								}
+							}
+							console.log(col);
+						}
+						
 						$(this).appendGrid(opts);
 					}
 				});
@@ -124,7 +152,7 @@ var appendGridCurrencySetter = function (idPrefix, name, uniqueIndex, value) {
 		else {
 			// Init
 			$('.field.appendgrid table').each(function () {
-				opts = window['appendgrid_' + $(this).attr('id')];
+				var opts = window['appendgrid_' + $(this).attr('id')];
 				$(this).appendGrid(opts);
 			});
 		}

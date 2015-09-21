@@ -8,11 +8,13 @@
 	</thead>
 	<tbody>
 		<% loop DataList %>
-		<% if SubColumn %>
-		<tr>
+		<% if SubColumn && SubcolumnsHaveValues %>
+		<tr class="tablefield-sub-columns">
 			<td colspan="$ColSpan">
 				<% loop Rows %>
+				<% if Value %>
 				<strong>$Label:</strong> $Value
+				<% end_if %>
 				<% end_loop %>
 			</td>
 		</tr>

@@ -22,7 +22,7 @@
 					<% end_loop %>
 				</select>
 				<% else %>
-				<input type="$Type" name="$Key" data-required="$Required" size='$Size' />
+				<input type="$Type" name="$Key" data-required="$Required" <% if Size %>size='$Size'<% end_if %> />
 				<% end_if %>
 			</th>
 			<% end_loop %>

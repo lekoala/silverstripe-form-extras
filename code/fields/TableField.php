@@ -56,7 +56,7 @@ class TableField extends TableFieldCommon
             $values     = $this->array_get($column, self::KEY_OPTIONS);
             $valuesList = null;
 
-            $size = 12;
+            $size = null;
             
             if($type == self::TYPE_CURRENCY) {
                 $type = 'text';
@@ -107,9 +107,13 @@ class TableField extends TableFieldCommon
 
             $rows            = new ArrayList();
             $subcolumnsToAdd = array();
+            $subcolumnsHaveValues = false;
             foreach ($arr as $k => $v) {
 
                 if (in_array($k, $subcols)) {
+                    if($v) {
+                        $subcolumnsHaveValues = true;
+                    }
                     $subcolumnsToAdd[] = array(
                         'Name' => $k,
                         'Label' => $this->subColumns[$k][self::KEY_HEADER],
@@ -137,6 +141,7 @@ class TableField extends TableFieldCommon
                 $list->push(new ArrayData(array(
                     'ID' => $i,
                     'SubColumn' => 1,
+                    'SubcolumnsHaveValues' => $v,
                     'ColSpan' => $rows->count(),
                     'Rows' => new ArrayData($subcolumnToAdd)
                 )));

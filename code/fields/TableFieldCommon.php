@@ -50,11 +50,13 @@ class TableFieldCommon extends FormField
         $relation = ($fieldname && $record && $record->hasMethod($fieldname)) ? $record->$fieldname()
                 : null;
 
+        $value = $this->dataValue();
+
         if ($relation) {
             // TODO: Save to relation
         } else {
-            if (is_array($this->value)) {
-                $this->value = json_encode(array_values($this->value));
+            if (is_array($value)) {
+                $this->value = json_encode(array_values($value));
             }
         }
         parent::saveInto($record);
