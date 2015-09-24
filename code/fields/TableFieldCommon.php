@@ -308,6 +308,9 @@ class TableFieldCommon extends FormField
 
     public function performReadonlyTransformation()
     {
+        if($this->isReadonly()) {
+            return $this;
+        }
         $copy = $this->castedCopy('TableField_ReadOnly');
         $copy->setColumns($this->getColumns());
         $copy->setReadonly(true);

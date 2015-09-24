@@ -57,8 +57,8 @@ class TableField extends TableFieldCommon
             $valuesList = null;
 
             $size = null;
-            
-            if($type == self::TYPE_CURRENCY) {
+
+            if ($type == self::TYPE_CURRENCY) {
                 $type = 'text';
                 $size = 7;
             }
@@ -105,13 +105,13 @@ class TableField extends TableFieldCommon
                 $arr = get_object_vars($arr);
             }
 
-            $rows            = new ArrayList();
-            $subcolumnsToAdd = array();
+            $rows                 = new ArrayList();
+            $subcolumnsToAdd      = array();
             $subcolumnsHaveValues = false;
             foreach ($arr as $k => $v) {
 
                 if (in_array($k, $subcols)) {
-                    if($v) {
+                    if ($v) {
                         $subcolumnsHaveValues = true;
                     }
                     $subcolumnsToAdd[] = array(
@@ -167,5 +167,6 @@ class TableField extends TableFieldCommon
 
 class TableField_ReadOnly extends TableField
 {
+    protected $readonly = true;
 
 }
