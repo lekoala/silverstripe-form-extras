@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Zend/Locale/Data.php';
+
 /**
  * Support class for initializing javascript in a global manner
  *
