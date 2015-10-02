@@ -154,6 +154,7 @@ var appendGridCurrencySetter = function (idPrefix, name, uniqueIndex, value) {
 						}
 
 						$(this).appendGrid(opts);
+						$(this).parents('form').removeClass('changed');
 					}
 				});
 			});
