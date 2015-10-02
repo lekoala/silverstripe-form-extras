@@ -1,0 +1,38 @@
+/* Custom styles for Silverstripe */
+div.appendgrid .ui-widget-header .ui-icon-closethick {
+	background: url(../../../framework/thirdparty/jquery-ui-themes/smoothness/images/ui-icons_888888_256x240.png) -96px -128px;
+	width: 16px;
+    height: 16px;
+}
+div.appendgrid .ui-widget-header {
+	border: 1px solid #aaaaaa;
+}
+div.appendgrid select {
+	margin-left:0;
+}
+div.appendgrid textarea {
+	padding:1px;
+	color: #444;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+}
+div.appendgrid .appendgrid-sub-field {
+	white-space:normal;
+}
+div.appendgrid td.appendgrid-sub-field-label {
+	padding-right:1em;
+	vertical-align: top;
+}
+div.appendgrid td.appendgrid-sub-field-input {
+	width:416px;
+	max-width:100%;
+}
+div.appendgrid .appendGridTotalRow {
+	padding:5px 0;
+}
+div.appendgrid .appendGridTotalRow input {
+	background:#ddd;
+	margin-left:5px;
+	padding:1px 5px;
+	border:1px solid #999;
+}
