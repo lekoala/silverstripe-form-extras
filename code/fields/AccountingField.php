@@ -83,10 +83,6 @@ class AccountingField extends TextField
         $formattedValue = number_format($rawValue, $precision, self::$_decimals,
             self::$_thousands);
 
-        if ($value < 0) {
-            $formattedValue = '-' . $formattedValue;
-        }
-        
         return $formattedValue;
     }
 
@@ -107,6 +103,11 @@ class AccountingField extends TextField
             $value = 0;
         }
 
+        $neg = false;
+        if(strpos($value, '-') === 0) {
+            $neg = true;
+        }
+
         $cleanString       = preg_replace('/([^0-9\.,])/i', '', $value);
         $onlyNumbersString = preg_replace('/([^0-9])/i', '', $value);
 
@@ -118,6 +119,10 @@ class AccountingField extends TextField
         $removedThousendSeparator = preg_replace('/(\.|,)(?=[0-9]{3,}$)/', '',
             $stringWithCommaOrDot);
 
-        return str_replace(',', '.', $removedThousendSeparator);
+        $value = str_replace(',', '.', $removedThousendSeparator);
+        if($neg) {
+            $value = -1 * abs($value);
+        }
+        return $value;
     }
 }
