@@ -81,6 +81,13 @@ class SimpleTinyMceField extends TextareaField
 
         $skin = $this->config()->skin;
 
+        $plugins = $this->getPlugins();
+
+        $tools = '';
+        if(strpos($plugins, 'table') !== false) {
+            $tools ="\n    tools: 'inserttable',";
+        }
+
         // We should update the hidden textarea to make sure validation still works
         Requirements::customScript('var simpleTinymceSetup = function(editor) {
     editor.on("change",function(e) {
@@ -96,9 +103,9 @@ class SimpleTinyMceField extends TextareaField
     skin: "'.$skin.'",
     setup: simpleTinymceSetup,
     autoresize_bottom_margin : 0,
-	menubar: '.$menubar.',
+    menubar: '.$menubar.',
     toolbar: '.$toolbar.',
-    plugins: ["'.$this->getPlugins().'"],
+    plugins: ["'.$plugins.'"],' . $tools . '
  });');
         return parent::Field($properties);
     }
