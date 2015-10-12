@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PercentField
+ * Slider field using jquery ui
  *
  * @author lekoala
  */
@@ -45,6 +45,52 @@ class SliderField extends TextField
     {
         $this->sliderOptions[$k] = $v;
         return $this;
+    }
+
+    /**
+     * @param string $v true,min,max
+     * @return \SliderField
+     */
+    public function setRange($v)
+    {
+        $this->setSliderOption('range', $v);
+        return $this;
+    }
+
+    public function setMin($v)
+    {
+        $this->setSliderOption('min', (int) $v);
+        return $this;
+    }
+
+    public function setMax($v)
+    {
+        $this->setSliderOption('max', (int) $v);
+        return $this;
+    }
+
+    public function setValues($v1, $v2)
+    {
+        $this->setSliderOption('values', array($v1, $v2));
+        return $this;
+    }
+
+    public function setStep($v)
+    {
+        $this->setSliderOption('step', (int) $v);
+        return $this;
+    }
+
+    public function setDisabled($disabled)
+    {
+        $this->setSliderOption('disabled', (bool) $disabled);
+        return parent::setReadonly($disabled);
+    }
+
+    public function setReadonly($readonly)
+    {
+        $this->setSliderOption('disabled', (bool) $readonly);
+        return parent::setReadonly($readonly);
     }
 
     public function Units()
