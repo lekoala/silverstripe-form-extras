@@ -59,13 +59,13 @@ class SliderField extends TextField
 
     public function setMin($v)
     {
-        $this->setSliderOption('min', (int) $v);
+        $this->setSliderOption('min', (float) $v);
         return $this;
     }
 
     public function setMax($v)
     {
-        $this->setSliderOption('max', (int) $v);
+        $this->setSliderOption('max', (float) $v);
         return $this;
     }
 
@@ -77,7 +77,7 @@ class SliderField extends TextField
 
     public function setStep($v)
     {
-        $this->setSliderOption('step', (int) $v);
+        $this->setSliderOption('step', (float)$v);
         return $this;
     }
 
