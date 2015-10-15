@@ -173,6 +173,32 @@ class FormExtraJquery extends Object
     }
 
     /**
+     * Include jquery entwine
+     */
+    public static function include_entwine()
+    {
+        if (self::$disabled || in_array('entwine', self::$included)) {
+            return;
+        }
+        switch (self::config()->jquery_ui) {
+            case self::JQUERY_FRAMEWORK:
+                Requirements::javascript('framework/javascript/thirdparty/jquery-entwine/jquery.entwine-dist.js');
+                Requirements::block(FORM_EXTRAS_PATH.'/javascript/entwine/jquery.entwine-dist.js');
+                Requirements::block(FORM_EXTRAS_PATH.'/javascript/entwine/jquery.entwine-dist.min.js');
+                break;
+            default:
+                Requirements::block('framework/thirdparty/jquery-entwine/dist/jquery.entwine-dist.js');
+                if (Director::isDev()) {
+                    Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/entwine/jquery.entwine-dist.js');
+                } else {
+                    Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/entwine/jquery.entwine-dist.min.js');
+                }
+                break;
+        }
+        self::$included[] = 'entwine';
+    }
+
+    /**
      * Include jquery mousewheel (does not call include jquery, you have to do it by yourself)
      */
     public static function include_mousewheel()
