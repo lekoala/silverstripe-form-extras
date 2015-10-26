@@ -36,6 +36,18 @@ class FormExtra extends Form
         $this->restoreDataFromSession();
     }
 
+    /**
+     * Set a message on the controller. Useful is the form is not displayed
+     * in the redirected page
+     *
+     * @param string $message
+     * @param string $type
+     */
+    public function setControllerMessage($message, $type = 'good')
+    {
+        $this->Controller()->SetSessionMessage($message);
+    }
+
     public function saveDataInSession()
     {
         Session::set(
@@ -59,7 +71,7 @@ class FormExtra extends Form
     {
         $data = $this->getDataFromSession();
         if ($data) {
-            $this->loadDataFrom($data,Form::MERGE_IGNORE_FALSEISH);
+            $this->loadDataFrom($data, Form::MERGE_IGNORE_FALSEISH);
         }
     }
 
