@@ -80,7 +80,7 @@ class GridFieldExportAllButton extends GridFieldExportButton
             // source name as the header instead
             foreach ($csvColumns as $columnSource => $columnHeader) {
                 $headers[] = (!is_string($columnHeader) && is_callable($columnHeader))
-                        ? $columnSource : $columnHeader;
+                        ? utf8_decode($columnSource) : utf8_decode($columnHeader);
             }
 
             $fileData .= "\"".implode("\"{$separator}\"", array_values($headers))."\"";
