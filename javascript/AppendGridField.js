@@ -47,8 +47,8 @@ var appendGridRowDataLoaded = function (caller, record, rowIndex, uniqueIndex) {
 	var id = this.htmlID;
 	jQuery.each(this.subColumns, function (index, value) {
 		if (record[value.name]) {
-			 var elem = document.getElementById(id + '_' + value.name + '_' + uniqueIndex);
-			 elem.value = record[value.name];
+			var elem = document.getElementById(id + '_' + value.name + '_' + uniqueIndex);
+			elem.value = record[value.name];
 		}
 	});
 };
