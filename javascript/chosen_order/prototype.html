@@ -1,0 +1,159 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>Chosen order handler : Prototype plugin</title>
+
+<!--[if lte IE 8]>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.6/es5-shim.min.js"></script>
+<![endif]-->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/prototype/1.7.2/prototype.js"></script>
+    <script type="text/javascript" src="vendor/chosen/chosen.proto.min.js"></script>
+    <script type="text/javascript" src="chosen.order.proto.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="vendor/chosen/chosen.min.css">
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <article class="container">
+        <h1>Chosen order handler <small>Prototype plugin</small></h1>
+
+        <p>
+            <a href="https://github.com/tristanjahier/chosen-order">Github repository</a>
+            &bull;
+            <a href="index.html">Checkout jQuery version of the plugin</a>
+        </p>
+
+        <hr>
+        <p>
+            <div class="input-group">
+                <span class="input-group-addon">Fruits &laquo; à la française &raquo;</span>
+                <select class="form-control chosen" multiple style="width: 450px;">
+                    <option value="banane">Banane</option>
+                    <option value="pomme">Pomme</option>
+                    <option value="poire">Poire</option>
+                    <option value="ananas" selected>Ananas</option>
+                    <option value="kiwi" selected>Kiwi</option>
+                    <option value="goyave">Goyave</option>
+                    <option value="abricot">Abricot</option>
+                    <option value="fraise" selected>Fraise</option>
+                    <option value="framboise">Framboise</option>
+                    <option value="avocat" selected>Avocat</option>
+                </select>
+            </div>
+        </p>
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <button type="button" id="s1-get-order" class="btn btn-primary" style="width: 150px">Retrieve order</button>
+                <br><br>
+                <ol id="s1-order-list"></ol>
+            </div>
+            <div class="col-lg-3 col-lg-offset-1 col-sm-6">
+                <button type="button" id="s1-set-order" class="btn btn-success" style="width: 150px">Set order</button>
+                <br><br>
+                <input id="s1-input-order" type="text" class="form-control" value="poire,  ananas, banane  ,kiwi " style="width: 250px;">
+            </div>
+        </div>
+        <hr>
+        <p>
+            <div class="input-group">
+                <span class="input-group-addon">Another multiple select</span>
+                <select class="form-control chosen" multiple style="width: 450px;">
+                    <option value="1" selected>Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                    <option value="4" selected>Option 4</option>
+                    <option value="5" selected>Option 5</option>
+                </select>
+            </div>
+        </p>
+        <hr>
+        <h3>Now with <code>&lt;optgroup&gt;</code> support!</h3>
+        <p>
+            <div class="input-group">
+                <span class="input-group-addon">Video games</span>
+                <select name="videogames" class="form-control chosen" multiple style="width: 450px;">
+                    <optgroup label="FPS">
+                        <option value="cs" selected>Counter-Strike</option>
+                        <option value="hl">Half-Life</option>
+                        <option value="bf">Battlefield</option>
+                    </optgroup>
+                    <optgroup label="RPG">
+                        <option value="ff">Final Fantasy</option>
+                        <option value="pkm">Pokémon</option>
+                    </optgroup>
+                    <optgroup label="Strategy">
+                        <option value="aoe">Age of Empires</option>
+                        <option value="sc">StarCraft</option>
+                    </optgroup>
+                    <optgroup label="Puzzle">
+                        <option value="portal">Portal</option>
+                        <option value="btm">Blocks That Matter</option>
+                    </optgroup>
+                </select>
+            </div>
+        </p>
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <button type="button" id="s3-get-order" class="btn btn-primary" style="width: 150px">Retrieve order</button>
+                <br><br>
+                <ol id="s3-order-list"></ol>
+            </div>
+            <div class="col-lg-3 col-lg-offset-1 col-sm-6">
+                <button type="button" id="s3-set-order" class="btn btn-success" style="width: 150px">Set order</button>
+                <br><br>
+                <input id="s3-input-order" type="text" class="form-control" value="portal,hl,aoe   , pkm" style="width: 250px;">
+            </div>
+        </div>
+    </article>
+
+    <script type="text/javascript">
+        // Chosenify every multiple select DOM elements with class 'chosen'
+        $$('select[multiple].chosen').each(function(element) { new Chosen(element); });
+        var MY_SELECT = $$('select[multiple].chosen')[0];
+
+        $('s1-get-order').on('click', 'button', function(event, element)
+        {
+            // Functional
+            // var selection = ChosenOrder.getSelectionOrder(MY_SELECT);
+            // Object-oriented
+            var selection = MY_SELECT.getSelectionOrder();
+
+            while ($('s1-order-list').hasChildNodes())
+                $('s1-order-list').removeChild($('s1-order-list').lastChild);
+
+            $(selection).each(function(fruit)
+            {
+                $('s1-order-list').appendChild(new Element('li').update(fruit));
+            });
+        });
+
+        $('s1-set-order').on('click', 'button', function(event, element)
+        {
+            // Functional
+            // ChosenOrder.setSelectionOrder(MY_SELECT, $('s1-input-order').value.split(','), true);
+            // Object-oriented
+            MY_SELECT.setSelectionOrder($('s1-input-order').value.split(','), true);
+        });
+
+        // $('s1-get-order').click();
+        // $('s1-set-order').click();
+
+        var SELECT_VIDEOGAMES = $$('select[multiple][name="videogames"].chosen')[0];
+        $('s3-get-order').on('click', 'button', function(event, element)
+        {
+            var selection = ChosenOrder.getSelectionOrder(SELECT_VIDEOGAMES);
+            while ($('s3-order-list').hasChildNodes())
+                $('s3-order-list').removeChild($('s3-order-list').lastChild);
+            $(selection).each(function(videogame)
+            {
+                $('s3-order-list').appendChild(new Element('li').update(videogame));
+            });
+        });
+
+        $('s3-set-order').on('click', 'button', function(event, element)
+        {
+            ChosenOrder.setSelectionOrder(SELECT_VIDEOGAMES, $('s3-input-order').value.split(','), true);
+        });
+    </script>
+</body>
+</html>

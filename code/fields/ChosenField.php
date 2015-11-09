@@ -10,6 +10,7 @@ class ChosenField extends ListboxField
     protected $no_results_text;
     protected $allow_single_deselect = true;
     protected $allow_max_selected;
+    protected $use_order             = false;
 
     public function __construct($name, $title = null, $source = array(),
                                 $value = '', $form = null, $emptyString = null)
@@ -26,7 +27,10 @@ class ChosenField extends ListboxField
         Requirements::block(FRAMEWORK_ADMIN_DIR.'/thirdparty/chosen/chosen/chosen.css');
         Requirements::block(FRAMEWORK_ADMIN_DIR.'/thirdparty/chosen/chosen/chosen.jquery.js');
         Requirements::css(FORM_EXTRAS_PATH.'/javascript/chosen/chosen.min.css');
-        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/chosen/chosen.jquery.min.js');
+        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/chosen/chosen.jquery.js');
+        if ($this->use_order) {
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/chosen_order/chosen.order.jquery.js');
+        }
 
         // Init
         $opts = array(
@@ -39,9 +43,26 @@ class ChosenField extends ListboxField
         if ($this->allow_max_selected) {
             $opts['allow_max_selected'] = $this->allow_max_selected;
         }
-        Requirements::customScript('jQuery("#'.$this->ID().'").chosen('.json_encode($opts).')');
-
+        if ($this->use_order) {
+            $stringValue = $this->value;
+            if (is_array($stringValue)) {
+                $stringValue = implode(',', $stringValue);
+            }
+            $this->setAttribute('data-chosen-order', $stringValue);
+        }
+        $this->setAttribute('data-chosen', json_encode($opts));
+        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/ChosenField.js');
         return parent::Field($properties);
+    }
+
+    function getUseOrder()
+    {
+        return $this->use_order;
+    }
+
+    function setUseOrder($use_order)
+    {
+        $this->use_order = $use_order;
     }
 
     public function getNoResultsText()

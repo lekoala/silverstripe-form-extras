@@ -16,6 +16,7 @@ class Select2Field extends ListboxField
     protected $tags;
     protected $token_separators      = array(',', ' ');
     protected $ajax;
+    protected $free_order;
 
     public function __construct($name, $title = null, $source = array(),
                                 $value = '', $form = null, $emptyString = null)
@@ -84,6 +85,7 @@ class Select2Field extends ListboxField
                 // Tags are calculated from options
                 $opts['tags']             = $this->tags;
                 $opts['token_separators'] = $this->token_separators;
+                $opts['free_order']       = $this->free_order;
             }
         }
         if (self::config()->rtl && !$use_v3) {
@@ -259,6 +261,16 @@ class Select2Field extends ListboxField
     public function setSingleDeselect($v)
     {
         $this->allow_single_deselect = $v;
+    }
+
+    function getFreeOrder()
+    {
+        return $this->free_order;
+    }
+
+    function setFreeOrder($free_order)
+    {
+        $this->free_order = (bool) $free_order;
     }
 
     public function getMaxSelected()
