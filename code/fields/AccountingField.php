@@ -62,8 +62,12 @@ class AccountingField extends TextField
      * @param int $precision
      * @return string
      */
-    public static function format($value, $precision = 2)
+    public static function format($value, $precision = 2, $locale = null)
     {
+        if ($locale) {
+            $currentLocale = self::$_locale;
+            self::$_locale = $locale;
+        }
         if (is_array($value)) {
             foreach ($value as &$val) {
                 $val = self::format($val, $precision);
@@ -82,6 +86,10 @@ class AccountingField extends TextField
 
         $formattedValue = number_format($rawValue, $precision, self::$_decimals,
             self::$_thousands);
+
+        if ($locale) {
+            self::$_locale = $currentLocale;
+        }
 
         return $formattedValue;
     }
@@ -104,7 +112,7 @@ class AccountingField extends TextField
         }
 
         $neg = false;
-        if(strpos($value, '-') === 0) {
+        if (strpos($value, '-') === 0) {
             $neg = true;
         }
 
@@ -120,7 +128,7 @@ class AccountingField extends TextField
             $stringWithCommaOrDot);
 
         $value = str_replace(',', '.', $removedThousendSeparator);
-        if($neg) {
+        if ($neg) {
             $value = -1 * abs($value);
         }
         return $value;
