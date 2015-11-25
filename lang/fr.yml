@@ -57,7 +57,7 @@ fr:
     FROMFILES: 'Depuis vos dossiers'
     NOT_EDITABLE: 'Non éditable'
     REMOVE: Supprimer
-    REMOVEINFO: 'Supprimer ce fichier dmais ne pas effacer de la base de fichier'
+    REMOVEINFO: 'Supprimer ce fichier mais ne pas effacer de la base de fichier'
     STARTALL: 'Start all'
     UPLOADSINTO: 'Sauvegarder dans /{path}'
   YesNoOptionsetField:

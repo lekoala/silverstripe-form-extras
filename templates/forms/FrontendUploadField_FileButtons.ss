@@ -1,16 +1,21 @@
 <% if canEditFrontend %>
-	<button class="ss-uploadfield-item-edit btn" title="<% _t('UploadField.EDITINFO', 'Edit this file') %>">
+<button class="ss-uploadfield-item-edit btn" title="<% _t('UploadField.EDITINFO', 'Edit this file') %>">
 	<i class="$IconEdit"></i> <% _t('UploadField.EDIT', 'Edit') %>
 	<span class="toggle-details">
 		<span class="toggle-details-icon"></span>
 	</span>
-	</button>
+</button>
 <% else %>
-<span class="btn btn-inactive"><% _t('UploadField.NOT_EDITABLE', 'Not editable') %></span>
+<%-- hide button --%>
 <% end_if %>
-<button class="ss-uploadfield-item-remove btn" title="<% _t('UploadField.REMOVEINFO', 'Remove this file from here, but do not delete it from the file store') %>">
+<% if $canDelete %> <%-- if the user can delete the file, allow so to avoid tons of useless files on server... --%>
+<button data-href="$UploadFieldDeleteLink" class="ss-uploadfield-item-delete ss-ui-button ui-corner-all">
+	<i class="$IconRemove"></i> <% _t('UploadField.DELETE', 'Delete from files') %></button>
+<% else %>
+<button class="ss-uploadfield-item-remove btn">
 	<i class="$IconRemove"></i> <% _t('UploadField.REMOVE', 'Remove') %></button>
+<% end_if %>
 <% if UploadField.canAttachExisting %>
-	<button class="ss-uploadfield-item-choose-another ss-uploadfield-fromfiles btn" title="<% _t('UploadField.CHOOSEANOTHERINFO', 'Replace this file with another one from the file store') %>">
+<button class="ss-uploadfield-item-choose-another ss-uploadfield-fromfiles btn">
 	<% _t('UploadField.CHOOSEANOTHERFILE', 'Choose another file') %></button>
 <% end_if %>
