@@ -14,36 +14,6 @@ class CropboxField extends FormField
         $this->setDefaultValue();
         $this->setImage($imageID);
 
-        FormExtraJquery::include_jquery();
-        if (self::config()->use_hammer) {
-            FormExtraJquery::include_hammer();
-        }
-        if (self::config()->use_mousewheel) {
-            FormExtraJquery::include_mousewheel();
-        }
-        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/cropbox/jquery.cropbox.js');
-        Requirements::css(FORM_EXTRAS_PATH.'/javascript/cropbox/jquery.cropbox.css');
-        Requirements::customScript("jQuery( '.cropbox-field' ).each( function () {
-			var t = jQuery(this),
-			image = t.find('img'),
-            cropwidth = image.data('cropwidth'),
-            cropheight = image.data('cropheight'),
-			x       = jQuery('[name=CropX]', t),
-            y       = jQuery('[name=CropY]', t),
-            w       = jQuery('[name=CropWidth]', t),
-            h       = jQuery('[name=CropHeight]', t)
-		;
-
-          image.cropbox( {width: cropwidth, height: cropheight, result: {cropX:x.val(), cropY:y.val(), cropW:w.val(), cropH:h.val()} })
-            .on('cropbox', function( event, results, img ) {
-				x.val(results.cropX);
-				y.val(results.cropY);
-				w.val(results.cropW);
-				h.val(results.cropH);
-            })
-			;
-      } );", 'cropboxFieldInit');
-
         parent::__construct($name, ($title === null) ? $name : $title, $value,
             $form);
     }
@@ -84,6 +54,10 @@ class CropboxField extends FormField
             $this->ImageID = $imageID;
 
             $image = $this->getImage();
+            // It's not an image
+            if (!$image) {
+                return;
+            }
             $this->setValue(array(
                 'CropX' => $image->CropX,
                 'CropY' => $image->CropY,
@@ -101,6 +75,46 @@ class CropboxField extends FormField
         if ($this->ImageID) {
             return Image::get()->byID($this->ImageID);
         }
+    }
+
+    public function Field($properties = array())
+    {
+        $image = $this->getImage();
+        if (!$image) {
+            return false;
+        }
+
+        FormExtraJquery::include_jquery();
+        if (self::config()->use_hammer) {
+            FormExtraJquery::include_hammer();
+        }
+        if (self::config()->use_mousewheel) {
+            FormExtraJquery::include_mousewheel();
+        }
+        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/cropbox/jquery.cropbox.js');
+        Requirements::css(FORM_EXTRAS_PATH.'/javascript/cropbox/jquery.cropbox.css');
+        Requirements::customScript("jQuery( '.cropbox-field' ).each( function () {
+			var t = jQuery(this),
+			image = t.find('img'),
+            cropwidth = image.data('cropwidth'),
+            cropheight = image.data('cropheight'),
+			x       = jQuery('[name=CropX]', t),
+            y       = jQuery('[name=CropY]', t),
+            w       = jQuery('[name=CropWidth]', t),
+            h       = jQuery('[name=CropHeight]', t)
+		;
+
+          image.cropbox( {width: cropwidth, height: cropheight, result: {cropX:x.val(), cropY:y.val(), cropW:w.val(), cropH:h.val()} })
+            .on('cropbox', function( event, results, img ) {
+				x.val(results.cropX);
+				y.val(results.cropY);
+				w.val(results.cropW);
+				h.val(results.cropH);
+            })
+			;
+      } );", 'cropboxFieldInit');
+
+        return parent::Field($properties);
     }
 }
 
