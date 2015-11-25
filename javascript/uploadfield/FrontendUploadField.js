@@ -254,8 +254,7 @@
 					$('.ss-uploadfield-item-uploador').hide().show();
 					dropZone.hide().show();
 				}
-
-
+				
 				this._super();
 			},
 			onunmatch: function () {

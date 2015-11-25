@@ -68,6 +68,10 @@ jQuery(window).load(function() {
         Requirements::javascript(FRAMEWORK_ADMIN_DIR.'/javascript/ssui.core.js');
         Requirements::add_i18n_javascript(FRAMEWORK_DIR.'/javascript/lang');
 
+        // Avoid conflicts
+        Requirements::block(FRAMEWORK_DIR.'/javascript/UploadField_uploadtemplate.js');
+        Requirements::block(FRAMEWORK_DIR.'/javascript/UploadField_downloadtemplate.js');
+        Requirements::block(FRAMEWORK_DIR.'/javascript/UploadField.js');
 
         Requirements::combine_files('frontenduploadfield.js',
             array(
@@ -471,7 +475,6 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
         $item = $this->getItem();
         if (!$item) return $this->httpError(404);
 
-
         $memberID = Member::currentUserID();
 
         $res = false;
@@ -493,5 +496,42 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
         return $this->customise(array(
                 'Form' => $this->EditForm()
             ))->renderWith($this->parent->getTemplateFileEdit());
+    }
+
+    /**
+     * @param array $data
+     * @param Form $form
+     * @param SS_HTTPRequest $request
+     */
+    public function doEdit(array $data, Form $form, SS_HTTPRequest $request)
+    {
+        // Check form field state
+        if ($this->parent->isDisabled() || $this->parent->isReadonly())
+                return $this->httpError(403);
+
+        // Check item permissions
+        $item = $this->getItem();
+        if (!$item) return $this->httpError(404);
+        if ($item instanceof Folder) return $this->httpError(403);
+
+        $memberID = Member::currentUserID();
+
+        $res = false;
+        try {
+            // Owner can always delete
+            if ($memberID && $item->OwnerID == $memberID) {
+                $res = true;
+            } else {
+                $res = $item->canEditFrontend();
+            }
+        } catch (Exception $ex) {
+
+        }
+        $form->saveInto($item);
+        $item->write();
+
+        $form->sessionMessage(_t('UploadField.Saved', 'Saved'), 'good');
+
+        return $this->edit($request);
     }
 }
