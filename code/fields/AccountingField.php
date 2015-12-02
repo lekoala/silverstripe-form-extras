@@ -25,6 +25,22 @@ class AccountingField extends TextField
         return parent::Field($properties);
     }
 
+    public function Value()
+    {
+        return self::format(parent::Value(),$this->getRawPrecision());
+    }
+
+    /**
+     * Avoid recursive calls when called from Value() method
+     * @return int
+     */
+    public function getRawPrecision() {
+        if(!isset($this->attributes['data-precision'])) {
+            return 0;
+        }
+        return $this->attributes['data-precision'];
+    }
+
     public function getPrecision()
     {
         return $this->getAttribute('data-precision');
@@ -35,15 +51,9 @@ class AccountingField extends TextField
         return $this->setAttribute('data-precision', $value);
     }
 
-    public function dataValue()
-    {
-        return self::unformat($this->value);
-    }
-
     public function setValue($value)
     {
         $value = self::unformat($value);
-        $value = self::format($value);
         parent::setValue($value);
     }
 
@@ -62,8 +72,11 @@ class AccountingField extends TextField
      * @param int $precision
      * @return string
      */
-    public static function format($value, $precision = 2, $locale = null)
+    public static function format($value, $precision = null, $locale = null)
     {
+        if($precision === null) {
+            $precision = 2;
+        }
         if ($locale) {
             $currentLocale = self::$_locale;
             self::$_locale = $locale;
