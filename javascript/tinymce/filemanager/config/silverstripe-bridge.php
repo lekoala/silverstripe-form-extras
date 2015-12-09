@@ -32,7 +32,7 @@ $_thumbsPath  = FILEMANAGER_RELATIVE_PATH.'thumbs/' . Member::currentUserID() . 
 // Init thumbs
 if (!is_dir($_thumbsPath)) {
     mkdir($_thumbsPath, 0777, true);
-    file_put_contents(dirname($_thumbsPath).'_manifest_exclude', '');
+    file_put_contents(dirname($_thumbsPath).'/_manifest_exclude', '');
 }
 
 // Keep assets db in sync with filesystem
