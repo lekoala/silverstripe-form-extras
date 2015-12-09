@@ -22,17 +22,17 @@ $_ssFolder = null;
 
 
 
-$_ssFolder = Folder::find_or_make('owner/'.Member::currentUserID().'/uploads');
+$_ssFolder = Folder::find_or_make('userfiles/'.Member::currentUserID());
 
 // Ends with slash!
-$_uploadDir   = 'assets/owner/'.Member::currentUserID().'/uploads/';
+$_uploadDir   = 'assets/userfiles/'.Member::currentUserID().'/';
 $_currentPath = FILEMANAGER_RELATIVE_PATH.$_uploadDir.'/';
-$_thumbsPath  = FILEMANAGER_RELATIVE_PATH.'thumbs/';
+$_thumbsPath  = FILEMANAGER_RELATIVE_PATH.'thumbs/' . Member::currentUserID() . '/';
 
 // Init thumbs
 if (!is_dir($_thumbsPath)) {
     mkdir($_thumbsPath, 0777, true);
-    file_put_contents($_thumbsPath.'_manifest_exclude', '');
+    file_put_contents(dirname($_thumbsPath).'_manifest_exclude', '');
 }
 
 // Keep assets db in sync with filesystem
