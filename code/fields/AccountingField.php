@@ -10,6 +10,7 @@ class AccountingField extends TextField
     protected static $_locale    = null;
     protected static $_decimals  = null;
     protected static $_thousands = null;
+    private static $default_precision = 2;
 
     public function extraClass()
     {
@@ -36,7 +37,7 @@ class AccountingField extends TextField
      */
     public function getRawPrecision() {
         if(!isset($this->attributes['data-precision'])) {
-            return 0;
+            return self::$default_precision;
         }
         return $this->attributes['data-precision'];
     }
@@ -75,7 +76,7 @@ class AccountingField extends TextField
     public static function format($value, $precision = null, $locale = null)
     {
         if($precision === null) {
-            $precision = 2;
+            $precision = self::$default_precision;
         }
         if ($locale) {
             $currentLocale = self::$_locale;
