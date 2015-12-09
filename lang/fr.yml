@@ -13,9 +13,12 @@ fr:
   CheckboxSetOtherField:
     OTHER: 'Autres (veuillez préciser)'
   ChosenField:
-    NO_RESULTS: 'Oups, rien de trouver'
+    NO_RESULTS: 'Oups, aucun résultat!'
   ComboField:
     FREETEXT: 'Autre (précisez)'
+  File:
+    INVALIDEXTENSIONSHORT: 'Cette extension n''est pas autorisée'
+    TOOLARGESHORT: 'La taille du fichier dépasse {size}'
   FormExtra:
     doFinish: Terminer
     doNext: Suivant
@@ -41,13 +44,15 @@ fr:
     minScore: 'Doit avoir au moins {v} caractères spéciaux'
     punctuation: 'Doit contenir des ponctuations'
     uppercase: 'Doit contenir des majuscules'
+  SimpleTinyMceField:
+    FILEMANAGER: 'Gestionnaire de fichiers'
   URLField:
     VALIDATION: 'Please enter a valid URL (e.g http://mywebsite.com).'
   UploadField:
     ATTACHFILE: 'Attacher un fichier'
     ATTACHFILES: 'Attacher des fichiers'
     CHOOSEANOTHERFILE: 'Choisir un autre fichier'
-    CHOOSEANOTHERINFO: 'Remplacer ce fichier par un autre fichier de la base de fichiers'
+    DELETE: 'Supprimer des fichiers'
     DROPFILE: 'Déposer un fichier'
     DROPFILES: 'Déposer des fichiers'
     EDIT: Editer
@@ -55,11 +60,16 @@ fr:
     FROMCOMPUTER: 'Depuis votre ordinateur'
     FROMCOMPUTERINFO: 'Dans vos dossiers'
     FROMFILES: 'Depuis vos dossiers'
-    NOT_EDITABLE: 'Non éditable'
+    MAXNUMBEROFFILESONE: 'Can only upload one file'
+    MAXNUMBEROFFILESSHORT: 'Can only upload {count} files'
+    OVERWRITEWARNING: 'File with the same name already exists'
     REMOVE: Supprimer
-    REMOVEINFO: 'Supprimer ce fichier mais ne pas effacer de la base de fichier'
-    STARTALL: 'Start all'
+    STARTALL: 'Démarrer tout'
+    Saved: Enregistré
     UPLOADSINTO: 'Sauvegarder dans /{path}'
+    CHOOSEANOTHERINFO: 'Remplacer ce fichier par un autre fichier de la base de fichiers'
+    NOT_EDITABLE: 'Non éditable'
+    REMOVEINFO: 'Supprimer ce fichier mais ne pas effacer de la base de fichier'
   YesNoOptionsetField:
     'NO': Non
     'YES': Oui

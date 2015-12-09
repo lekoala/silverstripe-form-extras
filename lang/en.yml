@@ -16,6 +16,9 @@ en:
     NO_RESULTS: 'Oops, nothing found!'
   ComboField:
     FREETEXT: 'Enter a new value'
+  File:
+    INVALIDEXTENSIONSHORT: 'Extension is not allowed'
+    TOOLARGESHORT: 'Filesize exceeds {size}'
   FormExtra:
     doFinish: Finish
     doNext: Next
@@ -41,13 +44,15 @@ en:
     minScore: 'Must have at least {v} special characters'
     punctuation: 'Must contain punctuation'
     uppercase: 'Must contain uppercase characters'
+  SimpleTinyMceField:
+    FILEMANAGER: 'File Manager'
   URLField:
     VALIDATION: 'Please enter a valid URL (e.g http://mywebsite.com).'
   UploadField:
     ATTACHFILE: 'Attach a file'
     ATTACHFILES: 'Attach files'
     CHOOSEANOTHERFILE: 'Choose another file'
-    CHOOSEANOTHERINFO: 'Replace this file with another one from the file store'
+    DELETE: 'Delete from files'
     DROPFILE: 'drop a file'
     DROPFILES: 'drop files'
     EDIT: Edit
@@ -55,11 +60,16 @@ en:
     FROMCOMPUTER: 'From your computer'
     FROMCOMPUTERINFO: 'Select from files'
     FROMFILES: 'From files'
-    NOT_EDITABLE: 'Not editable'
+    MAXNUMBEROFFILESONE: 'Can only upload one file'
+    MAXNUMBEROFFILESSHORT: 'Can only upload {count} files'
+    OVERWRITEWARNING: 'File with the same name already exists'
     REMOVE: Remove
-    REMOVEINFO: 'Remove this file from here, but do not delete it from the file store'
     STARTALL: 'Start all'
+    Saved: Saved
     UPLOADSINTO: 'saves into /{path}'
+    CHOOSEANOTHERINFO: 'Replace this file with another one from the file store'
+    NOT_EDITABLE: 'Not editable'
+    REMOVEINFO: 'Remove this file from here, but do not delete it from the file store'
   YesNoOptionsetField:
     'NO': 'No'
     'YES': 'Yes'

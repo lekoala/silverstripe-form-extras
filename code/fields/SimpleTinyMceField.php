@@ -10,6 +10,7 @@ class SimpleTinyMceField extends TextareaField
     protected $menubar;
     protected $toolbar;
     protected $plugins;
+    protected $fileManager = false;
 
     function __construct($name, $title = null, $value = null)
     {
@@ -22,7 +23,17 @@ class SimpleTinyMceField extends TextareaField
         }
     }
 
-    function getMenubar()
+    public function getFileManager()
+    {
+        return $this->fileManager;
+    }
+
+    public function setFileManager($fileManager = true)
+    {
+        $this->fileManager = $fileManager;
+    }
+
+    public function getMenubar()
     {
         if ($this->menubar === null) {
             return self::config()->menubar;
@@ -30,13 +41,13 @@ class SimpleTinyMceField extends TextareaField
         return $this->menubar;
     }
 
-    function setMenubar($menubar)
+    public function setMenubar($menubar)
     {
         $this->menubar = $menubar;
         return $this;
     }
 
-    function getToolbar()
+    public function getToolbar()
     {
         if ($this->toolbar === null) {
             return self::config()->toolbar;
@@ -44,13 +55,13 @@ class SimpleTinyMceField extends TextareaField
         return $this->toolbar;
     }
 
-    function setToolbar($toolbar)
+    public function setToolbar($toolbar)
     {
         $this->toolbar = $toolbar;
         return $this;
     }
 
-    function getPlugins()
+    public function getPlugins()
     {
         if ($this->plugins === null) {
             return self::config()->plugins;
@@ -58,14 +69,36 @@ class SimpleTinyMceField extends TextareaField
         return $this->plugins;
     }
 
-    function setPlugins($plugins)
+    public function setPlugins($plugins)
     {
         $this->plugins = $plugins;
         return $this;
     }
 
+    protected function enableFileManager()
+    {
+        $toolbar = $this->getToolbar();
+        if ($toolbar) {
+            $plugins = $this->getPlugins();
+            if (strpos($plugins, 'responsivefilemanager') === false) {
+                $plugins .= ' responsivefilemanager';
+            }
+            $this->setPlugins($plugins);
+            if (strpos($toolbar, 'responsivefilemanager') === false) {
+                $toolbar .= ' responsivefilemanager';
+            }
+            $this->setToolbar($toolbar);
+        } else {
+            // No toolbar, no manager
+            $this->fileManager = false;
+        }
+    }
+
     function Field($properties = array())
     {
+        if($this->fileManager) {
+            $this->enableFileManager();
+        }
         $toolbar = $this->getToolbar();
         if ($toolbar) {
             $toolbar = "'".$toolbar."'";
@@ -83,9 +116,14 @@ class SimpleTinyMceField extends TextareaField
 
         $plugins = $this->getPlugins();
 
-        $tools = '';
-        if(strpos($plugins, 'table') !== false) {
-            $tools ="\n    tools: 'inserttable',";
+        $extraJsInit = '';
+        if (strpos($plugins, 'table') !== false) {
+            $extraJsInit .= ",\n    tools: 'inserttable'";
+        }
+        if($this->fileManager) {
+            $extraJsInit .= ",\n    external_filemanager_path: '/form-extras/javascript/tinymce/filemanager/'";
+            $extraJsInit .= ",\n    filemanager_title: '"._t('SimpleTinyMceField.FILEMANAGER',"File Manager")."'";
+            $extraJsInit .= ",\n    external_plugins: {'filemanager':'/form-extras/javascript/tinymce/filemanager/plugin.min.js'}";
         }
 
         // We should update the hidden textarea to make sure validation still works
@@ -93,19 +131,19 @@ class SimpleTinyMceField extends TextareaField
     editor.on("change",function(e) {
         document.getElementById(e.target.id).innerHTML = e.target.contentDocument.innerHTML
     });
-}',
-            'simpleTinymceSetup');
-        
+}', 'simpleTinymceSetup');
+
         // Init instance
         Requirements::customScript('tinymce.init({
     selector: "#'.$this->ID().'",
     statusbar : false,
     skin: "'.$skin.'",
+    image_advtab: true,
     setup: simpleTinymceSetup,
     autoresize_bottom_margin : 0,
     menubar: '.$menubar.',
     toolbar: '.$toolbar.',
-    plugins: ["'.$plugins.'"],' . $tools . '
+    plugins: ["'.$plugins.'"]'.$extraJsInit.'
  });');
         return parent::Field($properties);
     }

@@ -38,7 +38,7 @@ SexyPasswordField:
   enable_show_hide: true
 SimpleTinyMceField:
   menubar: false
-  skin: 'light'
+  skin: 'lightgray'
   toolbar: 'cut copy paste undo redo | removeformat | nulllist numlist blockquote | alignleft aligncenter alignright | formatselect | bold italic textcolor hr | link image media'
   plugins: 'autolink autoresize link lists hr anchor image media paste textcolor emoticons'
 CropboxField:
