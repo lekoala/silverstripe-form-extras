@@ -16,6 +16,8 @@ class FormExtra extends Form
     const MSG_BAD     = 'bad';
     const MSG_GOOD    = 'good';
 
+    protected $keepSessionAlive = true;
+
     public function __construct($controller = null, $name = null,
                                 FieldList $fields = null,
                                 FieldList $actions = null, $validator = null)
@@ -34,6 +36,30 @@ class FormExtra extends Form
         }
         parent::__construct($controller, $name, $fields, $actions, $validator);
         $this->restoreDataFromSession();
+    }
+
+    public function forTemplate()
+    {
+        // Keep session alive if there is a logged in member
+        if ($this->keepSessionAlive && Member::currentUserID()) {
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/ping.js');
+        }
+        return parent::forTemplate();
+    }
+
+    public function getKeepSessionAlive()
+    {
+        return $this->keepSessionAlive;
+    }
+
+    /**
+     * Define if we want to have a little js script that pings Security/ping
+     * 
+     * @param bool $keepSessionAlive
+     */
+    public function setKeepSessionAlive($keepSessionAlive = true)
+    {
+        $this->keepSessionAlive = $keepSessionAlive;
     }
 
     /**
