@@ -10,7 +10,19 @@ class SimpleTinyMceField extends TextareaField
     protected $menubar;
     protected $toolbar;
     protected $plugins;
-    protected $fileManager = false;
+    protected $fileManager                          = null;
+
+    /**
+     * @config
+     * @var boolean
+     */
+    private static $prevent_file_manager            = false;
+
+    /**
+     * @config
+     * @var boolean
+     */
+    private static $file_manager_enabled_by_default = false;
 
     function __construct($name, $title = null, $value = null)
     {
@@ -23,14 +35,38 @@ class SimpleTinyMceField extends TextareaField
         }
     }
 
+    /**
+     * Get the responsive file manager state
+     *
+     * It can be enabled by default through the config
+     * 
+     * @return boolean
+     */
     public function getFileManager()
     {
+        if ($this->fileManager === null) {
+            if ($this->config()->file_manager_enabled_by_default) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         return $this->fileManager;
     }
 
+    /**
+     * Enable the responsive file manager for this tinymce instance
+     * 
+     * @param boolean $fileManager
+     * @return boolean File manager enabled or not?
+     */
     public function setFileManager($fileManager = true)
     {
+        if ($this->config()->prevent_file_manager ) {
+            return false;
+        }
         $this->fileManager = $fileManager;
+        return $fileManager;
     }
 
     public function getMenubar()
@@ -96,7 +132,7 @@ class SimpleTinyMceField extends TextareaField
 
     function Field($properties = array())
     {
-        if($this->fileManager) {
+        if ($this->fileManager) {
             $this->enableFileManager();
         }
         $toolbar = $this->getToolbar();
@@ -120,9 +156,10 @@ class SimpleTinyMceField extends TextareaField
         if (strpos($plugins, 'table') !== false) {
             $extraJsInit .= ",\n    tools: 'inserttable'";
         }
-        if($this->fileManager) {
+        if ($this->fileManager) {
             $extraJsInit .= ",\n    external_filemanager_path: '/form-extras/javascript/tinymce/filemanager/'";
-            $extraJsInit .= ",\n    filemanager_title: '"._t('SimpleTinyMceField.FILEMANAGER',"File Manager")."'";
+            $extraJsInit .= ",\n    filemanager_title: '"._t('SimpleTinyMceField.FILEMANAGER',
+                    "File Manager")."'";
             $extraJsInit .= ",\n    external_plugins: {'filemanager':'/form-extras/javascript/tinymce/filemanager/plugin.min.js'}";
         }
 
