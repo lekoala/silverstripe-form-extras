@@ -97,6 +97,10 @@ class SimpleTinyMceField extends TextareaField
         return $this;
     }
 
+    public function setSimpleToolbar() {
+        return $this->setToolbar(self::config()->simple_toolbar);
+    }
+
     public function getPlugins()
     {
         if ($this->plugins === null) {
