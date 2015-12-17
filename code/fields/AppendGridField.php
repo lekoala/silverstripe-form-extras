@@ -94,6 +94,16 @@ class AppendGridField extends TableFieldCommon
             $opts['subPanelGetter']  = 'appendGridSubPanelGetter';
             $opts['rowDataLoaded']   = 'appendGridRowDataLoaded';
         }
+        if($this->isReadonly() || $this->isDisabled()) {
+            $opts['hideButtons'] = array(
+                'append' => true,
+                'removeLast' => true,
+                'insert' => true,
+                'remove' => true,
+                'moveUp' => true,
+                'moveDown' => true,
+            );
+        }
 
         $opts['i18n'] = array(
             'append' => _t('AppendGridField.append', 'Append Row'),
