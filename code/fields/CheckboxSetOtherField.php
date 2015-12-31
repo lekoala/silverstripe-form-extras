@@ -29,7 +29,6 @@ class CheckboxSetOtherField extends CheckboxSetField
 
     public function getOptions()
     {
-
         $odd = 0;
 
         $source = $this->source;
@@ -54,9 +53,9 @@ class CheckboxSetOtherField extends CheckboxSetField
         if (is_string($source)) {
             $source = explode(',', $values);
             $source = str_replace('{comma}', ',', $source);
-        } else if ($source instanceof SS_List) {
+        } elseif ($source instanceof SS_List) {
             $source = $source->toArray();
-        } else if (is_array($source)) {
+        } elseif (is_array($source)) {
             // nothing to do
         } else {
             throw new Exception(__CLASS__." only supports array, SS_List and strings as source");
@@ -65,7 +64,7 @@ class CheckboxSetOtherField extends CheckboxSetField
         // Detect a current custom value
         $diff = array_diff($items, $source);
         $last = '';
-        if(count($diff)) {
+        if (count($diff)) {
             $last = end($diff);
         }
         $this->setAttribute('data-other-value', Convert::raw2htmlatt($last));

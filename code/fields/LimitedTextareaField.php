@@ -22,12 +22,12 @@ class LimitedTextareaField extends TextareaField
         $this->setAttribute('data-limit', $limit);
     }
 
-    function extraClass()
+    public function extraClass()
     {
         return 'textarea '.parent::extraClass();
     }
 
-    function Field($properties = array())
+    public function Field($properties = array())
     {
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/LimitedTextareaField.js');
         return parent::Field($properties);

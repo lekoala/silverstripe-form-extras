@@ -308,7 +308,7 @@ class TableFieldCommon extends FormField
 
     public function performReadonlyTransformation()
     {
-        if($this->isReadonly()) {
+        if ($this->isReadonly()) {
             return $this;
         }
         $copy = $this->castedCopy('TableField_ReadOnly');
@@ -322,7 +322,7 @@ class TableFieldCommon extends FormField
      * @param string $key
      * @return array
      */
-    function getColumn($key)
+    public function getColumn($key)
     {
         if (isset($this->columns[$key])) {
             return $this->columns[$key];
@@ -335,7 +335,7 @@ class TableFieldCommon extends FormField
      * @param array $col
      * @return \TableFieldCommon
      */
-    function setColumn($key, $col)
+    public function setColumn($key, $col)
     {
         $this->columns[$key] = $col;
         return $this;
@@ -345,7 +345,7 @@ class TableFieldCommon extends FormField
      * Remove a column
      * @param string $key
      */
-    function removeColumn($key)
+    public function removeColumn($key)
     {
         unset($this->columns[$key]);
     }
@@ -354,7 +354,7 @@ class TableFieldCommon extends FormField
      * Get all columns
      * @return array
      */
-    function getColumns()
+    public function getColumns()
     {
         return $this->columns;
     }
@@ -364,7 +364,7 @@ class TableFieldCommon extends FormField
      * @param array $columns
      * @return \TableFieldCommon
      */
-    function setColumns($columns)
+    public function setColumns($columns)
     {
         $this->columns = $columns;
         return $this;
@@ -374,7 +374,7 @@ class TableFieldCommon extends FormField
      * Get a property from all columns
      * @param string $property
      */
-    function getProperty($property)
+    public function getProperty($property)
     {
         $values = array();
         foreach ($this->columns as $key => $col) {
@@ -392,7 +392,7 @@ class TableFieldCommon extends FormField
      * @param array $arr
      * @return \TableFieldCommon
      */
-    function setProperty($property, $arr)
+    public function setProperty($property, $arr)
     {
         if (!ArrayLib::is_associative($arr)) {
             $arr = array_combine($arr, $arr);
@@ -420,7 +420,7 @@ class TableFieldCommon extends FormField
      * @param mixed $default
      * @return mixed
      */
-    function getColumnProperty($column, $property, $default = null)
+    public function getColumnProperty($column, $property, $default = null)
     {
         if (!isset($this->columns[$column])) {
             return $default;
@@ -438,7 +438,7 @@ class TableFieldCommon extends FormField
      * @param mixed $value
      * @return \TableFieldCommon
      */
-    function setColumnProperty($column, $property, $value)
+    public function setColumnProperty($column, $property, $value)
     {
         if (!isset($this->columns[$column])) {
             $this->columns[$column] = array();
@@ -447,42 +447,42 @@ class TableFieldCommon extends FormField
         return $this;
     }
 
-    function getHeader($column)
+    public function getHeader($column)
     {
         return $this->getColumnProperty($column, self::KEY_HEADER);
     }
 
-    function setHeader($column, $header)
+    public function setHeader($column, $header)
     {
         return $this->setColumnProperty($column, self::KEY_HEADER, $header);
     }
 
-    function getHeaders()
+    public function getHeaders()
     {
         return $this->getProperty(self::KEY_HEADER);
     }
 
-    function setHeaders($headers)
+    public function setHeaders($headers)
     {
         return $this->setProperty(self::KEY_HEADER, $headers);
     }
 
-    function getColumnType($column)
+    public function getColumnType($column)
     {
         return $this->getColumnProperty($column, self::KEY_TYPE, self::TYPE_TEXT);
     }
 
-    function setColumnType($column, $type)
+    public function setColumnType($column, $type)
     {
         return $this->setColumnProperty($column, self::KEY_TYPE, $type);
     }
 
-    function getColumnsTypes()
+    public function getColumnsTypes()
     {
         return $this->getProperty(self::KEY_TYPE);
     }
 
-    function setColumnsTypes($types)
+    public function setColumnsTypes($types)
     {
         return $this->setProperty(self::KEY_TYPE, $types);
     }

@@ -55,12 +55,12 @@ class ChosenField extends ListboxField
         return parent::Field($properties);
     }
 
-    function getUseOrder()
+    public function getUseOrder()
     {
         return $this->use_order;
     }
 
-    function setUseOrder($use_order)
+    public function setUseOrder($use_order)
     {
         $this->use_order = $use_order;
     }

@@ -143,7 +143,7 @@ class FormExtraMulti extends FormExtra
     public static function setCurrentStep($value)
     {
         $value = (int) $value;
-        if($value > self::getMaxStep()) {
+        if ($value > self::getMaxStep()) {
             self::setMaxStep($value);
         }
         Session::set(self::classNameWithoutNumber().'.step', $value);

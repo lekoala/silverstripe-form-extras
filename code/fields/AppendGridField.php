@@ -56,7 +56,6 @@ class AppendGridField extends TableFieldCommon
 
     public function buildJsonOpts($escape = false)
     {
-
         $opts = array();
         if ($this->caption) {
             $opts['caption'] = $this->caption;
@@ -94,7 +93,7 @@ class AppendGridField extends TableFieldCommon
             $opts['subPanelGetter']  = 'appendGridSubPanelGetter';
             $opts['rowDataLoaded']   = 'appendGridRowDataLoaded';
         }
-        if($this->isReadonly() || $this->isDisabled()) {
+        if ($this->isReadonly() || $this->isDisabled()) {
             $opts['hideButtons'] = array(
                 'append' => true,
                 'removeLast' => true,

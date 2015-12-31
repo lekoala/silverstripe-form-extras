@@ -40,7 +40,8 @@ class FrontendFileField extends FileField
     /**
      * @return File
      */
-    public function getFile() {
+    public function getFile()
+    {
         return File::get()->byID($this->fileID);
     }
 
@@ -56,14 +57,14 @@ class FrontendFileField extends FileField
     {
         if ($value) {
             $this->processValue($value);
-        } else if ($data) {
+        } elseif ($data) {
             if (is_array($data)) {
                 if (isset($data[$this->name])) {
                     $this->processValue($data[$this->name]);
                 }
             } else {
                 $field = $this->name . 'ID';
-                if($data->$field) {
+                if ($data->$field) {
                     $this->fileID = $data->$field;
                 }
             }
@@ -82,7 +83,8 @@ class FrontendFileField extends FileField
         return false;
     }
 
-    public function IsImage() {
+    public function IsImage()
+    {
         return $this->getFile() instanceof Image;
     }
 
@@ -128,12 +130,12 @@ class FrontendUpload extends Upload
 {
     protected $name;
 
-    function getName()
+    public function getName()
     {
         return $this->name;
     }
 
-    function setName($name)
+    public function setName($name)
     {
         $this->name = $name;
     }

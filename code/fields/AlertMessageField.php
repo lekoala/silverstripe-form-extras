@@ -12,7 +12,7 @@ class AlertMessageField extends LiteralField
     public function __construct($content, $type = 'info', $name = null)
     {
         self::$count++;
-        if($name === null) {
+        if ($name === null) {
             $name = 'AlertMessageField' . self::$count;
         }
         $content = '<div class="message '.$type.'" id="'.$name.'">' . $content . '</div>';

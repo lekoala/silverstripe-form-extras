@@ -9,12 +9,12 @@
 class ExpandableTextareaField extends TextareaField
 {
 
-    function extraClass()
+    public function extraClass()
     {
         return 'textarea '.parent::extraClass();
     }
 
-    function Field($properties = array())
+    public function Field($properties = array())
     {
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/expandable/jquery.expandable.js');
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/ExpandableTextareaField.js');

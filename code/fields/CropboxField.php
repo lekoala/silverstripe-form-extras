@@ -187,13 +187,12 @@ class CropboxImage extends DataExtension
      */
     public function generateCropboxedImage(GD $gd, $width, $height)
     {
-
         $width  = round($width);
         $height = round($height);
 
         // Check that a resize is actually necessary.
         if ($width == $this->owner->width && $height == $this->owner->height) {
-//			return $this;
+            //			return $this;
         }
 
         if ($this->owner->width > 0 && $this->owner->height > 0 && $this->owner->CropWidth

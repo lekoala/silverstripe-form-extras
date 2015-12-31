@@ -169,7 +169,7 @@ class Select2Field extends ListboxField
         return parent::setValue($val, $obj);
     }
 
-    function saveInto(\DataObjectInterface $record)
+    public function saveInto(\DataObjectInterface $record)
     {
         // If tags are enabled, saving into a relation will not work properly
         if ($this->tags) {
@@ -222,23 +222,23 @@ class Select2Field extends ListboxField
         }
     }
 
-    function getTags()
+    public function getTags()
     {
         return $this->tags;
     }
 
-    function setTags($tags)
+    public function setTags($tags)
     {
         $this->setMultiple($tags);
         $this->tags = $tags;
     }
 
-    function getTokenSeparators()
+    public function getTokenSeparators()
     {
         return $this->token_separators;
     }
 
-    function setTokenSeparators($token_separators)
+    public function setTokenSeparators($token_separators)
     {
         $this->token_separators = $token_separators;
     }
@@ -263,12 +263,12 @@ class Select2Field extends ListboxField
         $this->allow_single_deselect = $v;
     }
 
-    function getFreeOrder()
+    public function getFreeOrder()
     {
         return $this->free_order;
     }
 
-    function setFreeOrder($free_order)
+    public function setFreeOrder($free_order)
     {
         $this->free_order = (bool) $free_order;
     }

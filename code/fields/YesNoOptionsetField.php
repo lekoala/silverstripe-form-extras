@@ -16,7 +16,7 @@ class YesNoOptionsetField extends OptionsetField
     const VALUE_YES = 'YES';
     const VALUE_NO  = 'NO';
 
-    function __construct($name, $title = null, $source = array(), $value = '',
+    public function __construct($name, $title = null, $source = array(), $value = '',
                          $form = null, $emptyString = null)
     {
         if (empty($source)) {
@@ -28,7 +28,7 @@ class YesNoOptionsetField extends OptionsetField
         parent::__construct($name, $title, $source, $value, $form, $emptyString);
     }
 
-    function saveInto(\DataObjectInterface $record)
+    public function saveInto(\DataObjectInterface $record)
     {
         if ($this->name) {
             $castingHelper = $record->castingHelper($this->name);
@@ -40,7 +40,7 @@ class YesNoOptionsetField extends OptionsetField
         }
     }
 
-    function getBooleanValue()
+    public function getBooleanValue()
     {
         switch ($this->value) {
             case self::VALUE_NO:
@@ -50,17 +50,17 @@ class YesNoOptionsetField extends OptionsetField
         }
     }
 
-    function setYes()
+    public function setYes()
     {
         return $this->setValue(self::VALUE_YES);
     }
 
-    function setNo()
+    public function setNo()
     {
         return $this->setValue(self::VALUE_NO);
     }
 
-    function setValue($value)
+    public function setValue($value)
     {
         // Avoid setting blank as no
         if ($value === '' || $value === null) {
@@ -76,7 +76,7 @@ class YesNoOptionsetField extends OptionsetField
         parent::setValue($value);
     }
 
-    function extraClass()
+    public function extraClass()
     {
         return 'optionset '.parent::extraClass();
     }

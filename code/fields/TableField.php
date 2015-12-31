@@ -10,22 +10,22 @@ class TableField extends TableFieldCommon
 {
     const KEY_REQUIRED = 'required';
 
-    function getColumnRequired($column)
+    public function getColumnRequired($column)
     {
         return $this->getColumnProperty($column, self::KEY_REQUIRED);
     }
 
-    function setColumnRequired($column, $req)
+    public function setColumnRequired($column, $req)
     {
         return $this->setColumnProperty($column, self::KEY_REQUIRED, $req);
     }
 
-    function getColumnsRequired()
+    public function getColumnsRequired()
     {
         return $this->getProperty(self::KEY_REQUIRED);
     }
 
-    function setColumnsRequired($required)
+    public function setColumnsRequired($required)
     {
         $req = array();
         foreach ($required as $k => $v) {
@@ -43,12 +43,11 @@ class TableField extends TableFieldCommon
      * 
      * @return \ArrayList
      */
-    function ColumnsList()
+    public function ColumnsList()
     {
         $list = new ArrayList();
 
         foreach ($this->columns as $key => $column) {
-
             $header     = $this->array_get($column, self::KEY_HEADER);
             $required   = $this->array_get($column, self::KEY_REQUIRED);
             $type       = $this->array_get($column, self::KEY_TYPE,
@@ -83,7 +82,7 @@ class TableField extends TableFieldCommon
         return $list;
     }
 
-    function DataList()
+    public function DataList()
     {
         $list = new ArrayList();
 
@@ -109,7 +108,6 @@ class TableField extends TableFieldCommon
             $subcolumnsToAdd      = array();
             $subcolumnsHaveValues = false;
             foreach ($arr as $k => $v) {
-
                 if (in_array($k, $subcols)) {
                     if ($v) {
                         $subcolumnsHaveValues = true;
@@ -168,5 +166,4 @@ class TableField extends TableFieldCommon
 class TableField_ReadOnly extends TableField
 {
     protected $readonly = true;
-
 }
