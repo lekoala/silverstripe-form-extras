@@ -31,6 +31,7 @@
                 });
             }, PingIntervalSeconds * 1000);
         }
+        initTimer();
 
         function stopTimer() {
             clearInterval(interval);

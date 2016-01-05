@@ -71,7 +71,7 @@ class FormExtra extends Form
      */
     public function setControllerMessage($message, $type = 'good')
     {
-        $this->Controller()->SetSessionMessage($message);
+        $this->Controller()->SetSessionMessage($message, $type);
     }
 
     public function saveDataInSession()
