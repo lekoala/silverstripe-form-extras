@@ -3,7 +3,7 @@
 <% if TotalRow %>
 <% loop TotalRow %>
 <div class="appendGridTotalRow">
-	<label>$Label <input type="text" name="$.Name" id="{$Up.ID}_{$Name}" readonly /></label>
+	<label>$Label <input type="text" name="$Name" id="{$Up.ID}_{$Name}" readonly /></label>
 	<div style="clear:both;"></div>
 </div>
 <% end_loop %>
