@@ -103,6 +103,10 @@ class TableFieldCommon extends FormField
     public function addColumn($name, $display = null, $type = 'text',
                               $value = null, $opts = null)
     {
+        if (strpos($name, '_') !== false) {
+            throw new Exception('Please avoid _ in a column name');
+        }
+
         if ($display === null) {
             $display = $name;
         }
