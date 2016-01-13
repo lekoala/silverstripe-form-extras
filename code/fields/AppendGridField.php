@@ -78,12 +78,15 @@ class AppendGridField extends TableFieldCommon
             $opts['columns'] = array_values($this->columns);
         }
         if ($this->totalRow) {
-            foreach ($opts['columns'] as &$col) {
-                if ($col['name'] != $this->totalRow['Field']) {
-                    continue;
-                }
-                if (empty($col['totalRow'])) {
-                    $col['totalRow'] = array('TotalRowID' => $this->ID().'TotalRow');
+            foreach ($this->totalRow as $totalKey => $totalRowData) {
+                foreach ($opts['columns'] as &$col) {
+                    if ($col['name'] != $totalKey) {
+                        continue;
+                    }
+                    // Define a total row for this column
+                    if (empty($col['totalRow'])) {
+                        $col['totalRow'] = array('TotalRowID' => $this->ID().'_' . $totalRowData['Name']);
+                    }
                 }
             }
         }
@@ -94,7 +97,7 @@ class AppendGridField extends TableFieldCommon
             $opts['subPanelGetter']  = 'appendGridSubPanelGetter';
             $opts['rowDataLoaded']   = 'appendGridRowDataLoaded';
         }
-        if($this->isReadonly() || $this->isDisabled()) {
+        if ($this->isReadonly() || $this->isDisabled()) {
             $opts['hideButtons'] = array(
                 'append' => true,
                 'removeLast' => true,

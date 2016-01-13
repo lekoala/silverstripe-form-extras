@@ -35,7 +35,7 @@ class TableFieldCommon extends FormField
     protected $initRows          = 1; // Base number of rows
     protected $maxRowsAllowed    = 0; // Maximum number of rows
     protected $initData          = null; // Base data for empty fields
-    protected $totalRow; // Make a sum of all values in one column
+    protected $totalRow          = array(); // Make a sum of all values in one column
     protected $requireAccounting = false;
 
     public function extraClass()
@@ -146,10 +146,10 @@ class TableFieldCommon extends FormField
 
     public function TotalRow()
     {
-        if (!$this->totalRow) {
+        if (empty($this->totalRow)) {
             return false;
         }
-        return new ArrayData($this->totalRow);
+        return new ArrayList($this->totalRow);
     }
 
     /**
@@ -167,12 +167,23 @@ class TableFieldCommon extends FormField
         if ($label === null) {
             $label = $name;
         }
-        $this->totalRow = array('Field' => $field, 'Name' => $name, 'Label' => $label);
+        $this->totalRow[$field] = array('Field' => $field, 'Name' => $name, 'Label' => $label);
     }
 
-    public function removeTotalRow()
+    /**
+     * Remove the total row (or a field of it)
+     * 
+     * @param string $field
+     */
+    public function removeTotalRow($field = null)
     {
-        $this->totalRow = null;
+        if ($field) {
+            if (isset($this->totalRow[$field])) {
+                unset($this->totalRow[$field]);
+            }
+        } else {
+            $this->totalRow = array();
+        }
     }
 
     public function getSubColumns()
@@ -308,7 +319,7 @@ class TableFieldCommon extends FormField
 
     public function performReadonlyTransformation()
     {
-        if($this->isReadonly()) {
+        if ($this->isReadonly()) {
             return $this;
         }
         $copy = $this->castedCopy('TableField_ReadOnly');
