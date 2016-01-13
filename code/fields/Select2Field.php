@@ -94,6 +94,9 @@ class Select2Field extends ListboxField
         if ($this->ajax) {
             $opts['ajax'] = $this->ajax;
         }
+        if ($this->getDefaultText()) {
+            $opts['placeholder'] = $this->getDefaultText();
+        }
 
         if (FormExtraJquery::isAdminBackend()) {
             Requirements::customScript('var select2_'.$this->ID().' = '.json_encode($opts));
