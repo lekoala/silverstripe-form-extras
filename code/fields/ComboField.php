@@ -23,7 +23,7 @@ class ComboField extends DropdownField
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/ComboField.js');
     }
 
-    function extraClass()
+    public function extraClass()
     {
         return parent::extraClass().' dropdown';
     }
@@ -65,9 +65,9 @@ class ComboField extends DropdownField
 
     public function Field($properties = array())
     {
-		if(empty($this->source) || count($this->source) === 1) {
-			$this->setEmptyString('');
-		}
+        if (empty($this->source) || count($this->source) === 1) {
+            $this->setEmptyString('');
+        }
         return parent::Field($properties);
     }
 }

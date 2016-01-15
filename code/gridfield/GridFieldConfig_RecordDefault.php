@@ -15,7 +15,7 @@ class GridFieldConfig_RecordDefault extends GridFieldConfig_RecordEditor
         if ($sort) {
             if (class_exists('GridFieldSortableRows')) {
                 $this->addComponent(new GridFieldSortableRows('SortOrder'));
-            } else if (class_exists('GridFieldOrderableRows')) {
+            } elseif (class_exists('GridFieldOrderableRows')) {
                 $this->addComponent(new GridFieldOrderableRows('SortOrder'));
             }
         }

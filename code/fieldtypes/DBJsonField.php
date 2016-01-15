@@ -17,7 +17,7 @@ class DBJsonField extends Varchar
 
     public function setValue($value, $record = null)
     {
-        if(!is_string($value)) {
+        if (!is_string($value)) {
             $value = json_encode($value);
         }
         return parent::setValue($value, $record);

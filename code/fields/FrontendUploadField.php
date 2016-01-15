@@ -182,7 +182,9 @@ jQuery(window).load(function() {
      */
     public function canChooseFromGallery()
     {
-        if (!$this->isActive()) return false;
+        if (!$this->isActive()) {
+            return false;
+        }
         $can = $this->getConfig('canChooseFromGallery');
         if ($can === null) {
             return false;
@@ -421,16 +423,21 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
     public function delete(SS_HTTPRequest $request)
     {
         // Check form field state
-        if ($this->parent->isDisabled() || $this->parent->isReadonly())
-                return $this->httpError(403);
+        if ($this->parent->isDisabled() || $this->parent->isReadonly()) {
+            return $this->httpError(403);
+        }
 
         // Protect against CSRF on destructive action
         $token = $this->parent->getForm()->getSecurityToken();
-        if (!$token->checkRequest($request)) return $this->httpError(400);
+        if (!$token->checkRequest($request)) {
+            return $this->httpError(400);
+        }
 
         // Check item permissions
         $item = $this->getItem();
-        if (!$item) return $this->httpError(404);
+        if (!$item) {
+            return $this->httpError(404);
+        }
 
         $memberID = Member::currentUserID();
 
@@ -443,10 +450,11 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
                 $res = $item->canDelete();
             }
         } catch (Exception $ex) {
-            
         }
 
-        if (!$res) return $this->httpError(403);
+        if (!$res) {
+            return $this->httpError(403);
+        }
 
         // Delete the file from the filesystem. The file will be removed
         // from the relation on save
@@ -468,12 +476,15 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
     public function edit(SS_HTTPRequest $request)
     {
         // Check form field state
-        if ($this->parent->isDisabled() || $this->parent->isReadonly())
-                return $this->httpError(403);
+        if ($this->parent->isDisabled() || $this->parent->isReadonly()) {
+            return $this->httpError(403);
+        }
 
         // Check item permissions
         $item = $this->getItem();
-        if (!$item) return $this->httpError(404);
+        if (!$item) {
+            return $this->httpError(404);
+        }
 
         $memberID = Member::currentUserID();
 
@@ -486,10 +497,11 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
                 $res = $item->canEditFrontend();
             }
         } catch (Exception $ex) {
-
         }
 
-        if (!$res) return $this->httpError(403);
+        if (!$res) {
+            return $this->httpError(403);
+        }
 
         Requirements::css(FRAMEWORK_DIR.'/css/UploadField.css');
 
@@ -506,13 +518,18 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
     public function doEdit(array $data, Form $form, SS_HTTPRequest $request)
     {
         // Check form field state
-        if ($this->parent->isDisabled() || $this->parent->isReadonly())
-                return $this->httpError(403);
+        if ($this->parent->isDisabled() || $this->parent->isReadonly()) {
+            return $this->httpError(403);
+        }
 
         // Check item permissions
         $item = $this->getItem();
-        if (!$item) return $this->httpError(404);
-        if ($item instanceof Folder) return $this->httpError(403);
+        if (!$item) {
+            return $this->httpError(404);
+        }
+        if ($item instanceof Folder) {
+            return $this->httpError(403);
+        }
 
         $memberID = Member::currentUserID();
 
@@ -525,7 +542,6 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
                 $res = $item->canEditFrontend();
             }
         } catch (Exception $ex) {
-
         }
         $form->saveInto($item);
         $item->write();

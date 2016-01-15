@@ -39,7 +39,7 @@ class CmsInlineFormAction extends FormField
         if (!$this->url) {
             $ctrl = Controller::curr();
             $action = $this->name;
-            if($ctrl instanceof ModelAdmin) {
+            if ($ctrl instanceof ModelAdmin) {
                 $action = $ctrl->getRequest()->param('ModelClass') . '/' . $action;
             }
             return $ctrl->Link($action);

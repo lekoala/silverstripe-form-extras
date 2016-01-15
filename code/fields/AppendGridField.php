@@ -56,7 +56,6 @@ class AppendGridField extends TableFieldCommon
 
     public function buildJsonOpts($escape = false)
     {
-
         $opts = array();
         if ($this->caption) {
             $opts['caption'] = $this->caption;

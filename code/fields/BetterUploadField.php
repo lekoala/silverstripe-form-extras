@@ -7,12 +7,12 @@
  */
 class BetterUploadField extends UploadField
 {
-    public function canDownload() {
+    public function canDownload()
+    {
         return Permission::check('CMS_ACCESS');
     }
     public function getTemplate()
     {
         return 'forms/BetterUploadField';
     }
-
 }

@@ -42,19 +42,18 @@ class BaseUploadField extends UploadField
         $folderName = 'Uploads';
 
         if (is_object($class)) {
-            if(method_exists($class, 'hasMethod') && $class->hasMethod('BaseFolder')) {
+            if (method_exists($class, 'hasMethod') && $class->hasMethod('BaseFolder')) {
                 $folderName = $class->BaseFolder();
-            }
-            else if ($class instanceof Page) {
+            } elseif ($class instanceof Page) {
                 $folderName = get_class($class);
-            } else if ($class instanceof DataObject) {
+            } elseif ($class instanceof DataObject) {
                 $folderName = $class->baseTable();
-            } else if ($class instanceof DataExtension) {
+            } elseif ($class instanceof DataExtension) {
                 $folderName = $class->getOwner()->baseTable();
             } else {
                 $folderName = get_class($class);
             }
-        } else if (is_string($class)) {
+        } elseif (is_string($class)) {
             $folderName = $class;
         }
 

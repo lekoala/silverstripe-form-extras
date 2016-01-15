@@ -24,7 +24,7 @@ class SimpleTinyMceField extends TextareaField
      */
     private static $file_manager_enabled_by_default = false;
 
-    function __construct($name, $title = null, $value = null)
+    public function __construct($name, $title = null, $value = null)
     {
         parent::__construct($name, $title, $value);
 
@@ -62,7 +62,7 @@ class SimpleTinyMceField extends TextareaField
      */
     public function setFileManager($fileManager = true)
     {
-        if ($this->config()->prevent_file_manager ) {
+        if ($this->config()->prevent_file_manager) {
             return false;
         }
         $this->fileManager = $fileManager;
@@ -97,7 +97,8 @@ class SimpleTinyMceField extends TextareaField
         return $this;
     }
 
-    public function setSimpleToolbar() {
+    public function setSimpleToolbar()
+    {
         return $this->setToolbar(self::config()->simple_toolbar);
     }
 
@@ -134,7 +135,7 @@ class SimpleTinyMceField extends TextareaField
         }
     }
 
-    function Field($properties = array())
+    public function Field($properties = array())
     {
         if ($this->fileManager) {
             $this->enableFileManager();
