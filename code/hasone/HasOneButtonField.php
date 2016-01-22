@@ -1,11 +1,16 @@
 <?php
 
 /**
+ * Please note that HasOneButtonField as severe performance issue and can create
+ * thousands of sql requests for no apparent reason...
+ *
+ * In the meantime, it is recommeded to use a custom PickerField, see ::createPicker
+ * for a drop in alternative
+ *
  * @link https://github.com/burnbright/silverstripe-hasonefield
  */
 class HasOneButtonField extends GridField
 {
-
     protected $record;
     protected $parent;
 
@@ -20,12 +25,25 @@ class HasOneButtonField extends GridField
     {
         $this->record = $parent->{$name}();
         $this->parent = $parent;
-        $config = GridFieldConfig::create()
-                    ->addComponent(new GridFieldDetailForm())
-                    ->addComponent($button = new GridFieldHasOneEditButton());
+        $config       = GridFieldConfig::create()
+            ->addComponent(new GridFieldDetailForm())
+            ->addComponent($button       = new GridFieldHasOneEditButton())
+        ;
         $button->setButtonName($title);
-        $list = new HasOneButtonRelationList($this->record, $name, $parent);
+        $list         = new HasOneButtonRelationList($this->record, $name,
+            $parent);
         parent::__construct($name, $title, $list, $config);
+    }
+
+    public static function createPicker($name, $title, $parent)
+    {
+        $record = $parent->{$name}();
+        $fields->push($picker = new HasOnePickerField($parent, $name, $title,
+            $record));
+        $picker->getConfig()->removeComponentsByType('PickerFieldAddExistingSearchButton');
+        $picker->getConfig()->removeComponentsByType('PickerFieldDeleteAction');
+        $picker->getConfig()->removeComponentsByType('GridFieldToolbarHeader');
+        $picker->enableEdit();
     }
 
     public function getRecord()
@@ -49,11 +67,13 @@ class GridFieldHasOneEditButton extends GridFieldAddNewButton implements GridFie
         }
         if (!$this->buttonName) {
             // provide a default button name, can be changed by calling {@link setButtonName()} on this component
-            $objectName = $singleton->i18n_singular_name();
-            $this->buttonName = _t('GridField.Edit', 'Edit {name}', array('name' => $objectName));
+            $objectName       = $singleton->i18n_singular_name();
+            $this->buttonName = _t('GridField.Edit', 'Edit {name}',
+                array('name' => $objectName));
         }
         $data = new ArrayData(array(
-            'NewLink' => Controller::join_links($gridField->Link('item'), $record->ID, 'edit'),
+            'NewLink' => Controller::join_links($gridField->Link('item'),
+                $record->ID, 'edit'),
             'ButtonName' => $this->buttonName,
         ));
 
@@ -65,7 +85,6 @@ class GridFieldHasOneEditButton extends GridFieldAddNewButton implements GridFie
 
 class HasOneButtonRelationList extends DataList
 {
-
     protected $record;
     protected $name;
     protected $parent;
@@ -73,14 +92,19 @@ class HasOneButtonRelationList extends DataList
     public function __construct($record, $name, $parent)
     {
         $this->record = $record;
-        $this->name = $name;
+        $this->name   = $name;
         $this->parent = $parent;
         parent::__construct($record->ClassName);
     }
 
     public function add($item)
     {
+        // Set parent > child relationship
         $this->parent->{$this->name."ID"} = $item->ID;
         $this->parent->write();
+
+        // Set child > parent relationship
+        $item->{$this->parent->ClassName."ID"} = $this->parent->ID;
+        $item->write();
     }
 }
