@@ -166,7 +166,7 @@ class Select2Field extends ListboxField
                 $val = array_values($obj->$funcName()->getIDList());
             }
         }
-        if ($val && !is_array($val)) {
+        if ($val && !is_array($val) && $this->multiple) {
             $val = explode(self::SEPARATOR, $val);
         }
         return parent::setValue($val, $obj);
