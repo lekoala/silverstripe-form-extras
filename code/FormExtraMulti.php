@@ -15,6 +15,13 @@
 class FormExtraMulti extends FormExtra
 {
 
+    public function FormAction()
+    {
+        $action = parent::FormAction();
+        $action .= '?step=' . self::classNameNumber();
+        return $action;
+    }
+
     /**
      * Get class name without any number in it
      * @return string
@@ -43,6 +50,12 @@ class FormExtraMulti extends FormExtra
         if (!$step) {
             $step = 1;
         }
+        if(Controller::has_curr()) {
+            $requestStep = Controller::curr()->getRequest()->getVar('step');
+            if($requestStep) {
+                $step = $requestStep;
+            }
+        }
         return str_replace(self::classNameNumber(), $step, get_called_class());
     }
 
@@ -68,6 +81,8 @@ class FormExtraMulti extends FormExtra
         $class = str_replace($num, $n, get_called_class());
         $steps = new ArrayList();
 
+        $baseAction = parent::FormAction();
+
         while (class_exists($class)) {
             $isCurrent   = $isCompleted = false;
             $cssClass    = $n == $curr ? 'current' : 'link';
@@ -82,7 +97,7 @@ class FormExtraMulti extends FormExtra
                 $isCompleted = true;
                 $cssClass .= ' completed';
             }
-            $link  = $this->FormAction().'/gotoStep/?step='.$n;
+            $link  = $baseAction.'/gotoStep/?step='.$n;
             $steps->push(new ArrayData(array(
                 'Title' => $class::getStepTitle(),
                 'Number' => $n,
@@ -159,7 +174,7 @@ class FormExtraMulti extends FormExtra
         if (self::isLastStep()) {
             return;
         }
-        $next = self::getCurrentStep() + 1;
+        $next = self::classNameNumber() + 1;
         if ($next == 1) {
             $next++;
         }
@@ -184,7 +199,7 @@ class FormExtraMulti extends FormExtra
      */
     public static function decrementStep()
     {
-        $prev = self::getCurrentStep() - 1;
+        $prev = self::classNameNumber() - 1;
         if ($prev < 1) {
             return;
         }
@@ -223,7 +238,7 @@ class FormExtraMulti extends FormExtra
     }
 
     /**
-     * A basic previous action that saves the current step
+     * A basic save action that saves the current step
      * @param array $data
      * @return SS_HTTPResponse
      */
@@ -277,7 +292,7 @@ class FormExtraMulti extends FormExtra
         }
 
         $prev = null;
-        if (self::getCurrentStep() > 1) {
+        if (self::classNameNumber() > 1) {
             $actions->push($prev = new $prevClass('doPrev',
                 _t('FormExtra.doPrev', 'Previous')));
             $prev->addExtraClass('step-prev');
