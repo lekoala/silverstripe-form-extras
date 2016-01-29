@@ -135,6 +135,11 @@ class FormExtraJquery extends Object
         if (self::$disabled || in_array('jquery_ui', self::$included)) {
             return;
         }
+        // Avoid conflicts with jquery ui version of the cms
+        if (self::isAdminBackend()) {
+            self::$included[] = 'jquery_ui';
+            return;
+        }
         switch (self::config()->jquery_ui_version) {
             case self::JQUERY_UI_FRAMEWORK:
                 $path = THIRDPARTY_DIR.'/jquery-ui/jquery-ui';
