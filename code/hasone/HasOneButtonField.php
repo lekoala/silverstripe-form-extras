@@ -35,15 +35,18 @@ class HasOneButtonField extends GridField
         parent::__construct($name, $title, $list, $config);
     }
 
-    public static function createPicker($name, $title, $parent)
+    public static function createPicker($name, $title, $parent, $fields = null)
     {
         $record = $parent->{$name}();
-        $fields->push($picker = new HasOnePickerField($parent, $name, $title,
-            $record));
+        $picker = new HasOnePickerField($parent, $name, $title, $record);
         $picker->getConfig()->removeComponentsByType('PickerFieldAddExistingSearchButton');
         $picker->getConfig()->removeComponentsByType('PickerFieldDeleteAction');
         $picker->getConfig()->removeComponentsByType('GridFieldToolbarHeader');
         $picker->enableEdit();
+        if($fields) {
+            $fields->push($picker);
+        }
+        return $picker;
     }
 
     public function getRecord()
