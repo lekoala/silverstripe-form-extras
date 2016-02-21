@@ -9,7 +9,7 @@
 			var fieldHolder = $this.parents('.field');
 			var input = fieldHolder.find('input');
 			var span = fieldHolder.find('.readonly');
-			
+
 			var baseOptions = $this.data('options');
 			var opts = {
 				value : input.val(),
@@ -21,8 +21,8 @@
 				}
 			};
 			var options = $.extend(baseOptions,opts);
-			
-			$this.slider(options);			
+
+			$this.slider(options);
 		});
 	});
 })(jQuery);

@@ -54,7 +54,7 @@ class FormExtra extends Form
 
     /**
      * Define if we want to have a little js script that pings Security/ping
-     * 
+     *
      * @param bool $keepSessionAlive
      */
     public function setKeepSessionAlive($keepSessionAlive = true)

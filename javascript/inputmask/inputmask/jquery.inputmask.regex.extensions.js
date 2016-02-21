@@ -24,7 +24,7 @@
                 r: {
                     validator: function(chrs, maskset, pos, strict, opts) {
                         function regexToken(isGroup, isQuantifier) {
-                            this.matches = [], this.isGroup = isGroup || !1, this.isQuantifier = isQuantifier || !1, 
+                            this.matches = [], this.isGroup = isGroup || !1, this.isQuantifier = isQuantifier || !1,
                             this.quantifier = {
                                 min: 1,
                                 max: 1
@@ -32,7 +32,7 @@
                         }
                         function analyseRegex() {
                             var match, m, currentToken = new regexToken(), opengroups = [];
-                            for (opts.regexTokens = []; match = opts.tokenizer.exec(opts.regex); ) switch (m = match[0], 
+                            for (opts.regexTokens = []; match = opts.tokenizer.exec(opts.regex); ) switch (m = match[0],
                             m.charAt(0)) {
                               case "(":
                                 opengroups.push(new regexToken(!0));
@@ -82,7 +82,7 @@
                                     var crrntndx = $.inArray(matchToken, token.matches), matchGroup = token.matches[crrntndx - 1], regexPartBak = regexPart;
                                     if (isNaN(matchToken.quantifier.max)) {
                                         for (;matchToken.repeaterPart && matchToken.repeaterPart != regexPart && matchToken.repeaterPart.length > regexPart.length && !(isvalid = validateRegexToken(matchGroup, !0)); ) ;
-                                        isvalid = isvalid || validateRegexToken(matchGroup, !0), isvalid && (matchToken.repeaterPart = regexPart), 
+                                        isvalid = isvalid || validateRegexToken(matchGroup, !0), isvalid && (matchToken.repeaterPart = regexPart),
                                         regexPart = regexPartBak + matchToken.quantifier.max;
                                     } else {
                                         for (var i = 0, qm = matchToken.quantifier.max - 1; qm > i && !(isvalid = validateRegexToken(matchGroup, !0)); i++) ;

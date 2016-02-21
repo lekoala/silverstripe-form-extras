@@ -94,7 +94,7 @@ return array(
 	'File_Save_OK', "הקובץ נשמר בהצלחה .",
 	'File_Save_Error', "שגיאה בעת שמירת הקובץ.",
 	'New_File' => 'קובץ חדש',
-	'No_Extension' => 'חובה לציין את סיומת הקובץ.', 
+	'No_Extension' => 'חובה לציין את סיומת הקובץ.',
 	'Valid_Extensions' => 'סיומות חוקיות: %s', // %s = txt,log etc.
 
 );

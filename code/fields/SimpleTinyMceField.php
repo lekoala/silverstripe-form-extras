@@ -39,7 +39,7 @@ class SimpleTinyMceField extends TextareaField
      * Get the responsive file manager state
      *
      * It can be enabled by default through the config
-     * 
+     *
      * @return boolean
      */
     public function getFileManager()
@@ -56,7 +56,7 @@ class SimpleTinyMceField extends TextareaField
 
     /**
      * Enable the responsive file manager for this tinymce instance
-     * 
+     *
      * @param boolean $fileManager
      * @return boolean File manager enabled or not?
      */

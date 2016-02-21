@@ -14,7 +14,7 @@ class BaseUploadField extends UploadField
 
     /**
      * Return an instance of UploadField with the folder name already set up
-     * 
+     *
      * @param object|string $class
      * @param string $name
      * @param string $title
@@ -33,7 +33,7 @@ class BaseUploadField extends UploadField
 
     /**
      * Get folder for a given class
-     * 
+     *
      * @param mixed $class
      * @return string
      */

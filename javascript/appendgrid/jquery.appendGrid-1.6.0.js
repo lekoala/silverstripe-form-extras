@@ -186,7 +186,7 @@
                     _hideLastColumn: false,
                     // The element ID of the `appendGrid` wrapper
                     _wrapperId: null,
-                    // 
+                    //
                     _calculateWidth: true
                 });
                 // Labels or messages used in grid

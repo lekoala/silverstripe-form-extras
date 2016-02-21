@@ -22,11 +22,11 @@
 })(jQuery);
 
 if (window.ParsleyValidator) {
-	window.ParsleyValidator.addValidator('accountingmin', 
+	window.ParsleyValidator.addValidator('accountingmin',
     function (value, requirement) {
         return accounting.unformat(value) >= requirement
     }, 32);
-	window.ParsleyValidator.addValidator('accountingmax', 
+	window.ParsleyValidator.addValidator('accountingmax',
     function (value, requirement) {
         return accounting.unformat(value) <= requirement
     }, 32);

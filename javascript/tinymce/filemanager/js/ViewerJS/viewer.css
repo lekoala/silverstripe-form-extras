@@ -62,7 +62,7 @@ select {
 
 #titlebar {
     position: absolute;
-    z-index: 2; 
+    z-index: 2;
     top: 0px;
     left: 0px;
     height: 32px;
@@ -72,7 +72,7 @@ select {
     -webkit-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px 1px 3px rgba(50, 50, 50, 0.75);
     box-shadow:         0px 1px 3px rgba(50, 50, 50, 0.75);
-    
+
     background-image: url(images/texture.png), linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
     background-image: url(images/texture.png), -webkit-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
     background-image: url(images/texture.png), -moz-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
@@ -90,7 +90,7 @@ select {
     margin-top: 8px;
     color: #F2F2F2;
     line-height: 14px;
-    font-family: sans-serif; 
+    font-family: sans-serif;
 }
 #documentName {
     font-size: 14px;
@@ -98,7 +98,7 @@ select {
 
 #toolbarContainer {
     position: absolute;
-    z-index: 2; 
+    z-index: 2;
     bottom: 0px;
     left: 0px;
     height: 32px;
@@ -108,7 +108,7 @@ select {
     -webkit-box-shadow: 0px -1px 3px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px -1px 3px rgba(50, 50, 50, 0.75);
     box-shadow:         0px -1px 3px rgba(50, 50, 50, 0.75);
-    
+
     background-image: url(images/texture.png), linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
     background-image: url(images/texture.png), -webkit-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
     background-image: url(images/texture.png), -moz-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
@@ -513,7 +513,7 @@ html[dir='rtl'] .dropdownToolbarButton {
     display: inline-block;
     content: url(images/toolbarButton-zoomOut.png);
 }
-    
+
 .toolbarButton.zoomIn::before {
     display: inline-block;
     content: url(images/toolbarButton-zoomIn.png);
@@ -599,7 +599,7 @@ html[dir='rtl'] .dropdownToolbarButton {
     left: 0;
 
     text-align: center;
-    
+
     background-color: #888;
     background-image: url(images/texture.png);
 }
@@ -659,10 +659,10 @@ html[dir='rtl'] .dropdownToolbarButton {
 #previousPage {
     float: left;
     margin-left: 10px;
- 
+
     /* CSS triangle */
     border-top: 50px solid transparent;
-    border-bottom: 50px solid transparent; 
+    border-bottom: 50px solid transparent;
     border-right: 50px solid black;
 
     opacity: 0.5;
@@ -670,10 +670,10 @@ html[dir='rtl'] .dropdownToolbarButton {
 #nextPage {
     float: right;
     margin-right: 10px;
- 
+
     /* CSS triangle */
     border-top: 50px solid transparent;
-    border-bottom: 50px solid transparent; 
+    border-bottom: 50px solid transparent;
     border-left: 50px solid black;
 
     opacity: 0.5;

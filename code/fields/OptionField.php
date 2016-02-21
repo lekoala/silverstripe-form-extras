@@ -30,7 +30,7 @@ class OptionField extends CheckboxField
         $name .= '_' . $count;
         parent::__construct($name, $title, $value);
     }
-    
+
     public static function clearCountCache()
     {
         self::$count_cache = array();

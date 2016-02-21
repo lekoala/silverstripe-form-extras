@@ -293,7 +293,7 @@ class Select2Field extends ListboxField
 
     /**
      * Alias to make api compatible with ChosenField
-     * 
+     *
      * @param type $text
      * @return type
      */

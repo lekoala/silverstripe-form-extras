@@ -176,7 +176,7 @@ class TableFieldCommon extends FormField
 
     /**
      * Remove the total row (or a field of it)
-     * 
+     *
      * @param string $field
      */
     public function removeTotalRow($field = null)
@@ -279,7 +279,7 @@ class TableFieldCommon extends FormField
 
     /**
      * Get base number of rows
-     * 
+     *
      * @return int
      */
     public function getInitRows()

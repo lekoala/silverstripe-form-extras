@@ -37,7 +37,7 @@ class MaskedInputField extends TextField
     {
         return 'text ' . parent::extraClass();
     }
-    
+
     public function Field($properties = array())
     {
         FormExtraJquery::include_jquery();

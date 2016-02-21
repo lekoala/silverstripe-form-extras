@@ -2,14 +2,14 @@
 
 /**
  * FormExtraMulti
- * 
+ *
  * Multi step form
- * 
+ *
  * - Define a class name with a number in it (MyFormStep1)
  * - Call definePrevNextActions instead of defining your actions
  * - Define a name in getStepTitle for a nicer name
  * - In your controller, create the form with classForCurrentStep
- * 
+ *
  * @author lekoala
  */
 class FormExtraMulti extends FormExtra
@@ -345,7 +345,7 @@ class FormExtraMulti extends FormExtra
         if ($next) {
             $next->removeExtraClass('step-next-single');
         }
-        
+
         if (!$doSet) {
             $this->setActions($actions);
             $actions->setForm($this);

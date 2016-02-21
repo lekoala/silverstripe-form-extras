@@ -7,18 +7,18 @@
  */
 class FormActionArrow extends FormAction
 {
-    
+
     const BACK = 'back';
     const UP = 'up';
     const RIGHT = 'right';
     const DOWN = 'down';
-    
+
     const POS_LEFT = 'left';
     const POS_RIGHT = 'right';
 
     protected $arrow;
     protected $arrowPos = 'left';
-    
+
     protected static $arrow_codes = array(
         'left' => '←',
         'up' => '↑',
@@ -30,7 +30,7 @@ class FormActionArrow extends FormAction
         'start' => '⇤',
         'end' => '⇥'
     );
-    
+
     public function getArrow()
     {
         return $this->arrow;
@@ -47,7 +47,7 @@ class FormActionArrow extends FormAction
         $this->arrow = $arrow;
         return $this;
     }
-    
+
     public function getArrowPos()
     {
         return $this->arrowPos;
@@ -58,7 +58,7 @@ class FormActionArrow extends FormAction
         $this->arrowPos = $arrowPos;
         return $this;
     }
-    
+
     public function Title()
     {
         if ($this->arrow) {

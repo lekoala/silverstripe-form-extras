@@ -8,7 +8,7 @@
 class AlertMessageField extends LiteralField
 {
     protected static $count = 0;
-    
+
     public function __construct($content, $type = 'info', $name = null)
     {
         self::$count++;

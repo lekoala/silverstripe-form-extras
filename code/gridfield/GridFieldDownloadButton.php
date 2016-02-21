@@ -31,7 +31,7 @@ class GridFieldDownloadButton implements GridField_ColumnProvider, GridField_Act
     {
         if ($record->FileID) {
             return "<a class='action' href='".Controller::curr()->Link(get_class($record) . '/download?fileID=' . $record->ID) ."'>"._t('GridFieldDownloadButton.DOWLOAD', 'Download')."</a>";
-            
+
             /*$field = GridField_FormAction::create(
                             $gridField, 'CustomAction' . $record->ID, _t('GridFieldDownloadButton.DOWLOAD', 'Download'), "doDownload", array(
                         'RecordID' => $record->ID,
@@ -53,7 +53,7 @@ class GridFieldDownloadButton implements GridField_ColumnProvider, GridField_Act
     {
         if (isset($arguments['FileID'])) {
             $response = Controller::curr()->getResponse();
-            
+
             $file = File::get()->byID($arguments['FileID']);
             $path = $file->getFullPath();
             $filename = $file->getFileName();

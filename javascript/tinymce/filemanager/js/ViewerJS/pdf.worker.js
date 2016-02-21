@@ -3648,7 +3648,7 @@ var Catalog = (function CatalogClosure() {
         var isPrintAction = (isName(objType) && objType.name === 'Action' &&
                             isName(actionType) && actionType.name === 'Named' &&
                             isName(action) && action.name === 'Print');
-        
+
         if (isPrintAction) {
           javaScript.push('print(true);');
         }
@@ -4504,7 +4504,7 @@ var NameTree = (function NameTreeClosure() {
           warn('Search depth limit for named destionations has been reached.');
           return null;
         }
-        
+
         var kids = kidsOrNames.get('Kids');
         if (!isArray(kids)) {
           return null;
@@ -4559,10 +4559,10 @@ var NameTree = (function NameTreeClosure() {
 })();
 
 /**
- * "A PDF file can refer to the contents of another file by using a File 
+ * "A PDF file can refer to the contents of another file by using a File
  * Specification (PDF 1.1)", see the spec (7.11) for more details.
  * NOTE: Only embedded files are supported (as part of the attachments support)
- * TODO: support the 'URL' file system (with caching if !/V), portable 
+ * TODO: support the 'URL' file system (with caching if !/V), portable
  * collections attributes and related files (/RF)
  */
 var FileSpec = (function FileSpecClosure() {
@@ -4974,7 +4974,7 @@ var Annotation = (function AnnotationClosure() {
       if (data.borderWidth > 0 && dashArray) {
         if (!isArray(dashArray)) {
           // Ignore the border if dashArray is not actually an array,
-          // this is consistent with the behaviour in Adobe Reader. 
+          // this is consistent with the behaviour in Adobe Reader.
           data.borderWidth = 0;
         } else {
           var dashArrayLength = dashArray.length;
@@ -33964,9 +33964,9 @@ if (typeof window === 'undefined') {
 
 /* This class implements the QM Coder decoding as defined in
  *   JPEG 2000 Part I Final Committee Draft Version 1.0
- *   Annex C.3 Arithmetic decoding procedure 
+ *   Annex C.3 Arithmetic decoding procedure
  * available at http://www.jpeg.org/public/fcd15444-1.pdf
- * 
+ *
  * The arithmetic decoder is used in conjunction with context models to decode
  * JPEG2000 and JBIG2 streams.
  */
@@ -34608,7 +34608,7 @@ var JpegImage = (function jpegImage() {
 
       // stage 3
       // Shift v0 by 128.5 << 5 here, so we don't need to shift p0...p7 when
-      // converting to UInt8 range later.  
+      // converting to UInt8 range later.
       v0 = ((v0 + v1 + 1) >> 1) + 4112;
       v1 = v0 - v1;
       t  = (v2 * dctSin6 + v3 * dctCos6 + 2048) >> 12;
