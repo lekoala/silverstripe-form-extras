@@ -56,7 +56,7 @@
 		<% if canChooseFromGallery %>
 		<label class="ss-uploadfield-fromgallery btn" title="<% _t('AvatarGalleryField.FROMGALLERY', 'From the gallery') %>" data-mfp-src="$GalleryUrl">
 				<i class="$IconPicture"></i> <% _t('AvatarGalleryField.FROMGALLERY', 'From the gallery') %>
-		</label>	
+		</label>
 		<% end_if %>
 
 		<% if canAttachExisting %>

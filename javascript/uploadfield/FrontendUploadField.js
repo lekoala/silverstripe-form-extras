@@ -254,7 +254,7 @@
 					$('.ss-uploadfield-item-uploador').hide().show();
 					dropZone.hide().show();
 				}
-				
+
 				this._super();
 			},
 			onunmatch: function () {
@@ -476,7 +476,7 @@
 				});
 
 				if (editform.hasClass('loading')) {
-					// TODO Display loading indication, and register an event to toggle edit form 
+					// TODO Display loading indication, and register an event to toggle edit form
 				} else {
 					if (this.hasClass('ss-uploadfield-item-edit')) {
 						disabled = this.siblings();

@@ -3,14 +3,14 @@
  * Validates for correct URLs, based on RFC 2396.
  * Important if the underlying logic relies on it,
  * e.g. when passing repository URLs to an SVN binary.
- * 
+ *
  * @todo Doesn't work on internationalized (non-ASCII) domain names.
- * 
+ *
  * @see http://www.faqs.org/rfcs/rfc2396
  */
 class URLField extends TextField
 {
-    
+
     public function __construct($name, $title = null, $value = '', $maxLength = null, $form = null)
     {
         parent::__construct($name, $title, $value, $maxLength, $form);

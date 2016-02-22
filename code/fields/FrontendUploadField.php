@@ -194,7 +194,7 @@ jQuery(window).load(function() {
 
     /**
      * Set the url from where gallery items are loaded
-     * 
+     *
      * @param string $galleryUrl
      * permission code
      * @return UploadField Self reference
@@ -219,7 +219,7 @@ jQuery(window).load(function() {
 
     /**
      * Override default item handler
-     * 
+     *
      * @param int $itemID
      * @return UploadField_ItemHandler
      */

@@ -1,6 +1,6 @@
 ---
 Name: form-extras
-After: 
+After:
 - 'framework/*'
 - 'cms/*'
 ---
@@ -46,7 +46,7 @@ CropboxField:
   use_hammer: true
   use_mousewheel: true
 Image:
-  extensions: 
+  extensions:
     - 'CropboxImage'
 LeftAndMain:
   extensions:

@@ -7,7 +7,7 @@ Handling jquery, mousewheel and gestures
 ==================
 
 We try to favor jquery.mousewheel and hammer as librairies to handle mousewheel
-and gestures. The idea is to try to avoid include other librairies that would 
+and gestures. The idea is to try to avoid include other librairies that would
 do the job twice, leading to duplicated code and extra load time.
 
 You can use the following helper to load these libraries in your own project:

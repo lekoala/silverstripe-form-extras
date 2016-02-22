@@ -40,7 +40,7 @@ class TableField extends TableFieldCommon
 
     /**
      * Return an array list of columns
-     * 
+     *
      * @return \ArrayList
      */
     public function ColumnsList()

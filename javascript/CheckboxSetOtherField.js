@@ -6,14 +6,14 @@
 
 		$(document).on('change', '.field.checkboxset .val_ input', function () {
 			var $this = $(this);
-			
+
 			var val = $(this).parents('.field').data('other-value');
 			if(val === undefined) {
 				val = '';
 			}
-			
+
 			if ($this.is(':checked')) {
-				
+
 				var input = $('<input type="text" class="text" name="' + $this.attr('name') + '" value="'+val+'" />');
 
 				input.appendTo($this.parents('ul'));
