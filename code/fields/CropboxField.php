@@ -173,7 +173,6 @@ class CropboxImage extends DataExtension
      */
     public function CropboxedImage($width, $height)
     {
-         $this->owner->deleteFormattedImages();
         return $this->owner->getFormattedImage('CropboxedImage', $width, $height);
     }
 
