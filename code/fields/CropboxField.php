@@ -173,6 +173,7 @@ class CropboxImage extends DataExtension
      */
     public function CropboxedImage($width, $height)
     {
+         $this->owner->deleteFormattedImages();
         return $this->owner->getFormattedImage('CropboxedImage', $width, $height);
     }
 
@@ -191,16 +192,19 @@ class CropboxImage extends DataExtension
         $height = round($height);
 
         // Check that a resize is actually necessary.
-        if ($width == $this->owner->width && $height == $this->owner->height) {
-            //			return $this;
+        if ($width == $this->owner->Width && $height == $this->owner->Height) {
+            return $this;
         }
 
-        if ($this->owner->width > 0 && $this->owner->height > 0 && $this->owner->CropWidth
+        if ($this->owner->Width > 0 && $this->owner->Height > 0 && $this->owner->CropWidth
             > 0 && $this->owner->CropHeight > 0) {
             return $gd->crop($this->owner->CropY, $this->owner->CropX,
                     $this->owner->CropWidth, $this->owner->CropHeight)->resize($width,
                     $height);
         } else {
+            if($this->owner->hasExtension('FocusPointImage')) {
+                return $this->owner->generateCroppedFocusedImage($gd, $width, $height);
+            }
             return $gd->croppedResize($width, $height);
         }
     }
