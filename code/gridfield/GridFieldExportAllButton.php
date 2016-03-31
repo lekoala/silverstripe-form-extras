@@ -66,7 +66,8 @@ class GridFieldExportAllButton extends GridFieldExportButton
         if ($singl->hasMethod('exportedFields')) {
             $fallbackColumns = $singl->exportedFields();
         } else {
-            $fallbackColumns = $singl->summaryFields();
+            $fields          = array_keys(DataObject::database_fields($gridField->getModelClass()));
+            $fallbackColumns = array_combine($fields, $fields);
         }
         $csvColumns = ($this->exportColumns) ? $this->exportColumns : $fallbackColumns;
         $fileData   = '';
@@ -113,7 +114,8 @@ class GridFieldExportAllButton extends GridFieldExportButton
                     }
 
                     $value        = str_replace(array("\r", "\n"), "\n", $value);
-                    $columnData[] = '"'.str_replace('"', '""', utf8_decode($value)).'"';
+                    $columnData[] = '"'.str_replace('"', '""',
+                            utf8_decode($value)).'"';
                 }
 
                 $fileData .= implode($separator, $columnData);
