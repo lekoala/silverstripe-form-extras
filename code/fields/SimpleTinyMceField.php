@@ -10,13 +10,13 @@ class SimpleTinyMceField extends TextareaField
     protected $menubar;
     protected $toolbar;
     protected $plugins;
-    protected $fileManager                          = null;
+    protected $fileManager = null;
 
     /**
      * @config
      * @var boolean
      */
-    private static $prevent_file_manager            = false;
+    private static $prevent_file_manager = false;
 
     /**
      * @config
@@ -28,6 +28,9 @@ class SimpleTinyMceField extends TextareaField
     {
         parent::__construct($name, $title, $value);
 
+        if ($this->getFileManager()) {
+            FormExtraJquery::include_jquery();
+        }
         Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/tinymce/tinymce.min.js');
         $lang = i18n::get_lang_from_locale(i18n::get_locale());
         if ($lang != 'en') {
