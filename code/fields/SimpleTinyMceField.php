@@ -165,10 +165,14 @@ class SimpleTinyMceField extends TextareaField
             $extraJsInit .= ",\n    tools: 'inserttable'";
         }
         if ($this->fileManager) {
+            $fileManagerPlugin = 'plugin.min.js';
+            if(Director::isDev()) {
+                $fileManagerPlugin = 'plugin.js';
+            }
             $extraJsInit .= ",\n    external_filemanager_path: '/form-extras/javascript/tinymce/filemanager/'";
             $extraJsInit .= ",\n    filemanager_title: '"._t('SimpleTinyMceField.FILEMANAGER',
                     "File Manager")."'";
-            $extraJsInit .= ",\n    external_plugins: {'filemanager':'/form-extras/javascript/tinymce/filemanager/plugin.min.js'}";
+            $extraJsInit .= ",\n    external_plugins: {'filemanager':'/form-extras/javascript/tinymce/filemanager/".$fileManagerPlugin."'}";
         }
 
         // We should update the hidden textarea to make sure validation still works

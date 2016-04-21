@@ -2,15 +2,15 @@
  * jPlayerInspector Plugin for jPlayer Plugin for jQuery JavaScript Library
  * http://www.jplayer.org
  *
- * Copyright (c) 2009 - 2013 Happyworm Ltd
+ * Copyright (c) 2009 - 2014 Happyworm Ltd
  * Licensed under the MIT license.
  * http://www.opensource.org/licenses/MIT
  *
  * Author: Mark J Panaghiston
- * Version: 1.0.4
- * Date: 29th January 2013
+ * Version: 1.0.5
+ * Date: 1st April 2014
  *
- * For use with jPlayer Version: 2.2.19+
+ * For use with jPlayer Version: 2.6.0+
  *
  * Note: Declare inspector instances after jPlayer instances. ie., Otherwise the jPlayer instance is nonsense.
  */
@@ -23,12 +23,12 @@
 		idPrefix: "jplayer_inspector_",
 		visible: false
 	};
-
+	
 	var methods = {
 		init: function(options) {
 			var self = this;
 			var $this = $(this);
-
+			
 			var config = $.extend({}, $.jPlayerInspector.defaults, options);
 			$(this).data("jPlayerInspector", config);
 
@@ -42,45 +42,46 @@
 			config.eventResetId = config.idPrefix + "event_reset_" + $.jPlayerInspector.i;
 			config.updateId = config.idPrefix + "update_" + $.jPlayerInspector.i;
 			config.eventWindowId = config.idPrefix + "event_window_" + $.jPlayerInspector.i;
-
+			
 			config.eventId = {};
 			config.eventJq = {};
 			config.eventTimeout = {};
 			config.eventOccurrence = {};
-
+			
 			$.each($.jPlayer.event, function(eventName,eventType) {
 				config.eventId[eventType] = config.idPrefix + "event_" + eventName + "_" + $.jPlayerInspector.i;
 				config.eventOccurrence[eventType] = 0;
 			});
-
-			var structure =
-				'<p><a href="#" id="' + config.toggleId + '">' + (config.visible ? "Hide" : "Show") + '</a> jPlayer Inspector</p>'
+			
+			var structure = 
+				'<p><a href="#" id="' + config.toggleId + '">' + (config.visible ? "Hide" : "Show") + '</a> jPlayer Inspector</p>' 
 				+ '<div id="' + config.windowId + '">'
 					+ '<div id="' + config.statusId + '"></div>'
 					+ '<div id="' + config.eventWindowId + '" style="padding:5px 5px 0 5px;background-color:#eee;border:1px dotted #000;">'
 						+ '<p style="margin:0 0 10px 0;"><strong>jPlayer events that have occurred over the past 1 second:</strong>'
 						+ '<br />(Backgrounds: <span style="padding:0 5px;background-color:#eee;border:1px dotted #000;">Never occurred</span> <span style="padding:0 5px;background-color:#fff;border:1px dotted #000;">Occurred before</span> <span style="padding:0 5px;background-color:#9f9;border:1px dotted #000;">Occurred</span> <span style="padding:0 5px;background-color:#ff9;border:1px dotted #000;">Multiple occurrences</span> <a href="#" id="' + config.eventResetId + '">reset</a>)</p>';
-
+			
 			// MJP: Would use the next 3 lines for ease, but the events are just slapped on the page.
 			// $.each($.jPlayer.event, function(eventName,eventType) {
 			// 	structure += '<div id="' + config.eventId[eventType] + '" style="float:left;">' + eventName + '</div>';
 			// });
-
+			
 			var eventStyle = "float:left;margin:0 5px 5px 0;padding:0 5px;border:1px dotted #000;";
 			// MJP: Doing it longhand so order and layout easier to control.
 			structure +=
 						'<div id="' + config.eventId[$.jPlayer.event.ready] + '" style="' + eventStyle + '"></div>'
+						+ '<div id="' + config.eventId[$.jPlayer.event.setmedia] + '" style="' + eventStyle + '"></div>'
 						+ '<div id="' + config.eventId[$.jPlayer.event.flashreset] + '" style="' + eventStyle + '"></div>'
 						+ '<div id="' + config.eventId[$.jPlayer.event.resize] + '" style="' + eventStyle + '"></div>'
 						+ '<div id="' + config.eventId[$.jPlayer.event.repeat] + '" style="' + eventStyle + '"></div>'
 						+ '<div id="' + config.eventId[$.jPlayer.event.click] + '" style="' + eventStyle + '"></div>'
-						+ '<div id="' + config.eventId[$.jPlayer.event.error] + '" style="' + eventStyle + '"></div>'
 						+ '<div id="' + config.eventId[$.jPlayer.event.warning] + '" style="' + eventStyle + '"></div>'
 
 						+ '<div id="' + config.eventId[$.jPlayer.event.loadstart] + '" style="clear:left;' + eventStyle + '"></div>'
 						+ '<div id="' + config.eventId[$.jPlayer.event.progress] + '" style="' + eventStyle + '"></div>'
 						+ '<div id="' + config.eventId[$.jPlayer.event.timeupdate] + '" style="' + eventStyle + '"></div>'
 						+ '<div id="' + config.eventId[$.jPlayer.event.volumechange] + '" style="' + eventStyle + '"></div>'
+						+ '<div id="' + config.eventId[$.jPlayer.event.error] + '" style="' + eventStyle + '"></div>'
 
 						+ '<div id="' + config.eventId[$.jPlayer.event.play] + '" style="clear:left;' + eventStyle + '"></div>'
 						+ '<div id="' + config.eventId[$.jPlayer.event.pause] + '" style="' + eventStyle + '"></div>'
@@ -119,7 +120,7 @@
 					+ '<div id="' + config.configId + '"></div>'
 				+ '</div>';
 			$(this).html(structure);
-
+			
 			config.windowJq = $("#" + config.windowId);
 			config.statusJq = $("#" + config.statusId);
 			config.configJq = $("#" + config.configId);
@@ -130,7 +131,7 @@
 			$.each($.jPlayer.event, function(eventName,eventType) {
 				config.eventJq[eventType] = $("#" + config.eventId[eventType]);
 				config.eventJq[eventType].text(eventName + " (" + config.eventOccurrence[eventType] + ")"); // Sets the text to the event name and (0);
-
+				
 				config.jPlayer.bind(eventType + ".jPlayerInspector", function(e) {
 					config.eventOccurrence[e.type]++;
 					if(config.eventOccurrence[e.type] > 1) {
@@ -194,7 +195,7 @@
 			} else {
 				// config.updateJq.click();
 			}
-
+			
 			$.jPlayerInspector.i++;
 
 			return this;
@@ -204,12 +205,12 @@
 			$(this).empty();
 		},
 		updateConfig: function() { // This displays information about jPlayer's configuration in inspector
-
+		
 			var jPlayerInfo = "<p>This jPlayer instance is running in your browser where:<br />"
 
 			for(i = 0; i < $(this).data("jPlayerInspector").jPlayer.data("jPlayer").solutions.length; i++) {
 				var solution = $(this).data("jPlayerInspector").jPlayer.data("jPlayer").solutions[i];
-				jPlayerInfo += "&nbsp;jPlayer's <strong>" + solution + "</strong> solution is";
+				jPlayerInfo += "&nbsp;jPlayer's <strong>" + solution + "</strong> solution is";				
 				if($(this).data("jPlayerInspector").jPlayer.data("jPlayer")[solution].used) {
 					jPlayerInfo += " being <strong>used</strong> and will support:<strong>";
 					for(format in $(this).data("jPlayerInspector").jPlayer.data("jPlayer")[solution].support) {
@@ -246,7 +247,7 @@
 			} else {
 				jPlayerInfo += "</p>";
 			}
-
+			
 			jPlayerInfo += "<p><code>status.src = '" + $(this).data("jPlayerInspector").jPlayer.data("jPlayer").status.src + "'</code></p>";
 
 			jPlayerInfo += "<p><code>status.media = {<br />";
@@ -281,9 +282,9 @@
 			+ "&nbsp;supplied: '" + $(this).data("jPlayerInspector").jPlayer.jPlayer("option", "supplied") + "',<br />"
 
 			+ "&nbsp;preload: '" + $(this).data("jPlayerInspector").jPlayer.jPlayer("option", "preload") + "',<br />"
-
+			
 			+ "&nbsp;volume: " + $(this).data("jPlayerInspector").jPlayer.jPlayer("option", "volume") + ",<br />"
-
+			
 			+ "&nbsp;muted: " + $(this).data("jPlayerInspector").jPlayer.jPlayer("option", "muted") + ",<br />"
 
 			+ "&nbsp;backgroundColor: '" + $(this).data("jPlayerInspector").jPlayer.jPlayer("option", "backgroundColor") + "',<br />"
@@ -294,7 +295,7 @@
 
 			var cssSelector = $(this).data("jPlayerInspector").jPlayer.jPlayer("option", "cssSelector");
 			for(prop in cssSelector) {
-
+				
 				// jPlayerInfo += "<br />&nbsp;&nbsp;" + prop + ": '" + cssSelector[prop] + "'," // This works too of course, but want to use option method for deep keys.
 				jPlayerInfo += "<br />&nbsp;&nbsp;" + prop + ": '" + $(this).data("jPlayerInspector").jPlayer.jPlayer("option", "cssSelector." + prop) + "',"
 			}
@@ -304,7 +305,7 @@
 			jPlayerInfo += "<br />&nbsp;},<br />"
 
 			+ "&nbsp;errorAlerts: " + $(this).data("jPlayerInspector").jPlayer.jPlayer("option", "errorAlerts") + ",<br />"
-
+			
 			+ "&nbsp;warningAlerts: " + $(this).data("jPlayerInspector").jPlayer.jPlayer("option", "warningAlerts") + "<br />"
 
 			+ "});</code></p>";
@@ -332,6 +333,6 @@
 			return methods.init.apply( this, arguments );
 		} else {
 			$.error( 'Method ' +  method + ' does not exist on jQuery.jPlayerInspector' );
-		}
+		}    
 	};
 })(jQuery);

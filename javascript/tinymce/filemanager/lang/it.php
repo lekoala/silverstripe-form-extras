@@ -96,5 +96,27 @@ return array(
 	'New_File' => 'Nuovo file',
 	'No_Extension',"Non hai inserito l'estensione del file.",
 	'Valid_Extensions' => 'Estensioni valide: %s', // %s = txt,log etc.
+	'Upload_message' => "Trascina qui i file per l'upload",
 
+	'SERVER ERROR' => "ERRORE DEL SERVER",
+	'forbiden' => "Proibito",
+	'wrong path' => "Path errato",
+	'wrong name' => "Nome errato",
+	'wrong extension' => "Estensione errata",
+	'wrong option' => "Opzione errata",
+	'wrong data' => "Dato errato",
+	'wrong action' => "Azione errata",
+	'wrong sub-action' => "Sotto-azione errata",
+	'no action passed' => "Nessuna azione passata",
+	'no path' => "Nessun path",
+	'no file' => "Nessun file",
+	'view type number missing' => "Manca il numero del tipo di vista",
+	'Not enought Memory' => "Non c'è abbastanza memoria per processare",
+	'max_size_reached' => "La tua cartella ha raggiunto il massimo spazio disponibile di %d MB.", //%d = max overall size
+	'B' => "B",
+	'KB' => "KB",
+	'MB' => "MB",
+	'GB' => "GB",
+	'TB' => "TB",
+	'total size' => "Dim. totale",
 );
