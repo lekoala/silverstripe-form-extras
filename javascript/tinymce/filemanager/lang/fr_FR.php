@@ -96,8 +96,7 @@ return array(
 	'New_File' => 'Nouveau fichier',
 	'No_Extension' => 'Vous devez ajouter une extension au fichier.',
 	'Valid_Extensions' => 'Extensions valides: %s', // %s = txt,log etc.
-	'Upload_message' => "Glissez les fichier ici pour les ajouter",
-
+	'Upload_message' => "Cliquez ici ou faites glisser le(s) document(s)",
 	'SERVER ERROR' => "ERREUR SERVEUR",
 	'forbiden' => "Interdit",
 	'wrong path' => "Chemin invalide",

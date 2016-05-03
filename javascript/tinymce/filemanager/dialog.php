@@ -571,7 +571,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			<div class="row-fluid">
 			<div class="span4 half">
 				<?php if($upload_files){ ?>
-				<button class="tip btn upload-btn" title="<?php echo  trans('Upload_file');?>"><i class="rficon-upload"></i></button>
+				<button class="tip btn upload-btn" title="<?php echo  trans('Upload_file');?>"><i class="rficon-upload"></i> <?php echo  trans('Upload_file');?></button>
 				<?php } ?>
 				<?php if($create_text_files){ ?>
 				<button class="tip btn create-file-btn" title="<?php echo  trans('New_File');?>"><i class="icon-plus"></i><i class="icon-file"></i></button>

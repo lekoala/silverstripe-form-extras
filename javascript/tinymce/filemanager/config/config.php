@@ -212,19 +212,19 @@ $config = array(
     //Permissions configuration
     //******************
     'delete_files' => true,
-    'create_folders' => true,
-    'delete_folders' => true,
+    'create_folders' => false,
+    'delete_folders' => false,
     'upload_files' => true,
     'rename_files' => true,
     'rename_folders' => true,
     'duplicate_files' => true,
-    'copy_cut_files' => true, // for copy/cut files
-    'copy_cut_dirs' => true, // for copy/cut directories
+    'copy_cut_files' => false, // for copy/cut files
+    'copy_cut_dirs' => false, // for copy/cut directories
     'chmod_files' => true, // change file permissions
     'chmod_dirs' => true, // change folder permissions
-    'preview_text_files' => true, // eg.: txt, log etc.
-    'edit_text_files' => true, // eg.: txt, log etc.
-    'create_text_files' => true, // only create files with exts. defined in $editable_text_file_exts
+    'preview_text_files' => false, // eg.: txt, log etc.
+    'edit_text_files' => false, // eg.: txt, log etc.
+    'create_text_files' => false, // only create files with exts. defined in $editable_text_file_exts
     // you can preview these type of files if $preview_text_files is true
     'previewable_text_file_exts' => array('txt', 'log', 'xml', 'html', 'css', 'htm',
         'js'),

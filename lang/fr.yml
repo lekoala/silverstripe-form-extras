@@ -45,7 +45,7 @@ fr:
     punctuation: 'Doit contenir des ponctuations'
     uppercase: 'Doit contenir des majuscules'
   SimpleTinyMceField:
-    FILEMANAGER: 'Gestionnaire de fichiers'
+    FILEMANAGER: 'Sélectionnez ou téléchargez le document'
   URLField:
     VALIDATION: 'Please enter a valid URL (e.g http://mywebsite.com).'
   UploadField:
