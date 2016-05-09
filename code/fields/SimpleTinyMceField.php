@@ -188,6 +188,7 @@ class SimpleTinyMceField extends TextareaField
     statusbar : false,
     skin: "'.$skin.'",
     image_advtab: true,
+    document_base_url: "'.Director::baseURL().'",
     setup: simpleTinymceSetup,
     autoresize_bottom_margin : 0,
     menubar: '.$menubar.',
