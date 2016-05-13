@@ -133,7 +133,6 @@ class CropboxImage extends DataExtension
 
     public function updateCMSFields(FieldList $fields)
     {
-        //Add FocusPoint field for selecting focus
         $f       = new CropboxField(
             $name    = "Cropbox", $title   = "Crop Box",
             $imageID = $this->owner->ID
@@ -201,10 +200,10 @@ class CropboxImage extends DataExtension
                     $this->owner->CropWidth, $this->owner->CropHeight)->resize($width,
                     $height);
         } else {
-            if($this->owner->hasExtension('FocusPointImage')) {
-                return $this->owner->generateCroppedFocusedImage($gd, $width, $height);
-            }
             return $gd->croppedResize($width, $height);
         }
+    }
+
+    public function writeTo($path) {
     }
 }
