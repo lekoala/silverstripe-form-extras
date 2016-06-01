@@ -11,6 +11,7 @@ class FormActionConfirm extends FormAction
 
     public function __construct($action, $title = "", $form = null)
     {
+        $this->confirmText = _t('FormActionConfirm.AREYOUSURE', "Are you sure ?");
         parent::__construct($action, $title, $form);
     }
 

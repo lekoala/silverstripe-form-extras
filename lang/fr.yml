@@ -19,6 +19,8 @@ fr:
   File:
     INVALIDEXTENSIONSHORT: 'Cette extension n''est pas autorisée'
     TOOLARGESHORT: 'La taille du fichier dépasse {size}'
+  FormActionConfirm:
+    AREYOUSURE: 'Etes-vous sûr?'
   FormExtra:
     doFinish: Terminer
     doNext: Suivant
