@@ -17,6 +17,7 @@ class Select2Field extends ListboxField
     protected $token_separators      = array(',', ' ');
     protected $ajax;
     protected $free_order;
+    protected $min_input;
 
     public function __construct($name, $title = null, $source = array(),
                                 $value = '', $form = null, $emptyString = null)
@@ -39,16 +40,16 @@ class Select2Field extends ListboxField
                 Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/select2-v3/select2_locale_'.$lang.'.js');
             }
         } else {
-            // Locale support
-            $lang = i18n::get_lang_from_locale(i18n::get_locale());
-            if ($lang != 'en') {
-                Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/select2-v4/i18n/'.$lang.'.js');
-            }
-
             // Use full release
             Requirements::css(FORM_EXTRAS_PATH.'/javascript/select2-v4/css/select2.min.css');
             FormExtraJquery::include_mousewheel();
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/select2-v4/js/select2.full.min.js');
+
+            // Locale support
+            $lang = i18n::get_lang_from_locale(i18n::get_locale());
+            if ($lang != 'en') {
+                Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/select2-v4/js/i18n/'.$lang.'.js');
+            }
         }
 
         // Build options
@@ -66,6 +67,9 @@ class Select2Field extends ListboxField
             } else {
                 $opts['maximumSelectionLength'] = $this->allow_max_selected;
             }
+        }
+        if ($this->min_input) {
+            $opts['minimumInputLength'] = $this->min_input;
         }
         if ($this->tags) {
             if ($use_v3) {
@@ -323,6 +327,16 @@ class Select2Field extends ListboxField
     public function setDefaultText($text)
     {
         return $this->setAttribute('data-placeholder', $text);
+    }
+
+    function getMinInput()
+    {
+        return $this->min_input;
+    }
+
+    function setMinInput($min_input)
+    {
+        $this->min_input = $min_input;
     }
 
     public function getAjax()
