@@ -169,7 +169,30 @@ class Select2Field extends ListboxField
         if ($val && !is_array($val) && $this->multiple) {
             $val = explode(self::SEPARATOR, $val);
         }
-        return parent::setValue($val, $obj);
+
+        if ($val) {
+            if (!$this->multiple && is_array($val)) {
+                throw new InvalidArgumentException('Array values are not allowed (when multiple=false).');
+            }
+
+            if ($this->multiple) {
+                $parts = (is_array($val)) ? $val : preg_split("/ *, */",
+                        trim($val));
+                if (ArrayLib::is_associative($parts)) {
+                    // This is due to the possibility of accidentally passing an array of values (as keys) and titles (as values) when only the keys were intended to be saved.
+                    throw new InvalidArgumentException('Associative arrays are not allowed as values (when multiple=true), only indexed arrays.');
+                }
+
+                $this->value = $parts;
+            } else {
+
+                $this->value = $val;
+            }
+        } else {
+            $this->value = $val;
+        }
+
+        return $this;
     }
 
     public function saveInto(\DataObjectInterface $record)
