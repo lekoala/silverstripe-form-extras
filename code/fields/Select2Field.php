@@ -18,6 +18,8 @@ class Select2Field extends ListboxField
     protected $ajax;
     protected $free_order;
     protected $min_input;
+    protected $template_result;
+    protected $template_selection;
 
     public function __construct($name, $title = null, $source = array(),
                                 $value = '', $form = null, $emptyString = null)
@@ -102,11 +104,28 @@ class Select2Field extends ListboxField
             $opts['placeholder'] = $this->getDefaultText();
         }
 
+        $fcts = array();
+
+        if ($this->template_result) {
+            $opts['templateResult'] = $this->template_result;
+            $fcts[]                 = $this->template_result;
+        }
+        if ($this->template_selection) {
+            $opts['templateSelection'] = $this->template_selection;
+            $fcts[]                    = $this->template_selection;
+        }
+
+        $jsonOpts = json_encode($opts);
+
+        foreach ($fcts as $fct) {
+            $jsonOpts = str_replace('"'.$fct.'"', $fct, $jsonOpts);
+        }
+
         if (FormExtraJquery::isAdminBackend()) {
-            Requirements::customScript('var select2_'.$this->ID().' = '.json_encode($opts));
+            Requirements::customScript('var select2_'.$this->ID().' = '.$jsonOpts);
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/Select2Field.js');
         } else {
-            Requirements::customScript('jQuery("#'.$this->ID().'").select2('.json_encode($opts).');');
+            Requirements::customScript('jQuery("#'.$this->ID().'").select2('.$jsonOpts.');');
         }
 
         if ($use_v3) {
@@ -329,21 +348,54 @@ class Select2Field extends ListboxField
         return $this->setAttribute('data-placeholder', $text);
     }
 
-    function getMinInput()
+    public function getMinInput()
     {
         return $this->min_input;
     }
 
-    function setMinInput($min_input)
+    public function setMinInput($min_input)
     {
         $this->min_input = $min_input;
     }
 
+    public function getTemplateResult()
+    {
+        return $this->template_result;
+    }
+
+    /**
+     * @param string $template_result Name of the JS function to call
+     */
+    public function setTemplateResult($template_result)
+    {
+        $this->template_result = $template_result;
+    }
+
+    public function getTemplateSelection()
+    {
+        return $this->template_selection;
+    }
+
+    /**
+     * @param string $template_result Name of the JS function to call
+     */
+    public function setTemplateSelection($template_selection)
+    {
+        $this->template_selection = $template_selection;
+    }
+
+    /**
+     * @return array
+     */
     public function getAjax()
     {
         return $this->ajax;
     }
 
+    /**
+     * @link https://select2.github.io/options.html#ajax
+     * @param array $arr
+     */
     public function setAjax($arr)
     {
         $this->ajax = $arr;
