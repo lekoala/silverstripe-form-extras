@@ -400,4 +400,14 @@ class Select2Field extends ListboxField
     {
         $this->ajax = $arr;
     }
+
+    public function getPlaceholder()
+    {
+        return $this->getAttribute('placeholder');
+    }
+
+    public function setPlaceholder($value)
+    {
+        return $this->setAttribute('placeholder', $value);
+    }
 }
