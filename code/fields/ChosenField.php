@@ -11,6 +11,7 @@ class ChosenField extends ListboxField
     protected $allow_single_deselect = true;
     protected $allow_max_selected;
     protected $use_order             = false;
+    protected $disable_search        = null;
 
     public function __construct($name, $title = null, $source = array(),
                                 $value = '', $form = null, $emptyString = null)
@@ -43,6 +44,9 @@ class ChosenField extends ListboxField
         if ($this->allow_max_selected) {
             $opts['allow_max_selected'] = $this->allow_max_selected;
         }
+        if($this->disable_search !== null) {
+            $opts['disable_search'] = $this->disable_search;
+        }
         if ($this->use_order) {
             $stringValue = $this->value;
             if (is_array($stringValue)) {
@@ -55,6 +59,15 @@ class ChosenField extends ListboxField
         return parent::Field($properties);
     }
 
+    public function getDisableSearch()
+    {
+        return $this->disable_search;
+    }
+
+    public function setDisableSearch($disable_search)
+    {
+        $this->disable_search = $disable_search ;
+    }
     public function getUseOrder()
     {
         return $this->use_order;

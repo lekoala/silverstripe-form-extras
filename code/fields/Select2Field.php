@@ -20,6 +20,7 @@ class Select2Field extends ListboxField
     protected $min_input;
     protected $template_result;
     protected $template_selection;
+    protected $min_results_for_search;
 
     public function __construct($name, $title = null, $source = array(),
                                 $value = '', $form = null, $emptyString = null)
@@ -102,6 +103,9 @@ class Select2Field extends ListboxField
         }
         if ($this->getDefaultText()) {
             $opts['placeholder'] = $this->getDefaultText();
+        }
+        if ($this->min_results_for_search) {
+            $opts['minimumResultsForSearch'] = $this->min_results_for_search;
         }
 
         $fcts = array();
@@ -269,6 +273,16 @@ class Select2Field extends ListboxField
         } else {
             return parent::saveInto($record);
         }
+    }
+
+    public function getMinResultsForSearch()
+    {
+        return $this->min_results_for_search;
+    }
+
+    public function setMinResultsForSearch($min_results_for_search)
+    {
+        $this->min_results_for_search = $min_results_for_search;
     }
 
     public function getTags()
