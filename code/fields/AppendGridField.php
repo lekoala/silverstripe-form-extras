@@ -37,11 +37,11 @@ class AppendGridField extends TableFieldCommon
 
         FormExtraJquery::include_jquery_ui();
         if (Director::isDev()) {
-            Requirements::css(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.css');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.js');
+            Requirements::css(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.2.css');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.2.js');
         } else {
-            Requirements::css(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.min.css');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.0.min.js');
+            Requirements::css(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.2.min.css');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/appendgrid/jquery.appendGrid-1.6.2.min.js');
         }
 
         if (!FormExtraJquery::isAdminBackend()) {
