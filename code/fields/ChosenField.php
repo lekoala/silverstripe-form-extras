@@ -28,9 +28,9 @@ class ChosenField extends ListboxField
         Requirements::block(FRAMEWORK_ADMIN_DIR.'/thirdparty/chosen/chosen/chosen.css');
         Requirements::block(FRAMEWORK_ADMIN_DIR.'/thirdparty/chosen/chosen/chosen.jquery.js');
         Requirements::css(FORM_EXTRAS_PATH.'/javascript/chosen/chosen.min.css');
-        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/chosen/chosen.jquery.js');
+        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/chosen/chosen.jquery.min.js');
         if ($this->use_order) {
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/chosen_order/chosen.order.jquery.js');
+            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/chosen_order/chosen.order.jquery.min.js');
         }
 
         // Init
