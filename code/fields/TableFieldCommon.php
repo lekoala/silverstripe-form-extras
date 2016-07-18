@@ -170,7 +170,7 @@ class TableFieldCommon extends FormField
         }
         if ($label === null) {
             $label = $name;
-            $name  = preg_replace("/[^A-Za-z0-9]/", '', $name);
+            $name  = $field;
         }
         $this->totalRow[$field] = array('Field' => $field, 'Name' => $name, 'Label' => $label);
     }
