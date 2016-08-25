@@ -92,8 +92,10 @@ class Select2Field extends ListboxField
                 // Tags are calculated from options
                 $opts['tags']             = $this->tags;
                 $opts['token_separators'] = $this->token_separators;
-                $opts['free_order']       = $this->free_order;
             }
+        }
+        if ($this->free_order && !$use_v3) {
+            $opts['free_order'] = $this->free_order;
         }
         if (self::config()->rtl && !$use_v3) {
             $opts['dir'] = 'rtl';
