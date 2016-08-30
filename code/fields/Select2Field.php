@@ -128,7 +128,7 @@ class Select2Field extends ListboxField
         }
 
         if (FormExtraJquery::isAdminBackend()) {
-            Requirements::customScript('var select2_'.$this->ID().' = '.$jsonOpts);
+            $this->setAttribute('data-config', $jsonOpts);
             Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/Select2Field.js');
         } else {
             Requirements::customScript('jQuery("#'.$this->ID().'").select2('.$jsonOpts.');');

@@ -20,11 +20,14 @@
                     onmatch: function () {
                         this._super();
                         $(this).parents('.field').find('.chzn-container').hide();
-                        opts = window['select2_' + $(this).attr('id')];
+                        opts = $(this).data('config');
                         $(this).select2(opts);
                         if (opts.free_order) {
                             freeOrder(this);
                         }
+                    },
+                    onunmatch: function() {
+                        this._super();
                     }
                 });
             });
