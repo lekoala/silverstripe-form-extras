@@ -15,6 +15,8 @@
 class CmsInlineFormAction extends FormField
 {
     protected $url;
+    protected $redirectURL;
+    protected static $redirectParams;
 
     /**
      * Create a new action button.
@@ -37,10 +39,21 @@ class CmsInlineFormAction extends FormField
     {
         // Some sensible defaults if no url is specified
         if (!$this->url) {
-            $ctrl = Controller::curr();
+            $ctrl   = Controller::curr();
             $action = $this->name;
             if ($ctrl instanceof ModelAdmin) {
-                $action = $ctrl->getRequest()->param('ModelClass') . '/' . $action;
+                $modelClass = $ctrl->getRequest()->param('ModelClass');
+                $action     = $modelClass.'/'.$action;
+            }
+            $params = array();
+            if($this->redirectURL) {
+                $params['RedirectURL'] = $this->redirectURL;
+            }
+            if(self::$redirectParams) {
+                $params = array_merge($params,self::$redirectParams);
+            }
+            if(!empty($params)) {
+                $action .= '?' . http_build_query($params);
             }
             return $ctrl->Link($action);
         }
@@ -52,11 +65,37 @@ class CmsInlineFormAction extends FormField
         $this->url = $url;
     }
 
+    public function getRedirectURL()
+    {
+        return $this->redirectURL;
+    }
+
+    public function setRedirectURL($redirectURL)
+    {
+        $this->redirectURL = $redirectURL;
+    }
+
+    public static function getRedirectParams()
+    {
+        return self::$redirectParams;
+    }
+
+    public static function setRedirectParams($redirectParams)
+    {
+        self::$redirectParams = $redirectParams;
+    }
+
     public function Field($properties = array())
     {
+        $script = "var t=jQuery(this);t.attr('disabled','disabled');jQuery.post(t.data('url'),t.parents('form').serialize(),function(r){t.removeAttr('disabled');jQuery.noticeAdd({text:r})})";
+
+        if ($this->redirectURL) {
+            $this->addExtraClass('no-ajax');
+            $script = "var t=jQuery(this);window.open(t.data('url'));";
+        }
         return "<input type=\"submit\" name=\"action_{$this->name}\" value=\"{$this->title}\" id=\"{$this->id()}\""
             ." data-url=\"{$this->getUrl()}\""
-            ." class=\"action{$this->extraClass}\" onclick=\"var t=jQuery(this);t.attr('disabled','disabled');jQuery.post(t.data('url'),t.parents('form').serialize(),function(r){t.removeAttr('disabled');jQuery.noticeAdd({text:r})})\" />";
+            ." class=\"action{$this->extraClass}\" onclick=\"$script\" />";
     }
 
     public function Title()
