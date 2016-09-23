@@ -16,6 +16,9 @@ class CmsInlineFormAction extends FormField
 {
     protected $url;
     protected $redirectURL;
+    protected $openInNewWindow = false;
+    protected $dialog;
+    protected $ajax            = true;
     protected static $redirectParams;
 
     /**
@@ -46,14 +49,14 @@ class CmsInlineFormAction extends FormField
                 $action     = $modelClass.'/'.$action;
             }
             $params = array();
-            if($this->redirectURL) {
+            if ($this->redirectURL) {
                 $params['RedirectURL'] = $this->redirectURL;
             }
-            if(self::$redirectParams) {
-                $params = array_merge($params,self::$redirectParams);
+            if (self::$redirectParams) {
+                $params = array_merge($params, self::$redirectParams);
             }
-            if(!empty($params)) {
-                $action .= '?' . http_build_query($params);
+            if (!empty($params)) {
+                $action .= '?'.http_build_query($params);
             }
             return $ctrl->Link($action);
         }
@@ -72,7 +75,19 @@ class CmsInlineFormAction extends FormField
 
     public function setRedirectURL($redirectURL)
     {
+        $this->ajax        = false;
         $this->redirectURL = $redirectURL;
+    }
+
+    public function getOpenInNewWindow()
+    {
+        return $this->openInNewWindow;
+    }
+
+    public function setOpenInNewWindow($openInNewWindow)
+    {
+        $this->ajax            = false;
+        $this->openInNewWindow = $openInNewWindow;
     }
 
     public static function getRedirectParams()
@@ -85,17 +100,41 @@ class CmsInlineFormAction extends FormField
         self::$redirectParams = $redirectParams;
     }
 
+    public function getAjax()
+    {
+        return $this->ajax;
+    }
+
+    public function setAjax($v = true)
+    {
+        $this->ajax = $v;
+        return $this;
+    }
+
+    public function getDialog()
+    {
+        return $this->dialog;
+    }
+
+    public function setDialog($v = true)
+    {
+        $this->dialog = $v;
+        return $this;
+    }
+
     public function Field($properties = array())
     {
-        $script = "var t=jQuery(this);t.attr('disabled','disabled');jQuery.post(t.data('url'),t.parents('form').serialize(),function(r){t.removeAttr('disabled');jQuery.noticeAdd({text:r})})";
-
-        if ($this->redirectURL) {
+        Requirements::javascript(FORM_EXTRAS_PATH."/javascript/CmsInlineFormAction.js");
+        $target = '';
+        if (!$this->ajax) {
             $this->addExtraClass('no-ajax');
-            $script = "var t=jQuery(this);window.open(t.data('url'));";
+        }
+        if ($this->openInNewWindow) {
+            $target = ' target="_blank"';
         }
         return "<input type=\"submit\" name=\"action_{$this->name}\" value=\"{$this->title}\" id=\"{$this->id()}\""
-            ." data-url=\"{$this->getUrl()}\""
-            ." class=\"action{$this->extraClass}\" onclick=\"$script\" />";
+            ." data-url=\"{$this->getUrl()}\" data-dialog=\"{$this->dialog}\" data-ajax=\"{$this->ajax}\"{$target}"
+            ." class=\"cmsinlineaction action{$this->extraClass}\" />";
     }
 
     public function Title()
