@@ -70,8 +70,10 @@ class AppendGridField extends TableFieldCommon
             $opts['maxRowsAllowed'] = $this->maxRowsAllowed;
         }
         if ($this->value || $this->initData) {
-            $val              = $this->value ? $this->value : $this->initData;
-            $opts['initData'] = array_values($val);
+            $val = $this->value ? $this->value : $this->initData;
+            if (is_array($val)) {
+                $opts['initData'] = array_values($val);
+            }
         }
         if ($this->columns) {
             $opts['columns'] = array_values($this->columns);
@@ -84,7 +86,7 @@ class AppendGridField extends TableFieldCommon
                     }
                     // Define a total row for this column
                     if (empty($col['totalRow'])) {
-                        $col['totalRow'] = array('TotalRowID' => $this->ID().'_' . $totalRowData['Name']);
+                        $col['totalRow'] = array('TotalRowID' => $this->ID().'_'.$totalRowData['Name']);
                     }
                 }
             }
