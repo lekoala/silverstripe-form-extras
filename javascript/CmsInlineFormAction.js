@@ -33,7 +33,11 @@
                             t.removeAttr('disabled');
                         });
                     } else {
-                        window.location.href = t.data('url');
+                        if (t.attr('target') == '_blank') {
+                            window.open(t.data('url'));
+                        } else {
+                            window.location.href = t.data('url');
+                        }
                     }
                 }
             });
