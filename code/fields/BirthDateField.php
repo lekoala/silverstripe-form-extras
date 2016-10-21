@@ -7,7 +7,6 @@
  */
 class BirthDateField extends DateField
 {
-
     protected $fields;
     protected $cache = array();
 
@@ -22,7 +21,8 @@ class BirthDateField extends DateField
     {
         $this->cache = array();
         if (is_array($val)) {
-            $val = $val['year'] . '-' . str_pad($val['month'], 2, 0, STR_PAD_LEFT) . '-' . str_pad($val['day'], 2, 0, STR_PAD_LEFT);
+            $val = $val['year'].'-'.str_pad($val['month'], 2, 0, STR_PAD_LEFT).'-'.str_pad($val['day'],
+                    2, 0, STR_PAD_LEFT);
         }
         return parent::setValue($val);
     }
@@ -32,7 +32,11 @@ class BirthDateField extends DateField
         if (isset($this->cache['year'])) {
             return $this->cache['year'];
         }
-        $this->cache['year'] = date('Y', strtotime($this->dataValue()));
+        $value = $this->dataValue();
+        if (!$value) {
+            return false;
+        }
+        $this->cache['year'] = date('Y', strtotime($value));
         return $this->cache['year'];
     }
 
@@ -41,7 +45,11 @@ class BirthDateField extends DateField
         if (isset($this->cache['month'])) {
             return $this->cache['month'];
         }
-        $this->cache['month'] = date('n', strtotime($this->dataValue()));
+        $value = $this->dataValue();
+        if (!$value) {
+            return false;
+        }
+        $this->cache['month'] = date('n', strtotime($value));
         return $this->cache['month'];
     }
 
@@ -50,7 +58,11 @@ class BirthDateField extends DateField
         if (isset($this->cache['day'])) {
             return $this->cache['day'];
         }
-        $this->cache['day'] = date('j', strtotime($this->dataValue()));
+        $value = $this->dataValue();
+        if (!$value) {
+            return false;
+        }
+        $this->cache['day'] = date('j', strtotime($value));
         return $this->cache['day'];
     }
 
