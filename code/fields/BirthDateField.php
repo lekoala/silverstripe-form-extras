@@ -23,6 +23,9 @@ class BirthDateField extends DateField
         if (is_array($val)) {
             $val = $val['year'].'-'.str_pad($val['month'], 2, 0, STR_PAD_LEFT).'-'.str_pad($val['day'],
                     2, 0, STR_PAD_LEFT);
+            if($val == '-00-00') {
+                $val = ''; // leave it empty;
+            }
         }
         return parent::setValue($val);
     }
@@ -104,4 +107,5 @@ class BirthDateField extends DateField
         }
         return $list;
     }
+
 }
