@@ -90,12 +90,24 @@ class GridFieldExportAllButton extends GridFieldExportButton
 
         $items = $gridField->getList();
 
+        $count        = $items->count();
+        $fastMode     = false;
+        $veryFastMode = true;
+
+        // If you export too much, you need some boost!
+        if ($count > 1500) {
+            $fastMode = true;
+        }
+        if ($count > 7500) {
+            $veryFastMode = true;
+        }
+
         foreach ($items as $item) {
-            if (!$item->hasMethod('canView') || $item->canView()) {
+            if ($fastMode || !$item->hasMethod('canView') || $item->canView()) {
                 $columnData = array();
 
                 foreach ($csvColumns as $columnSource => $columnHeader) {
-                    if (!is_string($columnHeader) && is_callable($columnHeader)) {
+                    if (!$veryFastMode && !is_string($columnHeader) && is_callable($columnHeader)) {
                         if ($item->hasMethod($columnSource)) {
                             $relObj = $item->{$columnSource}();
                         } else {
@@ -104,12 +116,16 @@ class GridFieldExportAllButton extends GridFieldExportButton
 
                         $value = $columnHeader($relObj);
                     } else {
-                        $value = $gridField->getDataFieldValue($item,
-                            $columnSource);
-
-                        if (!$value) {
+                        if ($veryFastMode) {
+                            $value = $item->$columnSource;
+                        } else {
                             $value = $gridField->getDataFieldValue($item,
-                                $columnHeader);
+                                $columnSource);
+
+                            if (!$value) {
+                                $value = $gridField->getDataFieldValue($item,
+                                    $columnHeader);
+                            }
                         }
                     }
 
