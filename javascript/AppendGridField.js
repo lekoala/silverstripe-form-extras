@@ -24,7 +24,11 @@ var appendGridSubPanelBuilder = function (cell, uniqueIndex) {
 			id: id + '_' + value.name + '_' + uniqueIndex,
 			name: id + '_' + value.name + '_' + uniqueIndex
 		});
-
+                
+                if(this.value && this.value.ctrlAttr) {
+                    tag.attr(this.value.ctrlAttr);
+                }
+                
 		jQuery('<td class="appendgrid-sub-field-input"></td>').append(tag).appendTo(holder);
 	});
 };
