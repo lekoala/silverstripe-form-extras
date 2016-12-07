@@ -139,7 +139,7 @@ class TableField extends TableFieldCommon
                 $list->push(new ArrayData(array(
                     'ID' => $i,
                     'SubColumn' => 1,
-                    'SubcolumnsHaveValues' => $v,
+                    'SubcolumnsHaveValues' => $subcolumnsHaveValues,
                     'ColSpan' => $rows->count(),
                     'Rows' => new ArrayData($subcolumnToAdd)
                 )));
