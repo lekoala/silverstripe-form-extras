@@ -7,6 +7,7 @@
  */
 class TooltipFieldExtension extends Extension
 {
+
     private static $icon = 'uk-icon-question-circle';
     protected $tooltip;
 
@@ -22,9 +23,9 @@ class TooltipFieldExtension extends Extension
         $t = $this->owner->Title();
 
         if (Controller::has_curr() && Controller::curr() instanceof LeftAndMain) {
-            $t .= ' <span title="'.$tooltip.'" class="ui-icon ui-icon-info" style="display:inline-block;"></span>';
+            $t .= ' <span title="' . $tooltip . '" class="ui-icon ui-icon-info" style="display:inline-block;"></span>';
         } else {
-            $t .= ' <i class="'.Config::inst()->get(__CLASS__, 'icon').' tooltip" title="'.$tooltip.'"></i>';
+            $t .= ' <i class="' . Config::inst()->get(__CLASS__, 'icon') . ' tooltip" title="' . $tooltip . '"></i>';
         }
 
         $this->owner->setTitle($t);

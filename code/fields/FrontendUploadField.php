@@ -17,6 +17,7 @@
  */
 class FrontendUploadField extends BaseUploadField
 {
+
     /**
      * @var array
      */
@@ -28,9 +29,11 @@ class FrontendUploadField extends BaseUploadField
         'handleGallery',
         'fileexists'
     );
-    protected $useCropbox           = true;
-    protected $useFocuspoint        = false;
-    protected $galleryUrl           = null;
+    protected $useCropbox = true;
+    protected $useFocuspoint = false;
+    protected $galleryUrl = null;
+    private static $common_image_types = ['jpg', 'jpeg', 'png'];
+    private static $common_image_size = '4M';
 
     public function __construct($name, $title = null, \SS_List $items = null)
     {
@@ -58,54 +61,66 @@ jQuery(window).load(function() {
 	jQuery('.ss-uploadfield-item-edit').removeAttr('disabled').removeClass('disabled');
 });
 ", "FrontendUploadFieldFix");
+
+        // get the lower max size
+        $maxUpload = File::ini2bytes(ini_get('upload_max_filesize'));
+        $maxPost = File::ini2bytes(ini_get('post_max_size'));
+        $maxSize = min($maxUpload, $maxPost);
+
+        // set more explicit rules for images because their size matters more because they are resized
+        $rules = [
+            '*' => $maxSize
+        ];
+        foreach (self::$common_image_types as $ext) {
+            $rules[$ext] = File::ini2bytes(self::$common_image_size);
+        }
+
+        $this->getValidator()->setAllowedMaxFileSize($rules);
     }
 
     public function Field($properties = array())
     {
-        Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.js');
-        Requirements::javascript(THIRDPARTY_DIR.'/jquery-ui/jquery-ui.js');
-        Requirements::javascript(THIRDPARTY_DIR.'/jquery-entwine/dist/jquery.entwine-dist.js');
-        Requirements::javascript(FRAMEWORK_ADMIN_DIR.'/javascript/ssui.core.js');
-        Requirements::add_i18n_javascript(FRAMEWORK_DIR.'/javascript/lang');
+        Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+        Requirements::javascript(THIRDPARTY_DIR . '/jquery-ui/jquery-ui.js');
+        Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
+        Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/ssui.core.js');
+        Requirements::add_i18n_javascript(FRAMEWORK_DIR . '/javascript/lang');
 
         // Avoid conflicts
-        Requirements::block(FRAMEWORK_DIR.'/javascript/UploadField_uploadtemplate.js');
-        Requirements::block(FRAMEWORK_DIR.'/javascript/UploadField_downloadtemplate.js');
-        Requirements::block(FRAMEWORK_DIR.'/javascript/UploadField.js');
+        Requirements::block(FRAMEWORK_DIR . '/javascript/UploadField_uploadtemplate.js');
+        Requirements::block(FRAMEWORK_DIR . '/javascript/UploadField_downloadtemplate.js');
+        Requirements::block(FRAMEWORK_DIR . '/javascript/UploadField.js');
 
-        Requirements::combine_files('frontenduploadfield.js',
-            array(
+        Requirements::combine_files('frontenduploadfield.js', array(
             // @todo jquery templates is a project no longer maintained and should be retired at some point.
-            THIRDPARTY_DIR.'/javascript-templates/tmpl.js',
-            THIRDPARTY_DIR.'/javascript-loadimage/load-image.js',
-            THIRDPARTY_DIR.'/jquery-fileupload/jquery.iframe-transport.js',
-            THIRDPARTY_DIR.'/jquery-fileupload/cors/jquery.xdr-transport.js',
-            THIRDPARTY_DIR.'/jquery-fileupload/jquery.fileupload.js',
-            THIRDPARTY_DIR.'/jquery-fileupload/jquery.fileupload-ui.js',
-            FORM_EXTRAS_PATH.'/javascript/uploadfield/FrontendUploadField_uploadtemplate.js',
-            FORM_EXTRAS_PATH.'/javascript/uploadfield/FrontendUploadField_downloadtemplate.js',
-            FORM_EXTRAS_PATH.'/javascript/uploadfield/FrontendUploadField.js',
+            THIRDPARTY_DIR . '/javascript-templates/tmpl.js',
+            THIRDPARTY_DIR . '/javascript-loadimage/load-image.js',
+            THIRDPARTY_DIR . '/jquery-fileupload/jquery.iframe-transport.js',
+            THIRDPARTY_DIR . '/jquery-fileupload/cors/jquery.xdr-transport.js',
+            THIRDPARTY_DIR . '/jquery-fileupload/jquery.fileupload.js',
+            THIRDPARTY_DIR . '/jquery-fileupload/jquery.fileupload-ui.js',
+            FORM_EXTRAS_PATH . '/javascript/uploadfield/FrontendUploadField_uploadtemplate.js',
+            FORM_EXTRAS_PATH . '/javascript/uploadfield/FrontendUploadField_downloadtemplate.js',
+            FORM_EXTRAS_PATH . '/javascript/uploadfield/FrontendUploadField.js',
         ));
-        Requirements::css(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.css'); // TODO hmmm, remove it?
-        Requirements::css(FRAMEWORK_DIR.'/css/UploadField.css');
+        Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css'); // TODO hmmm, remove it?
+        Requirements::css(FRAMEWORK_DIR . '/css/UploadField.css');
 
         // Calculated config as per jquery.fileupload-ui.js
         $allowedMaxFileNumber = $this->getAllowedMaxFileNumber();
-        $config               = array(
+        $config = array(
             'url' => $this->Link('upload'),
             'urlSelectDialog' => $this->Link('select'),
             'urlAttach' => $this->Link('attach'),
             'urlFileExists' => $this->link('fileexists'),
             'acceptFileTypes' => '.+$',
             // Fileupload treats maxNumberOfFiles as the max number of _additional_ items allowed
-            'maxNumberOfFiles' => $allowedMaxFileNumber ? ($allowedMaxFileNumber
-                - count($this->getItemIDs())) : null
+            'maxNumberOfFiles' => $allowedMaxFileNumber ? ($allowedMaxFileNumber - count($this->getItemIDs())) : null
         );
 
         // Validation: File extensions
         if ($allowedExtensions = $this->getAllowedExtensions()) {
-            $config['acceptFileTypes']                  = '(\.|\/)('.implode('|',
-                    $allowedExtensions).')$';
+            $config['acceptFileTypes'] = '(\.|\/)(' . implode('|', $allowedExtensions) . ')$';
             $config['errorMessages']['acceptFileTypes'] = _t(
                 'File.INVALIDEXTENSIONSHORT', 'Extension is not allowed'
             );
@@ -113,10 +128,9 @@ jQuery(window).load(function() {
 
         // Validation: File size
         if ($allowedMaxFileSize = $this->getValidator()->getAllowedMaxFileSize()) {
-            $config['maxFileSize']                  = $allowedMaxFileSize;
+            $config['maxFileSize'] = $allowedMaxFileSize;
             $config['errorMessages']['maxFileSize'] = _t(
-                'File.TOOLARGESHORT', 'Filesize exceeds {size}',
-                array('size' => File::format_size($config['maxFileSize']))
+                'File.TOOLARGESHORT', 'Filesize exceeds {size}', array('size' => File::format_size($config['maxFileSize']))
             );
         }
 
@@ -124,14 +138,11 @@ jQuery(window).load(function() {
         if ($allowedMaxFileNumber) {
             if ($allowedMaxFileNumber > 1) {
                 $config['errorMessages']['maxNumberOfFiles'] = _t(
-                    'UploadField.MAXNUMBEROFFILESSHORT',
-                    'Can only upload {count} files',
-                    array('count' => $allowedMaxFileNumber)
+                    'UploadField.MAXNUMBEROFFILESSHORT', 'Can only upload {count} files', array('count' => $allowedMaxFileNumber)
                 );
             } else {
                 $config['errorMessages']['maxNumberOfFiles'] = _t(
-                    'UploadField.MAXNUMBEROFFILESONE',
-                    'Can only upload one file'
+                    'UploadField.MAXNUMBEROFFILESONE', 'Can only upload one file'
                 );
             }
         }
@@ -139,16 +150,37 @@ jQuery(window).load(function() {
         //get all the existing files in the current folder
         if ($this->getOverwriteWarning()) {
             //add overwrite warning error message to the config object sent to Javascript
-            $config['errorMessages']['overwriteWarning'] = _t('UploadField.OVERWRITEWARNING',
-                'File with the same name already exists');
+            $config['errorMessages']['overwriteWarning'] = _t('UploadField.OVERWRITEWARNING', 'File with the same name already exists');
+        }
+
+        // Inform users of validation criterias
+        $uploadInfos = null;
+        $record = $this->getRecord();
+        if ($record) {
+            $relation = $record->getRelationClass($this->name);
+            switch ($relation) {
+                case 'Image':
+                    $uploadInfos = _t('FrontendUploadField.MAXSIZE', 'Max file size: {size}', array('size' => File::format_size($this->getValidator()->getAllowedMaxFileSize())));
+                    $uploadInfos .= '; ';
+                    $uploadInfos .= _t('FrontendUploadField.MAXRESOLUTION', 'Max resolution: 2048x2048px; Allowed extensions: {ext}', array('ext' => implode(',', self::$common_image_types)));
+                    break;
+                default:
+                    $uploadInfos = _t('FrontendUploadField.MAXSIZE', 'Max file size: {size}', array('size' => File::format_size($this->getValidator()->getAllowedMaxFileSize())));
+                    break;
+            }
+        }
+        if ($uploadInfos) {
+            if (!$this->getDescription()) {
+                $this->setDescription($uploadInfos);
+            }
         }
 
         $mergedConfig = array_merge($config, $this->ufConfig);
+
         return $this->customise(array(
-                'configString' => str_replace('"', "&quot;",
-                    Convert::raw2json($mergedConfig)),
+                'configString' => str_replace('"', "&quot;", Convert::raw2json($mergedConfig)),
                 'config' => new ArrayData($mergedConfig),
-                'multiple' => $allowedMaxFileNumber !== 1
+                'multiple' => $allowedMaxFileNumber !== 1,
             ))->renderWith($this->getTemplates());
     }
 
@@ -157,7 +189,7 @@ jQuery(window).load(function() {
         if ($this->canChooseFromGallery()) {
             // Retrieve file attributes required by front end
             $return = array();
-            $files  = File::get()->byIDs($request->postVar('ids'));
+            $files = File::get()->byIDs($request->postVar('ids'));
             foreach ($files as $file) {
                 $return[] = $this->encodeFileAttributes($file);
             }
@@ -264,10 +296,10 @@ jQuery(window).load(function() {
             'disabled' => $this->isDisabled(),
         );
 
-        $attributes          = array_merge($attrs, $this->attributes);
-        $attributes['name']  = $attributes['name'].'[Uploads][]';
-        $attributes['class'] = $attributes['class'].' ss-uploadfield-fromcomputer-fileinput';
-        $attributes['type']  = 'file';
+        $attributes = array_merge($attrs, $this->attributes);
+        $attributes['name'] = $attributes['name'] . '[Uploads][]';
+        $attributes['class'] = $attributes['class'] . ' ss-uploadfield-fromcomputer-fileinput';
+        $attributes['type'] = 'file';
         return $attributes;
     }
 
@@ -292,8 +324,7 @@ jQuery(window).load(function() {
     protected function saveTemporaryFile($tmpFile, &$error = null)
     {
         // Override with a more meaningful name
-        $tmpFile['name'] = $this->name.'_'.time().'.'.strtolower(pathinfo($tmpFile['name'],
-                    PATHINFO_EXTENSION));
+        $tmpFile['name'] = $this->name . '_' . time() . '.' . strtolower(pathinfo($tmpFile['name'], PATHINFO_EXTENSION));
 
         $file = parent::saveTemporaryFile($tmpFile, $error);
 
@@ -318,8 +349,7 @@ jQuery(window).load(function() {
 
         // render file buttons
         return $customizedfile->customise(array(
-                'UploadFieldFileButtons' => (string) $file->renderWith($this->getTemplateFileButtons(),
-                    array(
+                'UploadFieldFileButtons' => (string) $file->renderWith($this->getTemplateFileButtons(), array(
                     'IconRemove' => $this->IconRemove(),
                     'IconEdit' => $this->IconEdit(),
                 ))
@@ -331,22 +361,19 @@ jQuery(window).load(function() {
         $fields = new FieldList;
 
         if ($this->getUseCropbox()) {
-            $f       = new CropboxField(
-                $name    = "Cropbox", $title   = "Crop box",
-                $imageID = $file->ID
+            $f = new CropboxField(
+                $name = "Cropbox", $title = "Crop box", $imageID = $file->ID
             );
             $f->addExtraClass('stacked');
             $fields->push($f);
         }
 
         if ($this->getUseFocuspoint()) {
-            $f       = new FocusPointField(
-                $name    = "FocusXY", $title   = "Focus point",
-                $imageID = $file->ID
+            $f = new FocusPointField(
+                $name = "FocusXY", $title = "Focus point", $imageID = $file->ID
                 //$value = FocusPointField::sourceCoordsToFieldValue($this->owner->FocusX,$this->owner->FocusY) //@todo $value argument isn't getting passed through for some reason
             );
-            $f->setValue(FocusPointField::sourceCoordsToFieldValue($file->FocusX,
-                    $file->FocusY));
+            $f->setValue(FocusPointField::sourceCoordsToFieldValue($file->FocusX, $file->FocusY));
             $f->addExtraClass('stacked');
             $fields->push($f);
         }
@@ -408,6 +435,7 @@ jQuery(window).load(function() {
  */
 class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
 {
+
     private static $allowed_actions = array(
         'delete',
         'edit',
@@ -450,6 +478,7 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
                 $res = $item->canDelete();
             }
         } catch (Exception $ex) {
+
         }
 
         if (!$res) {
@@ -497,13 +526,14 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
                 $res = $item->canEditFrontend();
             }
         } catch (Exception $ex) {
+
         }
 
         if (!$res) {
             return $this->httpError(403);
         }
 
-        Requirements::css(FRAMEWORK_DIR.'/css/UploadField.css');
+        Requirements::css(FRAMEWORK_DIR . '/css/UploadField.css');
 
         return $this->customise(array(
                 'Form' => $this->EditForm()
@@ -542,6 +572,7 @@ class FrontendUploadField_ItemHandler extends UploadField_ItemHandler
                 $res = $item->canEditFrontend();
             }
         } catch (Exception $ex) {
+
         }
         $form->saveInto($item);
         $item->write();

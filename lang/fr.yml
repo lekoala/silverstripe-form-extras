@@ -72,6 +72,9 @@ fr:
     CHOOSEANOTHERINFO: 'Remplacer ce fichier par un autre fichier de la base de fichiers'
     NOT_EDITABLE: 'Non éditable'
     REMOVEINFO: 'Supprimer ce fichier mais ne pas effacer de la base de fichier'
+  FrontendUploadField:
+    MAXSIZE: 'Poids max du fichier: {size}'
+    MAXRESOLUTION: 'Résolution max: 2048x2048px; Extensions autorisées: {ext}'
   YesNoOptionsetField:
     'NO': Non
     'YES': Oui
