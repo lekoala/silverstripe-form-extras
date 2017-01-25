@@ -22,10 +22,14 @@ fr:
   FormActionConfirm:
     AREYOUSURE: 'Etes-vous sûr?'
   FormExtra:
+    DATALOSS_MESSAGE: 'Etes-vous sûr de quitter la page? Toute donnée non sauvegardée sera perdue.'
     doFinish: Terminer
     doNext: Suivant
     doPrev: Précédent
     doSave: Sauvegarder
+  FrontendUploadField:
+    MAXRESOLUTION: 'Résolution max: 2048x2048px; Extensions autorisées: {ext}'
+    MAXSIZE: 'Poids max du fichier: {size}'
   GridField:
     Edit: 'Editer {name}'
   GridFieldDownloadButton:
@@ -72,9 +76,6 @@ fr:
     CHOOSEANOTHERINFO: 'Remplacer ce fichier par un autre fichier de la base de fichiers'
     NOT_EDITABLE: 'Non éditable'
     REMOVEINFO: 'Supprimer ce fichier mais ne pas effacer de la base de fichier'
-  FrontendUploadField:
-    MAXSIZE: 'Poids max du fichier: {size}'
-    MAXRESOLUTION: 'Résolution max: 2048x2048px; Extensions autorisées: {ext}'
   YesNoOptionsetField:
     'NO': Non
     'YES': Oui

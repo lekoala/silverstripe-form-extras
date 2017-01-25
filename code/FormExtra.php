@@ -11,16 +11,17 @@
  */
 class FormExtra extends Form
 {
-    const MSG_NOTICE  = 'notice';
+
+    const MSG_NOTICE = 'notice';
     const MSG_WARNING = 'warning';
-    const MSG_BAD     = 'bad';
-    const MSG_GOOD    = 'good';
+    const MSG_BAD = 'bad';
+    const MSG_GOOD = 'good';
 
     protected $keepSessionAlive = true;
+    protected $dataLossWarning = false;
+    protected $dataLossMessage = null;
 
-    public function __construct($controller = null, $name = null,
-                                FieldList $fields = null,
-                                FieldList $actions = null, $validator = null)
+    public function __construct($controller = null, $name = null, FieldList $fields = null, FieldList $actions = null, $validator = null)
     {
         if ($controller === null) {
             $controller = Controller::curr();
@@ -36,13 +37,19 @@ class FormExtra extends Form
         }
         parent::__construct($controller, $name, $fields, $actions, $validator);
         $this->restoreDataFromSession();
+
+        $this->dataLossMessage = _t('FormExtra.DATALOSS_MESSAGE', 'Are you sure you want to leave? Any unsaved work may be lost.');
     }
 
     public function forTemplate()
     {
         // Keep session alive if there is a logged in member
         if ($this->keepSessionAlive && Member::currentUserID()) {
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/ping.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/ping.js');
+        }
+        // Make sure the user is aware that data is not saved before leaving
+        if ($this->dataLossWarning) {
+            Requirements::javascriptTemplate(FORM_EXTRAS_PATH . '/javascript/beforeunload.js', array('message' => $this->dataLossMessage));
         }
         return parent::forTemplate();
     }
@@ -60,6 +67,28 @@ class FormExtra extends Form
     public function setKeepSessionAlive($keepSessionAlive = true)
     {
         $this->keepSessionAlive = $keepSessionAlive;
+    }
+
+    public function getDataLossWarning()
+    {
+        return $this->dataLossWarning;
+    }
+
+    public function setDataLossWarning($dataLossWarning)
+    {
+        $this->dataLossWarning = $dataLossWarning;
+        return $this;
+    }
+
+    public function getDataLossMessage()
+    {
+        return $this->dataLossMessage;
+    }
+
+    public function setDataLossMessage($dataLossMessage)
+    {
+        $this->dataLossMessage = $dataLossMessage;
+        return $this;
     }
 
     /**
