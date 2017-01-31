@@ -97,7 +97,7 @@ class TableFieldCommon extends FormField
         if ($value && is_string($value) && strpos($value, '[') === 0) {
             $value = json_decode($value);
         }
-        parent::setValue($value);
+        return parent::setValue($value);
     }
 
     public function addColumn($name, $display = null, $type = 'text',

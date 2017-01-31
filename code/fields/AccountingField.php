@@ -56,7 +56,7 @@ class AccountingField extends TextField
     public function setValue($value)
     {
         $value = self::unformat($value);
-        parent::setValue($value);
+        return parent::setValue($value);
     }
 
     public static function initVariables()

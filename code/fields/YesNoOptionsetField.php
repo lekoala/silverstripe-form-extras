@@ -73,7 +73,7 @@ class YesNoOptionsetField extends OptionsetField
                 $value = self::VALUE_NO;
             }
         }
-        parent::setValue($value);
+        return parent::setValue($value);
     }
 
     public function extraClass()
