@@ -18,13 +18,14 @@
  */
 class FormExtraJquery extends Object
 {
-    const JQUERY_FRAMEWORK        = 'framework';
-    const JQUERY_V1               = 'v1';
-    const JQUERY_V2               = 'v2';
-    const JQUERY_UI_FRAMEWORK     = 'framwework';
-    const JQUERY_UI_V1            = 'v1';
+
+    const JQUERY_FRAMEWORK = 'framework';
+    const JQUERY_V1 = 'v1';
+    const JQUERY_V2 = 'v2';
+    const JQUERY_UI_FRAMEWORK = 'framwework';
+    const JQUERY_UI_V1 = 'v1';
     const JQUERY_UI_THEME_DEFAULT = 'default';
-    const JQUERY_UI_THEME_NONE    = 'none';
+    const JQUERY_UI_THEME_NONE = 'none';
 
     protected static $disabled = false;
     protected static $included = array();
@@ -83,44 +84,62 @@ class FormExtraJquery extends Object
         }
         switch (self::config()->jquery_version) {
             case self::JQUERY_FRAMEWORK:
-                $path    = THIRDPARTY_DIR.'/jquery/jquery';
+                $path = THIRDPARTY_DIR . '/jquery/jquery';
                 $migrate = false;
                 break;
             case self::JQUERY_V1:
-                $path    = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-1.11.3';
+                $path = FORM_EXTRAS_PATH . '/javascript/jquery/jquery-' . self::config()->jquery_v1;
                 $migrate = true;
                 break;
             case self::JQUERY_V2:
-                $path    = FORM_EXTRAS_PATH.'/javascript/jquery/jquery-2.1.4';
+                $path = FORM_EXTRAS_PATH . '/javascript/jquery/jquery-' . self::config()->jquery_v2;
                 $migrate = false;
                 break;
             default:
-                $path    = THIRDPARTY_DIR.'/jquery/jquery';
+                $path = THIRDPARTY_DIR . '/jquery/jquery';
                 break;
         }
-        if (self::config()->jquery_migrate !== 'auto') {
+        $browser = false;
+        // Use jquery.browser instead of jquery migrate
+        if (self::config()->jquery_migrate == 'auto_browser') {
+            if ($migrate) {
+                $browser = true;
+            }
+            $migrate = false;
+        } else if (self::config()->jquery_migrate !== 'auto') {
             $migrate = self::config()->jquery_migrate;
         }
+
         // If we don't use the default version, block the framework version
-        if ($path !== THIRDPARTY_DIR.'/jquery/jquery') {
-            Requirements::block(THIRDPARTY_DIR.'/jquery/jquery.js');
-            Requirements::block(THIRDPARTY_DIR.'/jquery/jquery.min.js');
+        if ($path !== THIRDPARTY_DIR . '/jquery/jquery') {
+            Requirements::block(THIRDPARTY_DIR . '/jquery/jquery.js');
+            Requirements::block(THIRDPARTY_DIR . '/jquery/jquery.min.js');
         }
         if (Director::isDev()) {
-            Requirements::javascript($path.'.js');
-            Requirements::block($path.'.min.js');
+            Requirements::javascript($path . '.js');
+            Requirements::block($path . '.min.js');
         } else {
-            Requirements::javascript($path.'.min.js');
-            Requirements::block($path.'.js');
+            Requirements::javascript($path . '.min.js');
+            Requirements::block($path . '.js');
         }
 
         if ($migrate) {
             if (Director::isDev()) {
-                Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/jquery-migrate/jquery-migrate-1.2.1.js');
-                Requirements::block(FORM_EXTRAS_PATH.'/javascript/jquery-migrate/jquery-migrate-1.2.1.min.js');
+                Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/jquery-migrate/jquery-migrate-1.4.1.js');
+                Requirements::block(FORM_EXTRAS_PATH . '/javascript/jquery-migrate/jquery-migrate-1.4.1.min.js');
             } else {
-                Requirements::block(FORM_EXTRAS_PATH.'/javascript/jquery-migrate/jquery-migrate-1.2.1.js');
-                Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/jquery-migrate/jquery-migrate-1.2.1.min.js');
+                Requirements::block(FORM_EXTRAS_PATH . '/javascript/jquery-migrate/jquery-migrate-1.4.1.js');
+                Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/jquery-migrate/jquery-migrate-1.4.1.min.js');
+            }
+        }
+
+        if ($browser) {
+            if (Director::isDev()) {
+                Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/browser/jquery.browser.js');
+                Requirements::block(FORM_EXTRAS_PATH . '/javascript/browser/jquery.browser.min.js');
+            } else {
+                Requirements::block(FORM_EXTRAS_PATH . '/javascript/browser/jquery.browser.js');
+                Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/browser/jquery.browser.min.js');
             }
         }
 
@@ -142,25 +161,25 @@ class FormExtraJquery extends Object
         }
         switch (self::config()->jquery_ui_version) {
             case self::JQUERY_UI_FRAMEWORK:
-                $path = THIRDPARTY_DIR.'/jquery-ui/jquery-ui';
+                $path = THIRDPARTY_DIR . '/jquery-ui/jquery-ui';
                 break;
             case self::JQUERY_UI_V1:
-                $path = FORM_EXTRAS_PATH.'/javascript/jquery-ui/jquery-ui';
+                $path = FORM_EXTRAS_PATH . '/javascript/jquery-ui/jquery-ui';
                 break;
             default:
-                $path = THIRDPARTY_DIR.'/jquery-ui/jquery-ui';
+                $path = THIRDPARTY_DIR . '/jquery-ui/jquery-ui';
                 break;
         }
         if (Director::isDev()) {
-            Requirements::javascript($path.'.js');
-            Requirements::block($path.'.min.js');
+            Requirements::javascript($path . '.js');
+            Requirements::block($path . '.min.js');
         } else {
-            Requirements::javascript($path.'.min.js');
-            Requirements::block($path.'.js');
+            Requirements::javascript($path . '.min.js');
+            Requirements::block($path . '.js');
         }
         if (self::config()->jquery_ui_theme != self::JQUERY_UI_THEME_DEFAULT) {
-            Requirements::block(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.css');
-            Requirements::block(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.min.css');
+            Requirements::block(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');
+            Requirements::block(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.min.css');
 
             $theme = self::config()->jquery_ui_theme;
             // in case the less styles are used, developer should include it himself
@@ -169,9 +188,9 @@ class FormExtraJquery extends Object
             }
         } else {
             if (Director::isDev()) {
-                Requirements::css(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.css');
+                Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');
             } else {
-                Requirements::css(THIRDPARTY_DIR.'/jquery-ui-themes/smoothness/jquery-ui.min.css');
+                Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.min.css');
             }
         }
         self::$included[] = 'jquery_ui';
@@ -188,15 +207,15 @@ class FormExtraJquery extends Object
         switch (self::config()->jquery_ui) {
             case self::JQUERY_FRAMEWORK:
                 Requirements::javascript('framework/javascript/thirdparty/jquery-entwine/jquery.entwine-dist.js');
-                Requirements::block(FORM_EXTRAS_PATH.'/javascript/entwine/jquery.entwine-dist.js');
-                Requirements::block(FORM_EXTRAS_PATH.'/javascript/entwine/jquery.entwine-dist.min.js');
+                Requirements::block(FORM_EXTRAS_PATH . '/javascript/entwine/jquery.entwine-dist.js');
+                Requirements::block(FORM_EXTRAS_PATH . '/javascript/entwine/jquery.entwine-dist.min.js');
                 break;
             default:
                 Requirements::block('framework/thirdparty/jquery-entwine/dist/jquery.entwine-dist.js');
                 if (Director::isDev()) {
-                    Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/entwine/jquery.entwine-dist.js');
+                    Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/entwine/jquery.entwine-dist.js');
                 } else {
-                    Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/entwine/jquery.entwine-dist.min.js');
+                    Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/entwine/jquery.entwine-dist.min.js');
                 }
                 break;
         }
@@ -212,11 +231,11 @@ class FormExtraJquery extends Object
             return;
         }
         if (Director::isDev()) {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/jquery-mousewheel/jquery.mousewheel.min.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/jquery-mousewheel/jquery.mousewheel.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/jquery-mousewheel/jquery.mousewheel.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/jquery-mousewheel/jquery.mousewheel.js');
         } else {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/jquery-mousewheel/jquery.mousewheel.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/jquery-mousewheel/jquery.mousewheel.min.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/jquery-mousewheel/jquery.mousewheel.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/jquery-mousewheel/jquery.mousewheel.min.js');
         }
         self::$included[] = 'mousewheel';
     }
@@ -230,11 +249,11 @@ class FormExtraJquery extends Object
             return;
         }
         if (Director::isDev()) {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/hammer/hammer.min.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/hammer/hammer.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/hammer/hammer.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/hammer/hammer.js');
         } else {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/hammer/hammer.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/hammer/hammer.min.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/hammer/hammer.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/hammer/hammer.min.js');
         }
         self::$included[] = 'hammer';
     }
@@ -248,11 +267,11 @@ class FormExtraJquery extends Object
             return;
         }
         if (Director::isDev()) {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/scrollTo/jquery.scrollTo.min.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/scrollTo/jquery.scrollTo.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/scrollTo/jquery.scrollTo.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/scrollTo/jquery.scrollTo.js');
         } else {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/scrollTo/jquery.scrollTo.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/scrollTo/jquery.scrollTo.min.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/scrollTo/jquery.scrollTo.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/scrollTo/jquery.scrollTo.min.js');
         }
         self::$included[] = 'scrollTo';
     }
@@ -266,11 +285,11 @@ class FormExtraJquery extends Object
             return;
         }
         if (Director::isDev()) {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/form/jquery.form.min.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/form/jquery.form.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/form/jquery.form.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/form/jquery.form.js');
         } else {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/form/jquery.form.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/form/jquery.form.min.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/form/jquery.form.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/form/jquery.form.min.js');
         }
         self::$included[] = 'form';
     }
@@ -282,11 +301,11 @@ class FormExtraJquery extends Object
         }
 
         if (Director::isDev()) {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/accounting/accounting.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/accounting/accounting.js');
         } else {
-            Requirements::block(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.js');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/accounting/accounting.min.js');
+            Requirements::block(FORM_EXTRAS_PATH . '/javascript/accounting/accounting.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/accounting/accounting.min.js');
         }
 
         if (Controller::has_curr() && Controller::curr() instanceof LeftAndMain) {
@@ -296,10 +315,10 @@ class FormExtraJquery extends Object
         }
 
         // Send default settings according to locale
-        $locale    = i18n::get_locale();
-        $symbols   = Zend_Locale_Data::getList($locale, 'symbols');
-        $currency  = Currency::config()->currency_symbol;
-        $decimals  = $symbols['decimal'];
+        $locale = i18n::get_locale();
+        $symbols = Zend_Locale_Data::getList($locale, 'symbols');
+        $currency = Currency::config()->currency_symbol;
+        $decimals = $symbols['decimal'];
         $thousands = ($decimals == ',') ? ' ' : ',';
 
         Requirements::customScript(<<<JS

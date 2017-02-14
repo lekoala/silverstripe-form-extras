@@ -10,7 +10,9 @@ FormField:
 FormExtraJquery:
   # Version can be: framework, v1 or v2
   jquery_version: 'framework'
-  jquery_migrate: 'auto'
+  jquery_v1: '1.12.4'
+  jquery_v2: '2.2.4'
+  jquery_migrate: 'auto_browser'
   jquery_ui_version: 'framework'
   jquery_ui_theme: 'default'
 BaseUploadField:
