@@ -21,12 +21,12 @@
 	});
 })(jQuery);
 
-if (window.ParsleyValidator) {
-	window.ParsleyValidator.addValidator('accountingmin',
+if (window.Parsley) {
+    window.Parsley.addValidator('accountingmin',
     function (value, requirement) {
         return accounting.unformat(value) >= requirement
     }, 32);
-	window.ParsleyValidator.addValidator('accountingmax',
+    window.Parsley.addValidator('accountingmax',
     function (value, requirement) {
         return accounting.unformat(value) <= requirement
     }, 32);
