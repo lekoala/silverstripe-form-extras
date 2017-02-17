@@ -33,7 +33,7 @@ class FrontendUploadField extends BaseUploadField
     protected $useFocuspoint = false;
     protected $galleryUrl = null;
     private static $common_image_types = ['jpg', 'jpeg', 'png'];
-    private static $common_image_size = '4M';
+    private static $common_image_size = '2M';
 
     public function __construct($name, $title = null, \SS_List $items = null)
     {
@@ -160,7 +160,7 @@ jQuery(window).load(function() {
             $relation = $record->getRelationClass($this->name);
             switch ($relation) {
                 case 'Image':
-                    $uploadInfos = _t('FrontendUploadField.MAXSIZE', 'Max file size: {size}', array('size' => File::format_size($this->getValidator()->getAllowedMaxFileSize())));
+                    $uploadInfos = _t('FrontendUploadField.MAXSIZE', 'Max file size: {size}', array('size' => File::format_size($this->getValidator()->getAllowedMaxFileSize('jpg'))));
                     $uploadInfos .= '; ';
                     $uploadInfos .= _t('FrontendUploadField.MAXRESOLUTION', 'Max resolution: 2048x2048px; Allowed extensions: {ext}', array('ext' => implode(',', self::$common_image_types)));
                     break;
