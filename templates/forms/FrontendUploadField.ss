@@ -20,9 +20,11 @@
                 <% end_if %>
             </div>
         </div>
+        <% if canEditFrontend && Top.EditEnabled %>
         <div class="ss-uploadfield-item-editform loading includeParent">
             <iframe frameborder="0" src="$UploadFieldEditLink"></iframe>
         </div>
+        <% end_if %>
     </li>
     <% end_loop %>
     <% end_if %>

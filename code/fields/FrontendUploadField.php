@@ -32,6 +32,7 @@ class FrontendUploadField extends BaseUploadField
     protected $useCropbox = true;
     protected $useFocuspoint = false;
     protected $galleryUrl = null;
+    protected $editEnabled = true;
     private static $common_image_types = ['jpg', 'jpeg', 'png'];
     private static $common_image_size = '2M';
 
@@ -250,6 +251,26 @@ jQuery(window).load(function() {
     }
 
     /**
+     * Disallow editing - also suppress iframe => faster load
+     *
+     * @param bool $v
+     * @return $this
+     */
+    public function setEditEnabled($v)
+    {
+        $this->editEnabled = $v;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function EditEnabled()
+    {
+        return $this->editEnabled;
+    }
+
+    /**
      * Override default item handler
      *
      * @param int $itemID
@@ -352,6 +373,7 @@ jQuery(window).load(function() {
                 'UploadFieldFileButtons' => (string) $file->renderWith($this->getTemplateFileButtons(), array(
                     'IconRemove' => $this->IconRemove(),
                     'IconEdit' => $this->IconEdit(),
+                    'EditEnabled' => $this->EditEnabled(),
                 ))
         ));
     }

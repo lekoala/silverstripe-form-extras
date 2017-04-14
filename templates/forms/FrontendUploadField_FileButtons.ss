@@ -1,4 +1,4 @@
-<% if canEditFrontend %>
+<% if canEditFrontend && EditEnabled %>
 <button class="ss-uploadfield-item-edit btn" title="<% _t('UploadField.EDITINFO', 'Edit this file') %>">
 	<i class="$IconEdit"></i> <% _t('UploadField.EDIT', 'Edit') %>
 	<span class="toggle-details">
