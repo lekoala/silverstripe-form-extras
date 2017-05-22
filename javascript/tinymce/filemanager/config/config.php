@@ -130,7 +130,7 @@ $config = array(
       | in Megabytes
       |
      */
-    'MaxSizeUpload' => 1,
+    'MaxSizeUpload' => get_silverstripe_max_upload(),
     /*
       |--------------------------------------------------------------------------
       | default language file name

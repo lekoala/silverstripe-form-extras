@@ -5,12 +5,13 @@
 define('FILEMANAGER_RELATIVE_PATH', '../../../../');
 
 // Load in core
-require_once(FILEMANAGER_RELATIVE_PATH.'framework/core/Core.php');
+require_once(FILEMANAGER_RELATIVE_PATH . 'framework/core/Core.php');
 
 // Connect to database
-require_once(FILEMANAGER_RELATIVE_PATH.'framework/model/DB.php');
+require_once(FILEMANAGER_RELATIVE_PATH . 'framework/model/DB.php');
 global $databaseConfig;
-if ($databaseConfig) DB::connect($databaseConfig);
+if ($databaseConfig)
+    DB::connect($databaseConfig);
 
 Session::start();
 
@@ -22,17 +23,17 @@ $_ssFolder = null;
 
 
 
-$_ssFolder = Folder::find_or_make('userfiles/'.Member::currentUserID());
+$_ssFolder = Folder::find_or_make('userfiles/' . Member::currentUserID());
 
 // Ends with slash!
-$_uploadDir   = 'assets/userfiles/'.Member::currentUserID().'/';
-$_currentPath = FILEMANAGER_RELATIVE_PATH.$_uploadDir.'/';
-$_thumbsPath  = FILEMANAGER_RELATIVE_PATH.'thumbs/' . Member::currentUserID() . '/';
+$_uploadDir = 'assets/userfiles/' . Member::currentUserID() . '/';
+$_currentPath = FILEMANAGER_RELATIVE_PATH . $_uploadDir . '/';
+$_thumbsPath = FILEMANAGER_RELATIVE_PATH . 'thumbs/' . Member::currentUserID() . '/';
 
 // Init thumbs
 if (!is_dir($_thumbsPath)) {
     mkdir($_thumbsPath, 0777, true);
-    file_put_contents(dirname($_thumbsPath).'/_manifest_exclude', '');
+    file_put_contents(dirname($_thumbsPath) . '/_manifest_exclude', '');
 }
 
 // Keep assets db in sync with filesystem
@@ -65,13 +66,26 @@ function get_silverstripe_language()
         return 'fr_FR';
     }
     // Otherwise look in lang folder
-    $ulocale =  str_replace('-','_',$locale);
+    $ulocale = str_replace('-', '_', $locale);
     $lang_folder = dirname(__DIR__) . '/lang/';
-    if(is_file($lang_folder . $lang . '.php')) {
+    if (is_file($lang_folder . $lang . '.php')) {
         return $lang;
     }
-    if(is_file($lang_folder . $ulocale . '.php')) {
+    if (is_file($lang_folder . $ulocale . '.php')) {
         return $ulocale;
     }
     return 'en_EN';
+}
+
+function get_silverstripe_max_upload()
+{
+    $maxUpload = File::ini2bytes(ini_get('upload_max_filesize'));
+    $maxPost = File::ini2bytes(ini_get('post_max_size'));
+    $v = min($maxUpload, $maxPost);
+    $mb = round($v / 1048576);
+
+    if ($mb > 1) {
+        return $mb;
+    }
+    return 1;
 }
