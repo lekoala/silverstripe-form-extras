@@ -39,6 +39,7 @@ return array(
 	'Text_filter' => 'Texte de filtrage',
 	'Swipe_help' => 'Glissez le nom du fichier/dossier pour afficher les options',
 	'Upload_base' => 'Upload classique',
+	'Upload_url' => 'URL',
 	'Upload_java' => 'JAVA upload (fichiers de grandes tailles)',
 	'Upload_java_help' => "Si l'applet Java Applet ne charge pas 1. Assurez-vous que vous avez bien installé Java <a href='http://java.com/en/download/'>[download link]</a> 2. Assurez-vous que votre pare-feu ne bloque pas la connexion.",
 	'Upload_base_help' => "Glisser & Déposer le(s) fichier(s) à l'intérieur de la zone ou cliquez dessus (pour les derniers navigateurs), sinon sélectionnez le fichier. Lorsque l'upload est terminé, cliquez sur le bouton retour.",
@@ -96,7 +97,8 @@ return array(
 	'New_File' => 'Nouveau fichier',
 	'No_Extension' => 'Vous devez ajouter une extension au fichier.',
 	'Valid_Extensions' => 'Extensions valides: %s', // %s = txt,log etc.
-	'Upload_message' => "Cliquez ici ou faites glisser le(s) document(s)",
+	'Upload_message' => "Glissez les fichier ici pour les ajouter",
+
 	'SERVER ERROR' => "ERREUR SERVEUR",
 	'forbiden' => "Interdit",
 	'wrong path' => "Chemin invalide",
