@@ -383,21 +383,21 @@ jQuery(window).load(function() {
         $fields = new FieldList;
 
         if ($this->getUseCropbox()) {
-            $f = new CropboxField(
-                $name = "Cropbox", $title = "Crop box", $imageID = $file->ID
-            );
-            $f->addExtraClass('stacked');
-            $fields->push($f);
+            $inst = new CropboxImage();
+            $inst->setOwner($file);
+            $inst->updateCMSFields($fields);
         }
 
         if ($this->getUseFocuspoint()) {
-            $f = new FocusPointField(
-                $name = "FocusXY", $title = "Focus point", $imageID = $file->ID
-                //$value = FocusPointField::sourceCoordsToFieldValue($this->owner->FocusX,$this->owner->FocusY) //@todo $value argument isn't getting passed through for some reason
-            );
-            $f->setValue(FocusPointField::sourceCoordsToFieldValue($file->FocusX, $file->FocusY));
-            $f->addExtraClass('stacked');
-            $fields->push($f);
+            if (class_exists('FocusPointCropImage')) {
+                $inst = new FocusPointCropImage();
+                $inst->setOwner($file);
+                $inst->updateCMSFields($fields);
+            } else {
+                $inst = new FocusPointImage();
+                $inst->setOwner($file);
+                $inst->updateCMSFields($fields);
+            }
         }
         return $fields;
     }

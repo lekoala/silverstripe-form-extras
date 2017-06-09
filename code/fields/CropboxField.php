@@ -5,17 +5,16 @@
  */
 class CropboxField extends FormField
 {
-    protected $cropWidth  = 200;
+
+    protected $cropWidth = 200;
     protected $cropHeight = 200;
 
-    public function __construct($name = 'Cropbox', $title = 'Crop Box',
-                                $imageID = null, $value = '', $form = null)
+    public function __construct($name = 'Cropbox', $title = 'Crop Box', $imageID = null, $value = '', $form = null)
     {
         $this->setDefaultValue();
         $this->setImage($imageID);
 
-        parent::__construct($name, ($title === null) ? $name : $title, $value,
-            $form);
+        parent::__construct($name, ($title === null) ? $name : $title, $value, $form);
     }
 
     public function setDefaultValue()
@@ -84,6 +83,9 @@ class CropboxField extends FormField
             return false;
         }
 
+        $properties['CropX'] = $image->CropX;
+        $properties['CropY'] = $image->CropY;
+
         FormExtraJquery::include_jquery();
         if (self::config()->use_hammer) {
             FormExtraJquery::include_hammer();
@@ -91,8 +93,8 @@ class CropboxField extends FormField
         if (self::config()->use_mousewheel) {
             FormExtraJquery::include_mousewheel();
         }
-        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/cropbox/jquery.cropbox.js');
-        Requirements::css(FORM_EXTRAS_PATH.'/javascript/cropbox/jquery.cropbox.css');
+        Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/cropbox/jquery.cropbox.js');
+        Requirements::css(FORM_EXTRAS_PATH . '/javascript/cropbox/jquery.cropbox.css');
         Requirements::customScript("jQuery( '.cropbox-field' ).each( function () {
 			var t = jQuery(this),
 			image = t.find('img'),
@@ -120,7 +122,8 @@ class CropboxField extends FormField
 
 class CropboxImage extends DataExtension
 {
-    private static $db       = array(
+
+    private static $db = array(
         'CropX' => 'Int',
         'CropY' => 'Int',
         'CropWidth' => 'Int',
@@ -133,28 +136,28 @@ class CropboxImage extends DataExtension
 
     public function updateCMSFields(FieldList $fields)
     {
-        $f       = new CropboxField(
-            $name    = "Cropbox", $title   = "Crop Box",
-            $imageID = $this->owner->ID
+        $field = new CropboxField(
+            $name = "Cropbox", $title = "Crop Box", $imageID = $this->owner->ID
         );
-        $fields->addFieldToTab("Root.Main", $f);
+        $field->addExtraClass('stacked');
+
+        if ($fields->hasTabSet()) {
+            $fields->addFieldToTab('Root.Main', $field);
+        } else {
+            $fields->add($field);
+        }
     }
 
     public function onBeforeWrite()
     {
         if (isset($_POST['CropX'])) {
             //Save coords
-            $this->owner->CropX      = isset($_POST['CropX']) ? (int) $_POST['CropX']
-                    : 0;
-            $this->owner->CropY      = isset($_POST['CropY']) ? (int) $_POST['CropY']
-                    : 0;
-            $this->owner->CropWidth  = isset($_POST['CropWidth']) ? (int) $_POST['CropWidth']
-                    : 0;
-            $this->owner->CropHeight = isset($_POST['CropHeight']) ? (int) $_POST['CropHeight']
-                    : 0;
+            $this->owner->CropX = isset($_POST['CropX']) ? (int) $_POST['CropX'] : 0;
+            $this->owner->CropY = isset($_POST['CropY']) ? (int) $_POST['CropY'] : 0;
+            $this->owner->CropWidth = isset($_POST['CropWidth']) ? (int) $_POST['CropWidth'] : 0;
+            $this->owner->CropHeight = isset($_POST['CropHeight']) ? (int) $_POST['CropHeight'] : 0;
             //Flush images if crop has changed
-            if ($this->owner->isChanged('CropX') || $this->owner->isChanged('CropY')
-                || $this->owner->isChanged('CropWidth') || $this->owner->isChanged('CropHeight')
+            if ($this->owner->isChanged('CropX') || $this->owner->isChanged('CropY') || $this->owner->isChanged('CropWidth') || $this->owner->isChanged('CropHeight')
             ) {
                 $this->owner->deleteFormattedImages();
             }
@@ -186,7 +189,7 @@ class CropboxImage extends DataExtension
      */
     public function generateCropboxedImage(GD $gd, $width, $height)
     {
-        $width  = round($width);
+        $width = round($width);
         $height = round($height);
 
         // Check that a resize is actually necessary.
@@ -194,16 +197,15 @@ class CropboxImage extends DataExtension
             return $this;
         }
 
-        if ($this->owner->Width > 0 && $this->owner->Height > 0 && $this->owner->CropWidth
-            > 0 && $this->owner->CropHeight > 0) {
-            return $gd->crop($this->owner->CropY, $this->owner->CropX,
-                    $this->owner->CropWidth, $this->owner->CropHeight)->resize($width,
-                    $height);
+        if ($this->owner->Width > 0 && $this->owner->Height > 0 && $this->owner->CropWidth > 0 && $this->owner->CropHeight > 0) {
+            return $gd->crop($this->owner->CropY, $this->owner->CropX, $this->owner->CropWidth, $this->owner->CropHeight)->resize($width, $height);
         } else {
             return $gd->croppedResize($width, $height);
         }
     }
 
-    public function writeTo($path) {
+    public function writeTo($path)
+    {
+
     }
 }
