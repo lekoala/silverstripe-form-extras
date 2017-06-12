@@ -182,12 +182,12 @@ class CropboxImage extends DataExtension
      * Generate a resized copy of this image with the given width & height, cropping to maintain aspect ratio and focus point.
      * Use in templates with $CropboxImage
      *
-     * @param GD $gd
+     * @param GD|GDBackend $gd
      * @param integer $width Width to crop to
      * @param integer $height Height to crop to
-     * @return GD
+     * @return GD|GDBackend
      */
-    public function generateCropboxedImage(GD $gd, $width, $height)
+    public function generateCropboxedImage($gd, $width, $height)
     {
         $width = round($width);
         $height = round($height);
