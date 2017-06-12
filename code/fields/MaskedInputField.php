@@ -10,28 +10,29 @@
  */
 class MaskedInputField extends TextField
 {
+
     // Base masks
-    const MASK_NUMERIC        = '9';
-    const MASK_ALPHA          = 'a';
-    const MASK_ALPHANUMERIC   = '*';
+    const MASK_NUMERIC = '9';
+    const MASK_ALPHA = 'a';
+    const MASK_ALPHANUMERIC = '*';
     // Base alias
-    const ALIAS_URL           = 'url';
-    const ALIAS_IP            = 'ip';
-    const ALIAS_EMAIL         = 'email';
-    const ALIAS_DATE          = 'date'; // alias of dd/mm/yyyy
+    const ALIAS_URL = 'url';
+    const ALIAS_IP = 'ip';
+    const ALIAS_EMAIL = 'email';
+    const ALIAS_DATE = 'date'; // alias of dd/mm/yyyy
     const ALIAS_DATE_DDMMYYYY = 'dd/mm/yyyy';
     const ALIAS_DATE_MMDDYYYY = 'mm/dd/yyyy';
     const ALIAS_DATE_YYYYMMDD = 'yyyy/mm/dd';
-    const ALIAS_DATE_ISO      = 'yyyy-mm-dd';
-    const ALIAS_DATETIME      = 'datetime'; // dd/mm/yyyy hh:mm
-    const ALIAS_TIME          = 'hh:mm:ss';
-    const ALIAS_NUMERIC       = 'numeric';
-    const ALIAS_CURRENCY      = 'currency';
-    const ALIAS_DECIMAL       = 'decimal';
-    const ALIAS_INTEGER       = 'integer';
-    const ALIAS_PHONE         = 'phone';
-    const ALIAS_PHONEBE       = 'phonebe';
-    const ALIAS_REGEX         = 'regex';
+    const ALIAS_DATE_ISO = 'yyyy-mm-dd';
+    const ALIAS_DATETIME = 'datetime'; // dd/mm/yyyy hh:mm
+    const ALIAS_TIME = 'hh:mm:ss';
+    const ALIAS_NUMERIC = 'numeric';
+    const ALIAS_CURRENCY = 'currency';
+    const ALIAS_DECIMAL = 'decimal';
+    const ALIAS_INTEGER = 'integer';
+    const ALIAS_PHONE = 'phone';
+    const ALIAS_PHONEBE = 'phonebe';
+    const ALIAS_REGEX = 'regex';
 
     public function extraClass()
     {
@@ -41,18 +42,25 @@ class MaskedInputField extends TextField
     public function Field($properties = array())
     {
         FormExtraJquery::include_jquery();
-        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/inputmask/min/jquery.inputmask.bundle.min.js');
+        Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/inputmask/min/jquery.inputmask.bundle.min.js');
 
         // Set default options once
         $defaultOpts = self::config()->get('default_options');
+        if (empty($defaultOpts)) {
+            $defaultOpts = [];
+        }
+        // Add a alpha mask that accepts spaces and accents
+        $defaultOpts['definitions'] = [
+            's' => [
+                'validator' => "[A-Za-z\u00E0-\u00FC ]",
+            ]
+        ];
         if (!empty($defaultOpts)) {
-            Requirements::customScript('jQuery.extend($.inputmask.defaults, '.json_encode($defaultOpts).');',
-                'MaskedInputFieldDefault');
+            Requirements::customScript('Inputmask.extendDefaults( ' . json_encode($defaultOpts) . ');', 'MaskedInputFieldDefault');
         }
 
         // Initialize on all input fields once
-        Requirements::customScript('jQuery(document).ready(function(){jQuery(":input").inputmask();});',
-            'MaskedInputFieldInit');
+        Requirements::customScript('jQuery(document).ready(function(){jQuery(":input").inputmask();});', 'MaskedInputFieldInit');
 
         return parent::Field($properties);
     }
@@ -77,7 +85,7 @@ class MaskedInputField extends TextField
                 return is_numeric(str_replace($prefix, '', $this->value));
             case self::ALIAS_DATE:
             case self::ALIAS_DATE_DDMMYYYY:
-                $parts  = explode('/', $this->value);
+                $parts = explode('/', $this->value);
                 if (count($parts) !== 3) {
                     return false;
                 }
@@ -127,15 +135,12 @@ class MaskedInputField extends TextField
             case self::ALIAS_URL:
                 return filter_var($this->value, FILTER_VALIDATE_URL);
             default:
-                throw new Exception($this->getAlias().' validation not implemented');
+                throw new Exception($this->getAlias() . ' validation not implemented');
         }
 
         $validator->validationError(
-            $this->name,
-            _t(
-                'MaskedInputField.VALIDATION',
-                "'{value}' does not respect the required format",
-                array('value' => $this->value)
+            $this->name, _t(
+                'MaskedInputField.VALIDATION', "'{value}' does not respect the required format", array('value' => $this->value)
             ), "validation"
         );
         return false;
@@ -190,8 +195,7 @@ class MaskedInputField extends TextField
 
     public function setSkipOptionalPartCharacter($v = true)
     {
-        return $this->setBoolAttribute('data-inputmask-skipOptionalPartCharacter',
-                $v);
+        return $this->setBoolAttribute('data-inputmask-skipOptionalPartCharacter', $v);
     }
 
     public function getClearMaskOnLostFocus()
