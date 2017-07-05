@@ -50,9 +50,9 @@ class FormExtraMulti extends FormExtra
         if (!$step) {
             $step = 1;
         }
-        if(Controller::has_curr()) {
+        if (Controller::has_curr()) {
             $requestStep = Controller::curr()->getRequest()->getVar('step');
-            if($requestStep) {
+            if ($requestStep) {
                 $step = $requestStep;
             }
         }
@@ -69,7 +69,7 @@ class FormExtraMulti extends FormExtra
         if (!$num) {
             return;
         }
-        $n    = 1;
+        $n = 1;
         $curr = self::getCurrentStep();
         if (!$curr) {
             $curr = 1;
@@ -77,15 +77,15 @@ class FormExtraMulti extends FormExtra
         if (!Controller::has_curr()) {
             return;
         }
-        $c     = Controller::curr();
+        $c = Controller::curr();
         $class = str_replace($num, $n, get_called_class());
         $steps = new ArrayList();
 
         $baseAction = parent::FormAction();
 
         while (class_exists($class)) {
-            $isCurrent   = $isCompleted = false;
-            $cssClass    = $n == $curr ? 'current' : 'link';
+            $isCurrent = $isCompleted = false;
+            $cssClass = $n == $curr ? 'current' : 'link';
             if ($n == 1) {
                 $isCurrent = true;
                 $cssClass .= ' first';
@@ -97,7 +97,7 @@ class FormExtraMulti extends FormExtra
                 $isCompleted = true;
                 $cssClass .= ' completed';
             }
-            $link  = $baseAction.'/gotoStep/?step='.$n;
+            $link = $baseAction . '/gotoStep/?step=' . $n;
             $steps->push(new ArrayData(array(
                 'Title' => $class::getStepTitle(),
                 'Number' => $n,
@@ -118,7 +118,7 @@ class FormExtraMulti extends FormExtra
      */
     public static function clearCurrentStep()
     {
-        return Session::clear(self::classNameWithoutNumber().'.step');
+        return Session::clear(self::classNameWithoutNumber() . '.step');
     }
 
     /**
@@ -127,7 +127,7 @@ class FormExtraMulti extends FormExtra
      */
     public static function getCurrentStep()
     {
-        return (int) Session::get(self::classNameWithoutNumber().'.step');
+        return (int) Session::get(self::classNameWithoutNumber() . '.step');
     }
 
     /**
@@ -137,7 +137,7 @@ class FormExtraMulti extends FormExtra
      */
     public static function setMaxStep($value)
     {
-        Session::set(self::classNameWithoutNumber().'.maxStep', (int) $value);
+        Session::set(self::classNameWithoutNumber() . '.maxStep', (int) $value);
         return Session::save();
     }
 
@@ -147,7 +147,7 @@ class FormExtraMulti extends FormExtra
      */
     public static function getMaxStep()
     {
-        return (int) Session::get(self::classNameWithoutNumber().'.maxStep');
+        return (int) Session::get(self::classNameWithoutNumber() . '.maxStep');
     }
 
     /**
@@ -161,7 +161,7 @@ class FormExtraMulti extends FormExtra
         if ($value > self::getMaxStep()) {
             self::setMaxStep($value);
         }
-        Session::set(self::classNameWithoutNumber().'.step', $value);
+        Session::set(self::classNameWithoutNumber() . '.step', $value);
         return Session::save();
     }
 
@@ -187,8 +187,8 @@ class FormExtraMulti extends FormExtra
      */
     public static function isLastStep()
     {
-        $n     = self::classNameNumber();
-        $n1    = $n + 1;
+        $n = self::classNameNumber();
+        $n1 = $n + 1;
         $class = str_replace($n, $n1, get_called_class());
         return !class_exists($class);
     }
@@ -283,7 +283,7 @@ class FormExtraMulti extends FormExtra
      */
     protected function definePrevNextActions($doSet = false)
     {
-        $actions   = new FieldList();
+        $actions = new FieldList();
         $prevClass = 'FormAction';
 
         // do not validate if used in conjonction with zenvalidator
@@ -293,14 +293,14 @@ class FormExtraMulti extends FormExtra
 
         $prev = null;
         if (self::classNameNumber() > 1) {
-            $actions->push($prev = new $prevClass('doPrev',
-                _t('FormExtra.doPrev', 'Previous')));
+            $prev = new $prevClass('doPrev', _t('FormExtra.doPrev', 'Previous'));
+
             $prev->addExtraClass('step-prev');
             $prev->setUseButtonTag(true);
         }
 
         $label = _t('FormExtra.doNext', 'Next');
-        $actions->push($next  = new FormAction('doNext', $label));
+        $actions->push($next = new FormAction('doNext', $label));
         $next->setUseButtonTag(true);
         $next->addExtraClass('step-next');
         if (!$prev) {
@@ -310,6 +310,11 @@ class FormExtraMulti extends FormExtra
             $next->setTitle(_t('FormExtra.doFinish', 'Finish'));
             $next->addExtraClass('step-last');
         }
+
+        if ($prev) {
+            $actions->push($prev);
+        }
+
         $this->addExtraClass('form-steps');
 
         if (!$doSet) {
@@ -357,27 +362,26 @@ class FormExtraMulti extends FormExtra
     public static function getDataFromStep($step)
     {
         return Session::get(
-                "FormInfo.".self::classNameWithoutNumber().".formData.step".$step);
+                "FormInfo." . self::classNameWithoutNumber() . ".formData.step" . $step);
     }
 
     public function saveDataInSession()
     {
         Session::set(
-            "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber(),
-            $this->getData()
+            "FormInfo." . self::classNameWithoutNumber() . ".formData.step" . self::classNameNumber(), $this->getData()
         );
     }
 
     public function getDataFromSession()
     {
         return Session::get(
-                "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber());
+                "FormInfo." . self::classNameWithoutNumber() . ".formData.step" . self::classNameNumber());
     }
 
     public function clearDataFromSession()
     {
         return Session::clear(
-                "FormInfo.".self::classNameWithoutNumber().".formData.step".self::classNameNumber());
+                "FormInfo." . self::classNameWithoutNumber() . ".formData.step" . self::classNameNumber());
     }
 
     /**
@@ -387,6 +391,6 @@ class FormExtraMulti extends FormExtra
     {
         self::clearCurrentStep();
         Session::clear(
-                "FormInfo.".self::classNameWithoutNumber());
+            "FormInfo." . self::classNameWithoutNumber());
     }
 }
