@@ -10,7 +10,7 @@ class IntegerField extends TextField
 
     public function extraClass()
     {
-        return 'text ' . parent::extraClass();
+        return 'text numeric ' . parent::extraClass();
     }
 
     public function getAttributes()
