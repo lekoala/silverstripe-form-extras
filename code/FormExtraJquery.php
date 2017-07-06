@@ -143,6 +143,10 @@ class FormExtraJquery extends Object
             }
         }
 
+        if (class_exists('DebugBar')) {
+            DebugBar::config()->include_jquery = false;
+        }
+
         self::$included[] = 'jquery';
     }
 

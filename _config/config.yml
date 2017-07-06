@@ -4,6 +4,9 @@ After:
 - 'framework/*'
 - 'cms/*'
 ---
+Director:
+  rules:
+    '__upload//$Action/$ID/$Name': 'AjaxUploadController'
 FormField:
   extensions:
     - 'TooltipFieldExtension'

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of CKEditorField
+ * Replace your textarea by a CKEditor instance
  *
  * @author LeKoala
  */
@@ -13,21 +13,53 @@ class CKEditorField extends TextareaField
     const PACKAGE_STANDARD = 'standard';
     const PACKAGE_FULL = 'full';
     const PACKAGE_CUSTOM = 'custom';
+    const TOOLBAR_FULL = 'full';
+    const TOOLBAR_ADVANCED = 'advanced';
+    const TOOLBAR_BASIC = 'basic';
     const VERSION = '4.7.1';
+    const REMOVE_PLUGINS = 'elementspath';
+    const RESIZE_ENABLED = false;
+    const UPDATE_AS_YOU_TYPE = true;
 
     protected $package;
     protected $version;
     protected $scriptSrc;
+    protected $toolbar;
+    protected $removePlugins;
+    protected $resizeEnabled;
+    protected $updateAsYouType;
 
     public function __construct($name, $title = null, $value = null)
     {
         parent::__construct($name, $title, $value);
 
-        $this->version = self::VERSION;
-        $this->package = self::PACKAGE_STANDARD;
-        $this->scriptSrc = $this->getCdnUrl();
-        
-        $this->addExtraClass('typography-exclude');
+        $config = self::config();
+
+        $this->version = $config->version ? $config->version : self::VERSION;
+        $this->package = $config->package ? $config->package : self::PACKAGE_CUSTOM;
+
+        if ($this->package == self::PACKAGE_CUSTOM) {
+            $this->scriptSrc = FORM_EXTRAS_PATH . '/javascript/ckeditor/ckeditor.js';
+
+            $this->toolbar = $config->toolbar ? $config->toolbar : self::TOOLBAR_ADVANCED;
+            $this->removePlugins = ($config->removePlugins !== null) ? $config->removePlugins : self::REMOVE_PLUGINS;
+        } else {
+            $this->scriptSrc = $this->getCdnUrl();
+        }
+
+        $this->resizeEnabled = ($config->resizeEnabled !== null) ? $config->resizeEnabled : self::RESIZE_ENABLED;
+        $this->updateAsYouType = ($config->updateAsYouType !== null) ? $config->updateAsYouType : self::UPDATE_AS_YOU_TYPE;
+    }
+
+    /**
+     * Filter out html content
+     *
+     * @param string $content
+     * @return string
+     */
+    public static function filterContent($content)
+    {
+        return strip_tags($content, '<a><span><p><br/><br><ul><ol><li><img><b><strong><i><u><em><video><iframe><blockquote><hr>');
     }
 
     public function getPackage()
@@ -50,6 +82,28 @@ class CKEditorField extends TextareaField
         $this->version = $version;
     }
 
+    public function getToolbar()
+    {
+        return $this->toolbar;
+    }
+
+    public function setToolbar($toolbar)
+    {
+        $this->toolbar = $toolbar;
+        return $this;
+    }
+
+    public function getRemovePlugins()
+    {
+        return $this->removePlugins;
+    }
+
+    public function setRemovePlugins($removePlugins)
+    {
+        $this->removePlugins = $removePlugins;
+        return $this;
+    }
+
     public function getScriptSrc()
     {
         return $this->scriptSrc;
@@ -66,39 +120,36 @@ class CKEditorField extends TextareaField
             array('{version}', '{package}'), array($this->version, $this->package), self::CDN_SOURCE
         );
     }
-    
-    protected function makeToolbarLine($name, $groups = array()) {
-        return array(
-            'name' => $name,
-            'groups' => $groups
-        );
-    }
 
     public function Field($properties = array())
     {
-        Requirements::javascript($this->getCdnUrl());
-         
+        Requirements::javascript($this->getScriptSrc());
+
         // Init instance
         $id = $this->ID();
-        
+
         $lang = i18n::get_lang_from_locale(i18n::get_locale());
 
         $arr = array(
             'language' => $lang,
         );
-        
-        $toolbar = array();
-        $toolbar[]  =$this->makeToolbarLine('links');
-        $toolbar[]  =$this->makeToolbarLine('insert');
-        $toolbar[]  =$this->makeToolbarLine('basicstyles');
-        $toolbar[]  =$this->makeToolbarLine('paragraph');
-        
-        if($toolbar) {
-         //   $arr['toolbarGroups'] = $toolbar;
+
+        if ($this->toolbar) {
+            $arr['toolbar'] = $this->toolbar;
         }
-        
+        if ($this->removePlugins) {
+            $arr['removePlugins'] = $this->removePlugins;
+        }
+        if ($this->resizeEnabled !== null) {
+            $arr['resize_enabled'] = $this->resizeEnabled;
+        }
+
         $opts = json_encode($arr);
-        Requirements::customScript("CKEDITOR.replace('$id', $opts);");
+        Requirements::customScript("CKEDITOR.replace('$id', $opts)");
+
+        if ($this->updateAsYouType) {
+            Requirements::customScript("CKEDITOR.instances['$id'].on('change', function() { CKEDITOR.instances['$id'].updateElement() });");
+        }
 
         return parent::Field($properties);
     }
