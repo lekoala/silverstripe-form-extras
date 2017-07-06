@@ -25,7 +25,7 @@ CKEDITOR.editorConfig = function(config) {
                 {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike']},
                 {name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']},
                 {name: 'links', items: ['Link', 'Unlink']},
-                {name: 'insert', items: ['Image', 'EmbedSemantic', 'Table', 'HorizontalRule', 'Smiley', 'Iframe']}
+                {name: 'insert', items: ['Image', 'Embed', 'Table', 'HorizontalRule', 'Smiley', 'Iframe']}
             ];
 
     config.toolbar_basic =
@@ -37,4 +37,8 @@ CKEDITOR.editorConfig = function(config) {
     // Upload integration
     config.uploadUrl = '/__upload/ckeditor';
     config.imageUploadUrl = '/__upload/ckeditor?type=Images';
+
+    // Embed
+    config.embed_provider = '/__upload/oembed?embed_url={url}&callback={callback}';
+//    config.embed_provider = 'http://noembed.com/embed?url={url}&callback={callback}';
 };

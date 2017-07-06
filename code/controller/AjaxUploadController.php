@@ -12,8 +12,53 @@ class AjaxUploadController extends Controller
     const CKEDITOR_TYPE_IMAGES = 'Images';
 
     private static $allowed_actions = [
-        'ckeditor'
+        'ckeditor',
+        'oembed',
     ];
+
+    public function oembed()
+    {
+        $request = $this->getRequest();
+
+        $url = $request->getVar('embed_url');
+        $callback = $request->getVar('callback');
+
+        $embed = Embed\Embed::create($url);
+
+        $code = $embed->getCode();
+        $type = $embed->getType();
+
+        if ($type == 'video') {
+            $code = '<div class="embed-container">' . $code . '</div>';
+        }
+
+        $data = [
+            'html' => $code,
+            'type' => $type,
+            'width' => $embed->getWidth(),
+            'height' => $embed->getHeight(),
+            'author_name' => $embed->getAuthorName(),
+            'author_url' => $embed->getAuthorUrl(),
+            'version' => '1.0',
+            'provider_url' => $embed->getProviderUrl(),
+            'provider_name' => $embed->getProviderName(),
+            'thumbnail_width' => $embed->getImageWidth(),
+            'thumbnail_height' => $embed->getImageHeight(),
+            'thumbnail_url' => $embed->getImage(),
+            'url' => $embed->getUrl(),
+            'title' => $embed->getTitle(),
+            'description' => $embed->getDescription(),
+        ];
+
+        $json = json_encode($data, JSON_PRETTY_PRINT);
+
+        $this->getResponse()->addHeader('Content-type', 'text/javascript');
+
+        if ($callback) {
+            return "$callback && $callback($json);";
+        }
+        return $json;
+    }
 
     /**
      * @link http://docs.ckeditor.com/#!/guide/dev_file_upload

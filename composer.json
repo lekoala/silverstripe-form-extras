@@ -1,26 +1,26 @@
 {
-	"name": "lekoala/silverstripe-form-extras",
-	"description": "Form extras for Silverstripe",
-	"type": "silverstripe-module",
-	"keywords": ["silverstripe", "form", "extras", "module", "cms"],
-	"license": "BSD-3-Clause",
-	"authors": [
-		{
-			"name": "LeKoala",
-			"email": "thomas@lekoala.be"
-		}
-	],
-	"require":
-			{
-				"silverstripe/framework": "~3.1"
-			},
-	"suggest":
-			{
-				"sheadawson/silverstripe-zenvalidator": "*",
-				"unclecheese/display-logic": "*"
-			},
-	"extra": {
-		"installer-name": "form-extras"
-	}
-
+    "name": "lekoala/silverstripe-form-extras",
+    "description": "Form extras for Silverstripe",
+    "type": "silverstripe-module",
+    "keywords": ["silverstripe", "form", "extras", "module", "cms"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "LeKoala",
+            "email": "thomas@lekoala.be"
+        }
+    ],
+    "require":
+            {
+                "silverstripe/framework": "~3.1"
+            },
+    "suggest":
+            {
+                "embed/embed": "*",
+                "sheadawson/silverstripe-zenvalidator": "*",
+                "unclecheese/display-logic": "*"
+            },
+    "extra": {
+        "installer-name": "form-extras"
+    }
 }

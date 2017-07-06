@@ -59,7 +59,7 @@ class CKEditorField extends TextareaField
      */
     public static function filterContent($content)
     {
-        return strip_tags($content, '<a><span><p><br/><br><ul><ol><li><img><b><strong><i><u><em><video><iframe><blockquote><hr><figure><figcaption>');
+        return strip_tags($content, '<a><span><p><br/><br><ul><ol><li><img><b><strong><i><u><em><video><iframe><blockquote><hr><figure><figcaption><oembed>');
     }
 
     public function getPackage()
