@@ -104,6 +104,28 @@ class CKEditorField extends TextareaField
         return $this;
     }
 
+    public function getResizeEnabled()
+    {
+        return $this->resizeEnabled;
+    }
+
+    public function setResizeEnabled($resizeEnabled)
+    {
+        $this->resizeEnabled = $resizeEnabled;
+        return $this;
+    }
+
+    public function getUpdateAsYouType()
+    {
+        return $this->updateAsYouType;
+    }
+
+    public function setUpdateAsYouType($updateAsYouType)
+    {
+        $this->updateAsYouType = $updateAsYouType;
+        return $this;
+    }
+
     public function getScriptSrc()
     {
         return $this->scriptSrc;
@@ -150,6 +172,12 @@ class CKEditorField extends TextareaField
         if ($this->updateAsYouType) {
             Requirements::customScript("CKEDITOR.instances['$id'].on('change', function() { CKEDITOR.instances['$id'].updateElement() });");
         }
+
+        $tokenValue = SecurityToken::getSecurityID();
+        Requirements::customScript("CKEDITOR.instances['$id'].on('fileUploadRequest', function(evt) {
+    var xhr = evt.data.fileLoader.xhr;
+    xhr.setRequestHeader('X-SecurityToken', '$tokenValue' );
+});");
 
         return parent::Field($properties);
     }
