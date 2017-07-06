@@ -59,7 +59,7 @@ class CKEditorField extends TextareaField
      */
     public static function filterContent($content)
     {
-        return strip_tags($content, '<a><span><p><br/><br><ul><ol><li><img><b><strong><i><u><em><video><iframe><blockquote><hr>');
+        return strip_tags($content, '<a><span><p><br/><br><ul><ol><li><img><b><strong><i><u><em><video><iframe><blockquote><hr><figure><figcaption>');
     }
 
     public function getPackage()
@@ -169,14 +169,16 @@ class CKEditorField extends TextareaField
         $opts = json_encode($arr);
         Requirements::customScript("CKEDITOR.replace('$id', $opts)");
 
+        // This may be helpful if you use a javascript validator on the textarea
         if ($this->updateAsYouType) {
             Requirements::customScript("CKEDITOR.instances['$id'].on('change', function() { CKEDITOR.instances['$id'].updateElement() });");
         }
 
+        // Add the security token and other parameters
         $tokenValue = SecurityToken::getSecurityID();
         Requirements::customScript("CKEDITOR.instances['$id'].on('fileUploadRequest', function(evt) {
     var xhr = evt.data.fileLoader.xhr;
-    xhr.setRequestHeader('X-SecurityToken', '$tokenValue' );
+    xhr.setRequestHeader('X-Csrf', '$tokenValue' );
 });");
 
         return parent::Field($properties);
