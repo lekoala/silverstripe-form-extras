@@ -154,6 +154,7 @@ class CKEditorField extends TextareaField
 
         $arr = array(
             'language' => $lang,
+            'baseHref' => '/',
         );
 
         if ($this->toolbar) {
