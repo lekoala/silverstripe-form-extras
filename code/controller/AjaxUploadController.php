@@ -116,6 +116,24 @@ class AjaxUploadController extends Controller
     }
 
     /**
+     * Finds external links in a given html content
+     *
+     * @param string $content Your html content
+     * @return array An array of files
+     */
+    public static function findExternalLinks($content)
+    {
+        $matches = null;
+        preg_match_all('/(?:href|src)=\"([^\"]+)/', $content, $matches);
+
+        if (empty($matches[1])) {
+            return [];
+        }
+
+        return $matches[1];
+    }
+
+    /**
      * Finds temporary file and image in a given html content
      *
      * @param string $content Your html content
@@ -123,22 +141,21 @@ class AjaxUploadController extends Controller
      */
     public static function findTemporaryUploads($content)
     {
-        $matches = null;
-        preg_match_all('/(?:href|src)=\"([^\"]+)/', $content, $matches);
+        $links = self::findExternalLinks($content);
+
+        if (empty($links)) {
+            return $links;
+        }
 
         $files = [];
 
-        if (empty($matches[1])) {
-            return $files;
-        }
-
-        foreach ($matches[1] as $match) {
-            $strpos = strpos($match, '/' . self::TEMPORARY_FOLDER . '/');
+        foreach ($links as $link) {
+            $strpos = strpos($link, '/' . self::TEMPORARY_FOLDER . '/');
             if ($strpos === false) {
                 continue;
             }
 
-            $path = substr($match, $strpos);
+            $path = substr($link, $strpos);
 
             $file = File::find(ASSETS_DIR . $path);
 
@@ -148,6 +165,46 @@ class AjaxUploadController extends Controller
         }
 
         return $files;
+    }
+
+    /**
+     * Diff original and new content to find and delete removed files
+     *
+     * @param string $originalContent
+     * @param string $content
+     * @return array An array of deleted files
+     */
+    public static function deleteUnusedFiles($originalContent, $content)
+    {
+        $originalFiles = self::findExternalLinks($originalContent);
+
+        $deleted = [];
+
+        if (empty($originalFiles)) {
+            return $deleted;
+        }
+
+        $currentFiles = self::findExternalLinks($content);
+
+        $diff = array_diff($originalFiles, $currentFiles);
+        if (empty($diff)) {
+            return $deleted;
+        }
+
+        foreach ($diff as $path) {
+            // Skip absolute path
+            if (strpos($path, 'http') === 0) {
+                continue;
+            }
+
+            $file = File::find(ASSETS_DIR . $path);
+            if ($file) {
+                $deleted[] = $path;
+                $file->delete();
+            }
+        }
+
+        return $deleted;
     }
 
     /**

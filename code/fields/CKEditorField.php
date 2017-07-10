@@ -21,6 +21,7 @@ class CKEditorField extends TextareaField
     const RESIZE_ENABLED = false;
     const UPDATE_AS_YOU_TYPE = true;
 
+    public static $check_temp_uploads = true;
     protected $package;
     protected $version;
     protected $scriptSrc;
@@ -183,5 +184,39 @@ class CKEditorField extends TextareaField
 });");
 
         return parent::Field($properties);
+    }
+
+    public function saveInto(\DataObjectInterface $record)
+    {
+        if ($this->name) {
+            $dataValue = $this->dataValue();
+
+            $originalValue = null;
+            if (self::$check_temp_uploads) {
+                $originalValue = $record->{$this->name};
+
+                $dataValue = $this->checkTemporaryUploads($dataValue, $record);
+
+                AjaxUploadController::deleteUnusedFiles($originalValue, $dataValue);
+            }
+
+            $record->setCastedField($this->name, $dataValue);
+        }
+    }
+
+    public function checkTemporaryUploads($content, DataObject $record)
+    {
+        $tmpFiles = AjaxUploadController::findTemporaryUploads($content);
+
+        if (!empty($tmpFiles)) {
+            if ($record->hasMethod('getUploadFolder')) {
+                $destFolder = '/' . get_class($record) . '/' . $record->ID;
+            } else {
+                $destFolder = $record->getUploadFolder();
+            }
+            $content = AjaxUploadController::moveTemporaryUploads($content, $destFolder, $tmpFiles);
+        }
+
+        return $content;
     }
 }

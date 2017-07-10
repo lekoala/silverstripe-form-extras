@@ -15,13 +15,16 @@
             var val = target.val();
 
             if (validateURL(val)) {
-                target.val('');
+                target.val('...');
                 target.attr('readonly', 'readonly');
                 $.getJSON('/__upload/oembed/?embed_url=' + encodeURI(val), function(res) {
                     if (res.html) {
                         target.val(res.html);
-                        target.removeAttr('readonly');
                     }
+                    target.removeAttr('readonly');
+                }).error(function() {
+                    target.val(val);
+                    target.removeAttr('readonly');
                 });
             }
         }
