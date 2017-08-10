@@ -209,10 +209,11 @@ class CKEditorField extends TextareaField
         $tmpFiles = AjaxUploadController::findTemporaryUploads($content);
 
         if (!empty($tmpFiles)) {
+            // Use own folder if method exists
             if ($record->hasMethod('getUploadFolder')) {
-                $destFolder = '/' . get_class($record) . '/' . $record->ID;
-            } else {
                 $destFolder = $record->getUploadFolder();
+            } else {
+                $destFolder = '/' . get_class($record) . '/' . $record->ID;
             }
             $content = AjaxUploadController::moveTemporaryUploads($content, $destFolder, $tmpFiles);
         }

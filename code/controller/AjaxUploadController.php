@@ -224,8 +224,13 @@ class AjaxUploadController extends Controller
         /* @var $file File */
         foreach ($tmpFiles as $file) {
 
+            // Keep a copy of the old url to remplace with a new one in the html content
             $oldURL = $file->getURL();
 
+            $name = pathinfo($file->Name, PATHINFO_FILENAME);
+            $ext = pathinfo($file->Name, PATHINFO_EXTENSION);
+
+            $file->Name = $name . '_' . time() . '.' . $ext;
             $file->ParentID = $folder->ID;
             $file->write();
 
