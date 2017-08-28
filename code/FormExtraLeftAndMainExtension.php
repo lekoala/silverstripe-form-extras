@@ -39,5 +39,7 @@ class FormExtraLeftAndMainExtension extends LeftAndMainExtension
 EOT
             , 'accountingInit'
         );
+
+        Requirements::javascript('form-extras/javascript/LeftAndMain.js');
     }
 }
