@@ -9,12 +9,13 @@
  */
 class Select2Field extends ListboxField
 {
+
     const SEPARATOR = ',';
 
     protected $allow_single_deselect = true;
     protected $allow_max_selected;
     protected $tags;
-    protected $token_separators      = array(',', ' ');
+    protected $token_separators = array(',', ' ');
     protected $ajax;
     protected $free_order;
     protected $min_input;
@@ -22,8 +23,7 @@ class Select2Field extends ListboxField
     protected $template_selection;
     protected $min_results_for_search;
 
-    public function __construct($name, $title = null, $source = array(),
-                                $value = '', $form = null, $emptyString = null)
+    public function __construct($name, $title = null, $source = array(), $value = '', $form = null, $emptyString = null)
     {
         parent::__construct($name, $title, $source, $value, $form, $emptyString);
     }
@@ -35,23 +35,23 @@ class Select2Field extends ListboxField
         $use_v3 = self::config()->use_v3;
 
         if ($use_v3) {
-            Requirements::css(FORM_EXTRAS_PATH.'/javascript/select2-v3/select2.css');
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/select2-v3/select2.min.js');
+            Requirements::css(FORM_EXTRAS_PATH . '/javascript/select2-v3/select2.css');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v3/select2.min.js');
             // Locale support
             $lang = i18n::get_lang_from_locale(i18n::get_locale());
             if ($lang != 'en') {
-                Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/select2-v3/select2_locale_'.$lang.'.js');
+                Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v3/select2_locale_' . $lang . '.js');
             }
         } else {
             // Use full release
-            Requirements::css(FORM_EXTRAS_PATH.'/javascript/select2-v4/css/select2.min.css');
+            Requirements::css(FORM_EXTRAS_PATH . '/javascript/select2-v4/css/select2.min.css');
             FormExtraJquery::include_mousewheel();
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/select2-v4/js/select2.full.min.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v4/js/select2.full.min.js');
 
             // Locale support
             $lang = i18n::get_lang_from_locale(i18n::get_locale());
             if ($lang != 'en') {
-                Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/select2-v4/js/i18n/'.$lang.'.js');
+                Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v4/js/i18n/' . $lang . '.js');
             }
         }
 
@@ -82,7 +82,7 @@ class Select2Field extends ListboxField
                     $source = array();
                 }
                 // Tags is an array
-                $opts['tags']            = $source;
+                $opts['tags'] = $source;
                 $opts['tokenSeparators'] = $this->token_separators;
 
                 // Not compatible with select
@@ -90,7 +90,7 @@ class Select2Field extends ListboxField
                 $this->template = 'HiddenField';
             } else {
                 // Tags are calculated from options
-                $opts['tags']             = $this->tags;
+                $opts['tags'] = $this->tags;
                 $opts['token_separators'] = $this->token_separators;
             }
         }
@@ -114,24 +114,24 @@ class Select2Field extends ListboxField
 
         if ($this->template_result) {
             $opts['templateResult'] = $this->template_result;
-            $fcts[]                 = $this->template_result;
+            $fcts[] = $this->template_result;
         }
         if ($this->template_selection) {
             $opts['templateSelection'] = $this->template_selection;
-            $fcts[]                    = $this->template_selection;
+            $fcts[] = $this->template_selection;
         }
 
         $jsonOpts = json_encode($opts);
 
         foreach ($fcts as $fct) {
-            $jsonOpts = str_replace('"'.$fct.'"', $fct, $jsonOpts);
+            $jsonOpts = str_replace('"' . $fct . '"', $fct, $jsonOpts);
         }
 
         if (FormExtraJquery::isAdminBackend()) {
             $this->setAttribute('data-config', $jsonOpts);
-            Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/Select2Field.js');
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/Select2Field.js');
         } else {
-            Requirements::customScript('jQuery("#'.$this->ID().'").select2('.$jsonOpts.');');
+            Requirements::customScript('jQuery("#' . $this->ID() . '").select2(' . $jsonOpts . ');');
         }
 
         if ($use_v3) {
@@ -159,7 +159,7 @@ class Select2Field extends ListboxField
         $attrs = array();
         if (self::config()->use_v3 && $this->tags) {
             $attrs['type'] = 'hidden';
-            $values        = $this->Value();
+            $values = $this->Value();
             if (is_array($values)) {
                 // If we have a source, replace keys by values
                 if ($this->source && is_array($this->source)) {
@@ -205,8 +205,7 @@ class Select2Field extends ListboxField
             }
 
             if ($this->multiple) {
-                $parts = (is_array($val)) ? $val : preg_split("/ *, */",
-                        trim($val));
+                $parts = (is_array($val)) ? $val : preg_split("/ *, */", trim($val));
                 if (ArrayLib::is_associative($parts)) {
                     // This is due to the possibility of accidentally passing an array of values (as keys) and titles (as values) when only the keys were intended to be saved.
                     throw new InvalidArgumentException('Associative arrays are not allowed as values (when multiple=true), only indexed arrays.');
@@ -229,33 +228,31 @@ class Select2Field extends ListboxField
         // If tags are enabled, saving into a relation will not work properly
         if ($this->tags) {
             $fieldname = str_replace('[]', '', $this->name);
-            $relation  = ($fieldname && $record && $record->hasMethod($fieldname))
-                    ? $record->$fieldname() : null;
+            $relation = ($fieldname && $record && $record->hasMethod($fieldname)) ? $record->$fieldname() : null;
 
             if ($fieldname && $record && $relation &&
                 ($relation instanceof RelationList || $relation instanceof UnsavedRelationList)) {
                 $idList = (is_array($this->value)) ? array_values($this->value) : array();
                 if (!$record->ID) {
                     $record->write(); // record needs to have an ID in order to set relationships
-                    $relation = ($fieldname && $record && $record->hasMethod($fieldname))
-                            ? $record->$fieldname() : null;
+                    $relation = ($fieldname && $record && $record->hasMethod($fieldname)) ? $record->$fieldname() : null;
                 }
 
                 $newIdList = array();
 
                 // Tags will be a list of comma separated tags by title
-                $class       = $relation->dataClass();
+                $class = $relation->dataClass();
                 $filterField = 'Title';
-                $newList     = $class::get()->filter($filterField, $idList);
-                $newListMap  = $newList->map($filterField, 'ID');
+                $newList = $class::get()->filter($filterField, $idList);
+                $newListMap = $newList->map($filterField, 'ID');
 
                 // Tag will either already exist or need to be created
                 foreach ($idList as $id) {
                     if (isset($newListMap[$id])) {
                         $newIdList[] = $newListMap[$id];
                     } else {
-                        $obj         = new $class;
-                        $obj->Title  = trim(str_replace(self::SEPARATOR, '', $id));
+                        $obj = new $class;
+                        $obj->Title = trim(str_replace(self::SEPARATOR, '', $id));
                         $obj->write();
                         $newIdList[] = $obj->ID;
                     }
@@ -425,5 +422,42 @@ class Select2Field extends ListboxField
     public function setPlaceholder($value)
     {
         return $this->setAttribute('placeholder', $value);
+    }
+
+    /**
+     * Validate this field
+     *
+     * @param Validator $validator
+     * @return bool
+     */
+    public function validate($validator)
+    {
+        $values = $this->value;
+        if (!$values) {
+            return true;
+        }
+        if ($this->ajax) {
+            return true;
+        }
+        $errorMessage = _t(
+            'ListboxField.SOURCE_VALIDATION', "Please select a value within the list provided. %s is not a valid option", array('value' => $this->value)
+        );
+        $source = $this->getSourceAsArray();
+        if (is_array($values)) {
+            if (!array_intersect_key($source, array_flip($values))) {
+                $validator->validationError(
+                    $this->name, $errorMessage, "validation"
+                );
+                return false;
+            }
+        } else {
+            if (!array_key_exists($this->value, $source)) {
+                $validator->validationError(
+                    $this->name, $errorMessage, "validation"
+                );
+                return false;
+            }
+        }
+        return true;
     }
 }
