@@ -33,6 +33,9 @@ CKEDITOR.editorConfig = function(config) {
                 ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
             ];
 
+    // File manager
+//    config.filebrowserBrowseUrl = '/__upload/ckeditor_browse';
+    config.filebrowserUploadUrl = '/__upload/ckeditor';
 
     // Upload integration
     config.uploadUrl = '/__upload/ckeditor';
