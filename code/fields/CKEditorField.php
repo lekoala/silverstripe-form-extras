@@ -18,6 +18,7 @@ class CKEditorField extends TextareaField
     const TOOLBAR_BASIC = 'basic';
     const VERSION = '4.7.1';
     const REMOVE_PLUGINS = 'elementspath';
+    const EXTRA_PLUGINS = '';
     const RESIZE_ENABLED = false;
     const UPDATE_AS_YOU_TYPE = true;
 
@@ -27,6 +28,7 @@ class CKEditorField extends TextareaField
     protected $scriptSrc;
     protected $toolbar;
     protected $removePlugins;
+    protected $extraPlugins;
     protected $resizeEnabled;
     protected $updateAsYouType;
 
@@ -43,13 +45,14 @@ class CKEditorField extends TextareaField
             $this->scriptSrc = FORM_EXTRAS_PATH . '/javascript/ckeditor/ckeditor.js';
 
             $this->toolbar = $config->toolbar ? $config->toolbar : self::TOOLBAR_ADVANCED;
-            $this->removePlugins = ($config->removePlugins !== null) ? $config->removePlugins : self::REMOVE_PLUGINS;
+            $this->removePlugins = ($config->remove_plugins !== null) ? $config->remove_plugins : self::REMOVE_PLUGINS;
+            $this->extraPlugins = ($config->extra_plugins !== null) ? $config->extra_plugins : self::EXTRA_PLUGINS;
         } else {
             $this->scriptSrc = $this->getCdnUrl();
         }
 
-        $this->resizeEnabled = ($config->resizeEnabled !== null) ? $config->resizeEnabled : self::RESIZE_ENABLED;
-        $this->updateAsYouType = ($config->updateAsYouType !== null) ? $config->updateAsYouType : self::UPDATE_AS_YOU_TYPE;
+        $this->resizeEnabled = ($config->resize_enabled !== null) ? $config->resize_enabled : self::RESIZE_ENABLED;
+        $this->updateAsYouType = ($config->update_as_you_type !== null) ? $config->update_as_you_type : self::UPDATE_AS_YOU_TYPE;
     }
 
     /**
@@ -102,6 +105,17 @@ class CKEditorField extends TextareaField
     public function setRemovePlugins($removePlugins)
     {
         $this->removePlugins = $removePlugins;
+        return $this;
+    }
+
+    public function getExtraPlugins()
+    {
+        return $this->extraPlugins;
+    }
+
+    public function setExtraPlugins($extraPlugins)
+    {
+        $this->extraPlugins = $extraPlugins;
         return $this;
     }
 
@@ -163,6 +177,9 @@ class CKEditorField extends TextareaField
         }
         if ($this->removePlugins) {
             $arr['removePlugins'] = $this->removePlugins;
+        }
+        if ($this->extraPlugins) {
+            $arr['extraPlugins'] = $this->extraPlugins;
         }
         if ($this->resizeEnabled !== null) {
             $arr['resize_enabled'] = $this->resizeEnabled;

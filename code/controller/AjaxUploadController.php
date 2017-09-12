@@ -65,13 +65,25 @@ class AjaxUploadController extends Controller
      */
     public function ckeditor()
     {
-        $errorFn = function($msg) {
-            return json_encode(['uploaded' => 0, 'error' => ['message' => $msg]]);
-        };
 
         $request = $this->getRequest();
 
+        $callback = $request->getVar('CKEditorFuncNum');
+
+        // Depending on the upload context, we return a json or script response
+        $errorFn = function($msg) use ($callback) {
+            if (Director::is_ajax()) {
+                return json_encode(['uploaded' => 0, 'error' => ['message' => $msg]]);
+            }
+
+            return "<script type=\"text/javascript\">window.parent.CKEDITOR.tools.callFunction(" . $callback . ",  \"\", \"" . $msg . "\" );</script>";
+        };
+
+        // Security token is either in the header or in passed as get
         $token = $request->getHeader('X-Csrf');
+        if (!$token) {
+            $token = $request->getVar('SecurityID');
+        }
         $SecurityToken = SecurityToken::inst();
         if ($SecurityToken->isEnabled() && !$token) {
             return $errorFn('No token');
@@ -112,7 +124,12 @@ class AjaxUploadController extends Controller
             'fileName' => basename($file->getFilename()),
             'url' => $file->getURL(),
         ];
-        return json_encode($result);
+
+        if (Director::is_ajax()) {
+            return json_encode($result);
+        }
+
+        return "<script type=\"text/javascript\">window.parent.CKEDITOR.tools.callFunction(" . $callback . ",  \"" . $result['url'] . "\", \"\" );</script>";
     }
 
     /**

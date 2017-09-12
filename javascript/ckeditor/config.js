@@ -33,9 +33,57 @@ CKEDITOR.editorConfig = function(config) {
                 ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
             ];
 
-    // File manager
-//    config.filebrowserBrowseUrl = '/__upload/ckeditor_browse';
+    // Enable upload
+//    config.extraPlugins = 'uploadimage,image2';
+
+    // File manager - only upload, no browse
+//    config.filebrowserBrowseUrl = '/__upload/ckeditor';
     config.filebrowserUploadUrl = '/__upload/ckeditor';
+//    config.filebrowserImageBrowseUrl = '/__upload/ckeditor?type=Images';
+    config.filebrowserImageUploadUrl = '/__upload/ckeditor?type=Images';
+
+    // CSRF token
+    config.filebrowserParams = function() {
+        var params = {};
+
+        var securityID = $('input[name="SecurityID"]').val();
+
+        if (securityID) {
+            params['SecurityID'] = securityID;
+        }
+
+        return params;
+    };
+
+    config.addQueryString = function(url, params) {
+        var queryString = [];
+
+        if (!params) {
+            return url;
+        } else {
+            for (var i in params)
+                queryString.push(i + "=" + encodeURIComponent(params[ i ]));
+        }
+
+        return url + ((url.indexOf("?") != -1) ? "&" : "?") + queryString.join("&");
+    };
+
+    CKEDITOR.on('dialogDefinition', function(ev) {
+        // Take the dialog name and its definition from the event data.
+        var dialogName = ev.data.name;
+        var dialogDefinition = ev.data.definition;
+        var content, upload;
+
+        if (CKEDITOR.tools.indexOf(['link', 'image', 'image2', 'attachment', 'flash'], dialogName) > -1) {
+            content = (dialogDefinition.getContents('Upload') || dialogDefinition.getContents('upload'));
+            upload = (content == null ? null : content.get('upload'));
+
+            if (upload && upload.filebrowser && upload.filebrowser['params'] === undefined) {
+                upload.filebrowser['params'] = config.filebrowserParams();
+                upload.action = config.addQueryString(upload.action, upload.filebrowser['params']);
+            }
+        }
+    });
 
     // Upload integration
     config.uploadUrl = '/__upload/ckeditor';
