@@ -21,11 +21,10 @@ CKEDITOR.editorConfig = function(config) {
     ];
     config.toolbar_advanced =
             [
-                {name: 'clipboard', items: ['Paste', 'PasteText', 'PasteFromWord', 'Undo', '-', 'Maximize', 'ShowBlocks']},
-                {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike']},
-                {name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']},
-                {name: 'links', items: ['Link', 'Unlink']},
-                {name: 'insert', items: ['Image', 'Embed', 'Table', 'HorizontalRule', 'Smiley', 'Iframe']}
+                {name: 'clipboard', items: ['Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Maximize', 'ShowBlocks']},
+                {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Format']},
+                {name: 'paragraph', items: ['NumberedList', 'BulletedList', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']},
+                {name: 'insert', items: ['Link', 'Image', 'Embed', 'Table', 'HorizontalRule', 'Smiley', 'Iframe']}
             ];
 
     config.toolbar_basic =
