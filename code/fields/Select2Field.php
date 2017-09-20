@@ -59,9 +59,9 @@ class Select2Field extends ListboxField
         $opts = array();
         if ($this->allow_single_deselect) {
             if ($use_v3) {
-                $opts['allowClear'] = $this->allow_single_deselect;
-            } else {
                 $opts['allow_clear'] = $this->allow_single_deselect;
+            } else {
+                $opts['allowClear'] = $this->allow_single_deselect;
             }
         }
         if ($this->allow_max_selected) {
@@ -312,6 +312,9 @@ class Select2Field extends ListboxField
 
     public function setAllowClear($v)
     {
+        if ($v) {
+            $this->setDefaultText(_t('Select2Field.DEFAULT_PLACEHOLDER', "Please select a value"));
+        }
         $this->allow_single_deselect = $v;
     }
 
@@ -323,6 +326,13 @@ class Select2Field extends ListboxField
     public function setSingleDeselect($v)
     {
         $this->allow_single_deselect = $v;
+    }
+
+    public function setHasEmptyDefault($bool)
+    {
+        $this->setSingleDeselect($bool);
+        $this->setAllowClear($bool);
+        return parent::setHasEmptyDefault($bool);
     }
 
     public function getFreeOrder()

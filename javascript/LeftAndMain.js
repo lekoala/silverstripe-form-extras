@@ -3,7 +3,7 @@
 (function($) {
 
     $.entwine('ss', function($) {
-        $('.chzn-container').not('.select2').entwine({
+        $('.dropdown.chzn-container').entwine({
             onmatch: function() {
                 var t = this;
                 setTimeout(function() {
