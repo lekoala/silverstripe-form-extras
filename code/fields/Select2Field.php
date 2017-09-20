@@ -449,8 +449,13 @@ class Select2Field extends ListboxField
         if ($this->ajax) {
             return true;
         }
+
+        $strValue = $values;
+        if (is_array($strValue)) {
+            $strValue = implode(',', $strValue);
+        }
         $errorMessage = _t(
-            'ListboxField.SOURCE_VALIDATION', "Please select a value within the list provided. %s is not a valid option", array('value' => $this->value)
+            'Select2Field.SOURCE_VALIDATION', "Please select a value within the list provided. %s is not a valid option", array('value' => $strValue)
         );
         $source = $this->getSourceAsArray();
         if (is_array($values)) {
