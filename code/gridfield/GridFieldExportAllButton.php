@@ -5,10 +5,18 @@
  */
 class GridFieldExportAllButton extends GridFieldExportButton
 {
+    const SPEED_NORMAL = 'normal';
+    const SPEED_FAST = 'fast';
+    const SPEED_VERY_FAST = 'very_fast';
+
     /**
      * @var string
      */
     protected $csvSeparator = ";";
+
+    protected $beforeListCallback;
+    protected $afterListCallback;
+    protected $speedMode;
 
     /**
      * Place the export button in a <p> tag below the field
@@ -35,9 +43,13 @@ class GridFieldExportAllButton extends GridFieldExportButton
         return array('export_all');
     }
 
-    public function handleAction(GridField $gridField, $actionName, $arguments,
-                                 $data)
-    {
+    public function handleAction(
+        GridField $gridField,
+        $actionName,
+        $arguments,
+        $data
+    ) {
+    
         if ($actionName == 'export_all') {
             return $this->handleExport($gridField);
         }
@@ -88,18 +100,41 @@ class GridFieldExportAllButton extends GridFieldExportButton
             $fileData .= "\n";
         }
 
+        $cb = $this->beforeListCallback;
+        if ($cb) {
+            $cb($gridField);
+        }
+
         $items = $gridField->getList();
 
         $count        = $items->count();
-        $fastMode     = false;
-        $veryFastMode = true;
 
-        // If you export too much, you need some boost!
-        if ($count > 1500) {
-            $fastMode = true;
-        }
-        if ($count > 7500) {
-            $veryFastMode = true;
+        $speed = $this->speedMode;
+        $fastMode     = false;
+        $veryFastMode = false;
+        
+        if (!$speed) {
+            // If you export too much, you need some boost!
+            if ($count > 1500) {
+                $fastMode = true;
+            }
+            if ($count > 7500) {
+                $veryFastMode = true;
+            }
+        } else {
+            switch ($speed) {
+                case self::SPEED_NORMAL:
+                    break;
+                case self::SPEED_FAST:
+                    $fastMode = true;
+                    break;
+                case self::SPEED_VERY_FAST:
+                    $fastMode     = true;
+                    $veryFastMode = true;
+                    break;
+                default:
+                    throw new Exception("Speed $speed is not handled");
+            }
         }
 
         foreach ($items as $item) {
@@ -119,12 +154,10 @@ class GridFieldExportAllButton extends GridFieldExportButton
                         if ($veryFastMode) {
                             $value = $item->$columnSource;
                         } else {
-                            $value = $gridField->getDataFieldValue($item,
-                                $columnSource);
+                            $value = $gridField->getDataFieldValue($item, $columnSource);
 
                             if (!$value) {
-                                $value = $gridField->getDataFieldValue($item,
-                                    $columnHeader);
+                                $value = $gridField->getDataFieldValue($item, $columnHeader);
                             }
                         }
                     }
@@ -143,6 +176,42 @@ class GridFieldExportAllButton extends GridFieldExportButton
             }
         }
 
+        $cb = $this->afterListCallback;
+        if ($cb) {
+            $result = $cb($gridField, $list, $fileData);
+            if ($result) {
+                $fileData = $result;
+            }
+        }
+
         return $fileData;
+    }
+
+    public function getSpeedMode()
+    {
+        return $this->speedMode;
+    }
+
+    public function setSpeedMode($speed)
+    {
+        $this->speedMode = $speed;
+    }
+    
+    public function getBeforeListCallback()
+    {
+        return $this->beforeListCallback;
+    }
+    public function setBeforeListCallback($cb)
+    {
+        $this->beforeListCallback = $cb;
+    }
+
+    public function getAfterListCallback()
+    {
+        return $this->afterListCallback;
+    }
+    public function setAfterListCallback($cb)
+    {
+        $this->afterListCallback = $cb;
     }
 }
