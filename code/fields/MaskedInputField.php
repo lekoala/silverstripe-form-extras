@@ -34,6 +34,10 @@ class MaskedInputField extends TextField
     const ALIAS_PHONEBE = 'phonebe';
     const ALIAS_REGEX = 'regex';
 
+    public function Type() {
+		return strtolower('maskedinput');
+    }
+    
     public function extraClass()
     {
         return 'text ' . parent::extraClass();
@@ -60,7 +64,7 @@ class MaskedInputField extends TextField
         }
 
         // Initialize on all input fields once
-        Requirements::customScript('jQuery(document).ready(function(){jQuery(":input").inputmask();});', 'MaskedInputFieldInit');
+        Requirements::customScript('jQuery(document).ready(function(){jQuery("input.maskedinput").inputmask();});', 'MaskedInputFieldInit');
 
         return parent::Field($properties);
     }
