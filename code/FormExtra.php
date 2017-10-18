@@ -103,23 +103,27 @@ class FormExtra extends Form
         $this->Controller()->SetSessionMessage($message, $type);
     }
 
+    public function getSessionKey() {
+        return $this->FormName();
+    }
+
     public function saveDataInSession()
     {
         Session::set(
-            "FormInfo.{$this->FormName()}.formData", $this->getData()
+            "FormInfo.{$this->getSessionKey()}.formData", $this->getData()
         );
     }
 
     public function clearDataFromSession()
     {
         return Session::clear(
-                "FormInfo.{$this->FormName()}.formData");
+                "FormInfo.{$this->getSessionKey()}.formData");
     }
 
     public function getDataFromSession()
     {
         return Session::get(
-                "FormInfo.{$this->FormName()}.formData");
+                "FormInfo.{$this->getSessionKey()}.formData");
     }
 
     public function restoreDataFromSession()
