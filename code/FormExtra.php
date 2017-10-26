@@ -54,15 +54,13 @@ class FormExtra extends Form
         return parent::forTemplate();
     }
 
-    /**
-     * Store the back url to allow redirect after submitting the form
-     *
-     * @return void
-     */
-    public function storeRedirectURL()
-    {
+    public function storeBackURL() {
         $ctrl = $this->getController();
-        $this->Fields()->push(new HiddenField('BackURL', null, $ctrl->getRequest()->getVar('BackURL')));
+        if(!$ctrl) {
+            throw new Exception('Please call this function after base construct has been called');
+        }
+
+        $this->Fields()->push(new HiddenField('BackURL',null,$ctrl->getRequest()->getVar('BackURL')));
     }
 
     public function getKeepSessionAlive()
@@ -114,26 +112,27 @@ class FormExtra extends Form
         $this->Controller()->SetSessionMessage($message, $type);
     }
 
+    public function getSessionKey() {
+        return $this->FormName();
+    }
+
     public function saveDataInSession()
     {
         Session::set(
-            "FormInfo.{$this->FormName()}.formData",
-            $this->getData()
+            "FormInfo.{$this->getSessionKey()}.formData", $this->getData()
         );
     }
 
     public function clearDataFromSession()
     {
         return Session::clear(
-            "FormInfo.{$this->FormName()}.formData"
-        );
+                "FormInfo.{$this->getSessionKey()}.formData");
     }
 
     public function getDataFromSession()
     {
         return Session::get(
-            "FormInfo.{$this->FormName()}.formData"
-        );
+                "FormInfo.{$this->getSessionKey()}.formData");
     }
 
     public function restoreDataFromSession()

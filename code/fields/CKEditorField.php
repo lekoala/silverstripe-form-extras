@@ -15,6 +15,7 @@ class CKEditorField extends TextareaField
     const PACKAGE_CUSTOM = 'custom';
     const TOOLBAR_FULL = 'full';
     const TOOLBAR_ADVANCED = 'advanced';
+    const TOOLBAR_ADVANCED2 = 'advanced2';
     const TOOLBAR_BASIC = 'basic';
     const VERSION = '4.7.1';
     const REMOVE_PLUGINS = 'elementspath';

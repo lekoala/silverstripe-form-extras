@@ -19,14 +19,23 @@ CKEDITOR.editorConfig = function(config) {
         {name: 'colors', items: ['TextColor', 'BGColor']},
         {name: 'tools', items: ['Maximize', 'ShowBlocks']}
     ];
-    config.toolbar_advanced =
-            [
-                {name: 'clipboard', items: ['Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Maximize', 'ShowBlocks']},
-                {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Format']},
-                {name: 'paragraph', items: ['NumberedList', 'BulletedList', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']},
-                {name: 'insert', items: ['Link', 'Image', 'Embed', 'Table', 'HorizontalRule', 'Smiley', 'Iframe']}
-            ];
-
+    config.toolbar_advanced = [
+        {name: 'clipboard', items: ['Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Maximize', 'ShowBlocks']},
+        {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Format']},
+        {name: 'paragraph', items: ['NumberedList', 'BulletedList', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']},
+        {name: 'insert', items: ['Link', 'Image', 'Embed', 'Table', 'HorizontalRule', 'Smiley', 'Iframe']}
+    ];
+    config.toolbar_advanced2 = [
+        {name: 'clipboard', items: ['Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Maximize', 'ShowBlocks', 'SelectAll']},
+        {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat']},
+        {name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']},
+        '/',
+        {name: 'links', items: ['Link', 'Unlink', 'Anchor']},
+        {name: 'insert', items: ['Image', 'EmbedSemantic', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'Iframe']},
+        {name: 'styles', items: ['Format', 'Font', 'FontSize']},
+        {name: 'colors', items: ['TextColor', 'BGColor']},
+        {name: 'tools', items: ['Maximize', 'ShowBlocks']}
+    ];
     config.toolbar_basic =
             [
                 ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
