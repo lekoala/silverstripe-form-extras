@@ -11,6 +11,7 @@
  */
 class BaseUploadField extends UploadField
 {
+    private static $common_image_types = ['jpg', 'jpeg', 'png'];
 
     /**
      * Return an instance of UploadField with the folder name already set up
@@ -21,8 +22,12 @@ class BaseUploadField extends UploadField
      * @param \SS_List $items
      * @return \static
      */
-    public static function createForClass($class, $name, $title = null,
-                                          \SS_List $items = null)
+    public static function createForClass(
+        $class,
+        $name,
+        $title = null,
+        \SS_List $items = null
+    )
     {
         $folderName = self::getFolderForClass($class, $name);
 
@@ -44,34 +49,45 @@ class BaseUploadField extends UploadField
         if (is_object($class)) {
             if (method_exists($class, 'hasMethod') && $class->hasMethod('BaseFolder')) {
                 $folderName = $class->BaseFolder();
-            } elseif ($class instanceof Page) {
-                $folderName = get_class($class);
-            } elseif ($class instanceof DataObject) {
-                $folderName = $class->baseTable();
-            } elseif ($class instanceof DataExtension) {
-                $folderName = $class->getOwner()->baseTable();
-            } else {
+            }
+            elseif ($class instanceof Page) {
                 $folderName = get_class($class);
             }
-        } elseif (is_string($class)) {
+            elseif ($class instanceof DataObject) {
+                $folderName = $class->baseTable();
+            }
+            elseif ($class instanceof DataExtension) {
+                $folderName = $class->getOwner()->baseTable();
+            }
+            else {
+                $folderName = get_class($class);
+            }
+        }
+        elseif (is_string($class)) {
             $folderName = $class;
         }
 
-        if (class_exists('Subsite') && Config::inst()->get(__CLASS__,
-                'use_subsite_integration')) {
+        if (class_exists('Subsite') && Config::inst()->get(
+            __CLASS__,
+            'use_subsite_integration'
+        )) {
             $subsite = Subsite::currentSubsite();
             if ($subsite) {
                 // Subsite extras integration$
                 if ($subsite->hasField('BaseFolder')) {
                     $baseFolder = $subsite->BaseFolder;
-                } else {
-                    $filter     = new URLSegmentFilter();
+                }
+                else {
+                    $filter = new URLSegmentFilter();
                     $baseFolder = $filter->filter($subsite->getTitle());
-                    $baseFolder = str_replace(' ', '',
-                        ucwords(str_replace('-', ' ', $baseFolder)));
+                    $baseFolder = str_replace(
+                        ' ',
+                        '',
+                        ucwords(str_replace('-', ' ', $baseFolder))
+                    );
                 }
                 if (!empty($baseFolder)) {
-                    $folderName = $baseFolder.'/'.$folderName;
+                    $folderName = $baseFolder . '/' . $folderName;
                 }
             }
         }
@@ -84,9 +100,22 @@ class BaseUploadField extends UploadField
         $this->getValidator()->setAllowedExtensions(
             $ext ? $ext : ImageUploadField::config()->default_allowed_extensions
         );
-        $sizeInBytes = $size ? $size : ImageUploadField::config()->default_max_file_size
-            * 1024 * 1024;
-        $this->getValidator()->setAllowedMaxFileSize($sizeInBytes);
+
+        $maxUpload = File::ini2bytes(ini_get('upload_max_filesize'));
+        $maxPost = File::ini2bytes(ini_get('post_max_size'));
+        $maxSize = min($maxUpload, $maxPost);
+        
+        $baseSize = ImageUploadField::config()->default_max_file_size * 1024 * 1024;
+        $sizeInBytes = $size ? $size : $baseSize;
+
+        $rules = [
+            '*' => $maxSize
+        ];
+        foreach (self::$common_image_types as $ext) {
+            $rules[$ext] = File::ini2bytes($sizeInBytes);
+        }
+
+        $this->getValidator()->setAllowedMaxFileSize($rules);
 
         return $this;
     }
