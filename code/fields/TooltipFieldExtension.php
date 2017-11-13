@@ -25,7 +25,13 @@ class TooltipFieldExtension extends Extension
         if (Controller::has_curr() && Controller::curr() instanceof LeftAndMain) {
             $t .= ' <span title="' . $tooltip . '" class="ui-icon ui-icon-info" style="display:inline-block;"></span>';
         } else {
-            $t .= ' <i class="' . Config::inst()->get(__CLASS__, 'icon') . ' tooltip" title="' . $tooltip . '"></i>';
+            $class = Config::inst()->get(__class__, 'icon') . ' tooltip';
+            $data = '';
+            if (Config::inst()->get(__class__, 'use_data_toggle')) {
+                $class = Config::inst()->get(__class__, 'icon');
+                $data = ' data-toggle="tooltip"';
+            }
+            $t .= ' <i class="' . $class .'"' . $data . ' title="' . $tooltip . '"></i>';
         }
 
         $this->owner->setTitle($t);
