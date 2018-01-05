@@ -8,6 +8,13 @@
                 onclick: function () {
                     var t = this;
 
+                    if(t.data('confirm')) {
+                        res = confirm(t.data('confirm'));
+                        if(!res) {
+                            return;
+                        }
+                    }
+
                     if (t.data('dialog')) {
                         var dialog = $('<div class="cmsinlineaction-dialog"/>');
                         dialog.ssdialog({iframeUrl: this.data('url'), height: 550});

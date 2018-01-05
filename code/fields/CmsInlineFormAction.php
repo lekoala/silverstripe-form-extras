@@ -18,7 +18,8 @@ class CmsInlineFormAction extends FormField
     protected $redirectURL;
     protected $openInNewWindow = false;
     protected $dialog;
-    protected $ajax            = true;
+    protected $ajax = true;
+    protected $confirmMessage;
     protected static $redirectParams;
 
     /**
@@ -29,7 +30,7 @@ class CmsInlineFormAction extends FormField
      */
     public function __construct($action, $title = "", $extraClass = '')
     {
-        $this->extraClass = ' '.$extraClass;
+        $this->extraClass = ' ' . $extraClass;
         parent::__construct($action, $title, null, null);
     }
 
@@ -42,11 +43,11 @@ class CmsInlineFormAction extends FormField
     {
         // Some sensible defaults if no url is specified
         if (!$this->url) {
-            $ctrl   = Controller::curr();
+            $ctrl = Controller::curr();
             $action = $this->name;
             if ($ctrl instanceof ModelAdmin) {
                 $modelClass = $ctrl->getRequest()->param('ModelClass');
-                $action     = $modelClass.'/'.$action;
+                $action = $modelClass . '/' . $action;
             }
             $params = array();
             if ($this->redirectURL) {
@@ -56,7 +57,7 @@ class CmsInlineFormAction extends FormField
                 $params = array_merge($params, self::$redirectParams);
             }
             if (!empty($params)) {
-                $action .= '?'.http_build_query($params);
+                $action .= '?' . http_build_query($params);
             }
             return $ctrl->Link($action);
         }
@@ -75,7 +76,7 @@ class CmsInlineFormAction extends FormField
 
     public function setRedirectURL($redirectURL)
     {
-        $this->ajax        = false;
+        $this->ajax = false;
         $this->redirectURL = $redirectURL;
     }
 
@@ -86,8 +87,18 @@ class CmsInlineFormAction extends FormField
 
     public function setOpenInNewWindow($openInNewWindow)
     {
-        $this->ajax            = false;
+        $this->ajax = false;
         $this->openInNewWindow = $openInNewWindow;
+    }
+
+    public function getConfirmMessage()
+    {
+        return $this->confirmMessage;
+    }
+
+    public function setConfirmMessage($confirmMessage)
+    {
+        $this->confirmMessage = $confirmMessage;
     }
 
     public static function getRedirectParams()
@@ -124,7 +135,7 @@ class CmsInlineFormAction extends FormField
 
     public function Field($properties = array())
     {
-        Requirements::javascript(FORM_EXTRAS_PATH."/javascript/CmsInlineFormAction.js");
+        Requirements::javascript(FORM_EXTRAS_PATH . "/javascript/CmsInlineFormAction.js");
         $target = '';
         if (!$this->ajax) {
             $this->addExtraClass('no-ajax');
@@ -132,9 +143,12 @@ class CmsInlineFormAction extends FormField
         if ($this->openInNewWindow) {
             $target = ' target="_blank"';
         }
+        $confirmMessage = Convert::raw2htmlatt($this->getConfirmMessage());
+
         return "<input type=\"submit\" name=\"action_{$this->name}\" value=\"{$this->title}\" id=\"{$this->id()}\""
-            ." data-url=\"{$this->getUrl()}\" data-dialog=\"{$this->dialog}\" data-ajax=\"{$this->ajax}\"{$target}"
-            ." class=\"cmsinlineaction action{$this->extraClass}\" />";
+            . " data-url=\"{$this->getUrl()}\" data-dialog=\"{$this->dialog}\" data-ajax=\"{$this->ajax}\""
+            . " data-confirm=\"{$confirmMessage}\""
+            . " class=\"cmsinlineaction action{$this->extraClass}\"{$target} />";
     }
 
     public function Title()
@@ -155,7 +169,7 @@ class CmsInlineFormAction_ReadOnly extends FormField
     public function Field($properties = array())
     {
         return "<input type=\"submit\" name=\"action_{$this->name}\" value=\"{$this->title}\" id=\"{$this->id()}\""
-            ." disabled=\"disabled\" class=\"action disabled$this->extraClass\" />";
+            . " disabled=\"disabled\" class=\"action disabled$this->extraClass\" />";
     }
 
     public function Title()
