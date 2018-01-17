@@ -71,6 +71,9 @@ class AppendGridField extends TableFieldCommon
         }
         if ($this->value || $this->initData) {
             $val = $this->value ? $this->value : $this->initData;
+            if(is_string($val)) {
+                $opts['initData'] = json_decode($val, JSON_OBJECT_AS_ARRAY);
+            }
             if (is_array($val)) {
                 $opts['initData'] = array_values($val);
             }
@@ -148,6 +151,11 @@ class AppendGridField extends TableFieldCommon
         }
 
         return $jsonOpts;
+    }
+
+    public function setValue($value)
+    {
+        return parent::setValue($value);
     }
 
     public function dataValue()
