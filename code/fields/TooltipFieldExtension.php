@@ -39,6 +39,13 @@ class TooltipFieldExtension extends Extension
         return $this->owner;
     }
 
+    public function setInnerTooltip($tooltip){
+        $this->tooltip = $tooltip;
+        $this->owner->setAttribute("data-toggle","tooltip");
+        $this->owner->setAttribute("data-html","true");
+        $this->owner->setAttribute("data-original-title",$this->tooltip);
+    }
+
     public function getReadonlyUI()
     {
         return $this->owner->getAttribute('readonly');
