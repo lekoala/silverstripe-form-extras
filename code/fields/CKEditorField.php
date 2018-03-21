@@ -17,7 +17,7 @@ class CKEditorField extends TextareaField
     const TOOLBAR_ADVANCED = 'advanced';
     const TOOLBAR_ADVANCED2 = 'advanced2';
     const TOOLBAR_BASIC = 'basic';
-    const VERSION = '4.7.1';
+    const VERSION = '4.9.0';
     const REMOVE_PLUGINS = 'elementspath';
     const EXTRA_PLUGINS = '';
     const RESIZE_ENABLED = false;
@@ -43,7 +43,7 @@ class CKEditorField extends TextareaField
         $this->package = $config->package ? $config->package : self::PACKAGE_CUSTOM;
 
         if ($this->package == self::PACKAGE_CUSTOM) {
-            $this->scriptSrc = FORM_EXTRAS_PATH . '/javascript/ckeditor/ckeditor.js';
+            $this->scriptSrc = FORM_EXTRAS_PATH . '/javascript/ckeditor/' . $this->version . '/ckeditor.js';
 
             $this->toolbar = $config->toolbar ? $config->toolbar : self::TOOLBAR_ADVANCED;
             $this->removePlugins = ($config->remove_plugins !== null) ? $config->remove_plugins : self::REMOVE_PLUGINS;
@@ -155,7 +155,9 @@ class CKEditorField extends TextareaField
     public function getCdnUrl()
     {
         return str_replace(
-            array('{version}', '{package}'), array($this->version, $this->package), self::CDN_SOURCE
+            array('{version}', '{package}'),
+            array($this->version, $this->package),
+            self::CDN_SOURCE
         );
     }
 
