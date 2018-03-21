@@ -249,19 +249,19 @@ class FlatpickrField extends TextField
             $this->setConfig('locale', $lang);
         }
 
-        Requirements::css('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.4/flatpickr.min.css');
-        Requirements::javascript('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.4/flatpickr.js');
+        Requirements::css('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.3.2/flatpickr.min.css');
+        Requirements::javascript('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.3.2/flatpickr.js');
 
         // Locale
         if ($lang != 'en') {
-            Requirements::javascript("https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.4/l10n/$lang.js");
+            Requirements::javascript("https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.3.2/l10n/$lang.js");
         }
 
         // Range
         $this->setAttribute('data-flatpickr', json_encode($this->config));
         if ($this->rangeInput) {
             $this->setAttribute('data-rangeinput', $this->rangeInput);
-            Requirements::javascript("https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.4/plugins/rangePlugin.js");
+            Requirements::javascript("https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.3.2/plugins/rangePlugin.js");
         }
 
         if($this->disableDateFunctionName) {
