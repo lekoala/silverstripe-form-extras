@@ -68,7 +68,6 @@ class AjaxUploadController extends Controller
 
         $request = $this->getRequest();
 
-        echo '<pre>';print_r($_GET);die();
         // Required: anonymous function reference number as explained above.
         $callback = $request->getVar('CKEditorFuncNum');
         // Optional: instance name (might be used to load a specific configuration file or anything else).
