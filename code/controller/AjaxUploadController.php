@@ -68,10 +68,19 @@ class AjaxUploadController extends Controller
 
         $request = $this->getRequest();
 
+        echo '<pre>';print_r($_GET);die();
+        // Required: anonymous function reference number as explained above.
         $callback = $request->getVar('CKEditorFuncNum');
+        // Optional: instance name (might be used to load a specific configuration file or anything else).
+        $CKEditor = $request->getVar('CKEditor');
+        // Optional: might be used to provide localized messages.
+        $langCode = $request->getVar('langCode');
+        // Optional: compare it with the value of `ckCsrfToken` sent in a cookie to protect your server side uploader against CSRF.
+        // Available since CKEditor 4.5.6.
+        $ckCsrfToken = $request->postVar('ckCsrfToken');
 
         // Depending on the upload context, we return a json or script response
-        $errorFn = function($msg) use ($callback) {
+        $errorFn = function ($msg) use ($callback) {
             if (Director::is_ajax()) {
                 return json_encode(['uploaded' => 0, 'error' => ['message' => $msg]]);
             }
@@ -80,6 +89,7 @@ class AjaxUploadController extends Controller
         };
 
         // Security token is either in the header or in passed as get
+        // * We don't use the token provided by ckeditor
         $token = $request->getHeader('X-Csrf');
         if (!$token) {
             $token = $request->getVar('SecurityID');
@@ -107,6 +117,21 @@ class AjaxUploadController extends Controller
         }
 
         $tmpFile = $_FILES['upload'];
+
+        $phpFileUploadErrors = array(
+            0 => 'There is no error, the file uploaded with success',
+            1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+            2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+            3 => 'The uploaded file was only partially uploaded',
+            4 => 'No file was uploaded',
+            6 => 'Missing a temporary folder',
+            7 => 'Failed to write file to disk.',
+            8 => 'A PHP extension stopped the file upload.',
+        );
+
+        if (!empty($tmpFile['error'])) {
+            return $errorFn($phpFileUploadErrors[$tmpFile['error']]);
+        }
 
         // You will have to move these files outside of this folder afterwards
         $folder = self::TEMPORARY_FOLDER;
