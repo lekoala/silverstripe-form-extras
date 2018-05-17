@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Zend/Locale/Data.php';
+
 /**
  * A currency field with some default behaviours
  *
