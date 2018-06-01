@@ -7,7 +7,6 @@
  */
 class CKEditorField extends TextareaField
 {
-
     const CDN_SOURCE = "//cdn.ckeditor.com/{version}/{package}/ckeditor.js";
     const PACKAGE_BASIC = 'basic';
     const PACKAGE_STANDARD = 'standard';
@@ -17,7 +16,7 @@ class CKEditorField extends TextareaField
     const TOOLBAR_ADVANCED = 'advanced';
     const TOOLBAR_ADVANCED2 = 'advanced2';
     const TOOLBAR_BASIC = 'basic';
-    const VERSION = '4.7.3';
+    const VERSION = '4.7.2';
     const REMOVE_PLUGINS = 'elementspath';
     const EXTRA_PLUGINS = '';
     const RESIZE_ENABLED = false;
@@ -54,6 +53,37 @@ class CKEditorField extends TextareaField
 
         $this->resizeEnabled = ($config->resize_enabled !== null) ? $config->resize_enabled : self::RESIZE_ENABLED;
         $this->updateAsYouType = ($config->update_as_you_type !== null) ? $config->update_as_you_type : self::UPDATE_AS_YOU_TYPE;
+    }
+
+    /**
+    * Set the field value.
+    *
+    * @param mixed $value
+    * @param null|array|DataObject $data {@see Form::loadDataFrom}
+    *
+    * @return $this
+    */
+    public function setValue($value, $data = null)
+    {
+        $value = $this->preventHtmlParserError($value);
+        return parent::setValue($value, $data);
+    }
+
+    /**
+     * Cleanup content so that we don't get "getFirst" errors
+     *
+     * @param string $html
+     * @return string
+     */
+    protected function preventHtmlParserError($html)
+    {
+        // remove empty tags
+        $pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/m";
+        $html = preg_replace($pattern, '', $html);
+        // Run twice just in case we got nested empty tags like figure / figurecaption
+        $html = preg_replace($pattern, '', $html);
+
+        return $html;
     }
 
     /**
