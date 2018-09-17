@@ -7,21 +7,21 @@
  */
 class AccountingField extends TextField
 {
-    protected static $_locale    = null;
-    protected static $_decimals  = null;
+    protected static $_locale = null;
+    protected static $_decimals = null;
     protected static $_thousands = null;
     private static $default_precision = 2;
 
     public function extraClass()
     {
-        return 'text '.parent::extraClass();
+        return 'text ' . parent::extraClass();
     }
 
     public function Field($properties = array())
     {
         FormExtraJquery::include_jquery();
         FormExtraJquery::include_accounting();
-        Requirements::javascript(FORM_EXTRAS_PATH.'/javascript/AccountingField.js');
+        Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/AccountingField.js');
 
         return parent::Field($properties);
     }
@@ -61,9 +61,10 @@ class AccountingField extends TextField
 
     public static function initVariables()
     {
-        $locale           = i18n::get_locale();
-        $symbols          = Zend_Locale_Data::getList($locale, 'symbols');
-        self::$_decimals  = $symbols['decimal'];
+        $locale = i18n::get_locale();
+        require_once 'Zend/Locale/Data.php';
+        $symbols = Zend_Locale_Data::getList($locale, 'symbols');
+        self::$_decimals = $symbols['decimal'];
         self::$_thousands = (self::$_decimals == ',') ? ' ' : ',';
     }
 
@@ -99,8 +100,12 @@ class AccountingField extends TextField
 
         $rawValue = self::unformat($value);
 
-        $formattedValue = number_format($rawValue, $precision, self::$_decimals,
-            self::$_thousands);
+        $formattedValue = number_format(
+            $rawValue,
+            $precision,
+            self::$_decimals,
+            self::$_thousands
+        );
 
         if ($locale) {
             self::$_locale = $currentLocale;
@@ -131,16 +136,23 @@ class AccountingField extends TextField
             $neg = true;
         }
 
-        $cleanString       = preg_replace('/([^0-9\.,])/i', '', $value);
+        $cleanString = preg_replace('/([^0-9\.,])/i', '', $value);
         $onlyNumbersString = preg_replace('/([^0-9])/i', '', $value);
 
         $separatorsCountToBeErased = strlen($cleanString) - strlen($onlyNumbersString)
             - 1;
 
-        $stringWithCommaOrDot     = preg_replace('/([,\.])/', '', $cleanString,
-            $separatorsCountToBeErased);
-        $removedThousendSeparator = preg_replace('/(\.|,)(?=[0-9]{3,}$)/', '',
-            $stringWithCommaOrDot);
+        $stringWithCommaOrDot = preg_replace(
+            '/([,\.])/',
+            '',
+            $cleanString,
+            $separatorsCountToBeErased
+        );
+        $removedThousendSeparator = preg_replace(
+            '/(\.|,)(?=[0-9]{3,}$)/',
+            '',
+            $stringWithCommaOrDot
+        );
 
         $value = str_replace(',', '.', $removedThousendSeparator);
         if ($neg) {
