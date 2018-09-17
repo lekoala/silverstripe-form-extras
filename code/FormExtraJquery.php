@@ -320,6 +320,7 @@ class FormExtraJquery extends Object
 
         // Send default settings according to locale
         $locale = i18n::get_locale();
+        require_once 'Zend/Locale/Data.php';
         $symbols = Zend_Locale_Data::getList($locale, 'symbols');
         $currency = Currency::config()->currency_symbol;
         $decimals = $symbols['decimal'];
