@@ -25,10 +25,11 @@ $_ssFolder = null;
 
 $_ssFolder = Folder::find_or_make('userfiles/' . Member::currentUserID());
 
-// Ends with slash!
+// BASE_PATH doesn't end with slash!
+// Use BASE_PATH instead of relative path to ensure assets are found correctly
 $_uploadDir = 'assets/userfiles/' . Member::currentUserID() . '/';
-$_currentPath = FILEMANAGER_RELATIVE_PATH . $_uploadDir . '/';
-$_thumbsPath = FILEMANAGER_RELATIVE_PATH . 'thumbs/' . Member::currentUserID() . '/';
+$_currentPath = BASE_PATH . '/' . $_uploadDir . '/';
+$_thumbsPath = BASE_PATH . '/thumbs/' . Member::currentUserID() . '/';
 
 // Init thumbs
 if (!is_dir($_thumbsPath)) {
