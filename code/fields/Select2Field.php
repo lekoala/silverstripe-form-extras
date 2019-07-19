@@ -22,6 +22,7 @@ class Select2Field extends ListboxField
     protected $template_result;
     protected $template_selection;
     protected $min_results_for_search;
+    protected $dropdown_parent;
 
     public function __construct($name, $title = null, $source = array(), $value = '', $form = null, $emptyString = null)
     {
@@ -119,6 +120,10 @@ class Select2Field extends ListboxField
         if ($this->template_selection) {
             $opts['templateSelection'] = $this->template_selection;
             $fcts[] = $this->template_selection;
+        }
+        if($this->dropdown_parent) {
+            $opts['dropdownParent'] = $this->dropdown_parent;
+            $fcts[] = $this->dropdown_parent;
         }
 
         $jsonOpts = json_encode($opts);
@@ -272,6 +277,16 @@ class Select2Field extends ListboxField
         } else {
             return parent::saveInto($record);
         }
+    }
+    
+    public function getDropdownParent()
+    {
+        return $this->dropdown_parent;
+    }
+
+    public function setDropdownParent(dropdown_parent)
+    {
+        $this->dropdown_parent = dropdown_parent;
     }
 
     public function getMinResultsForSearch()
