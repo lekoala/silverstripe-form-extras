@@ -286,7 +286,7 @@ class Select2Field extends ListboxField
 
     public function setDropdownParent($dropdown_parent)
     {
-        $this->dropdown_parent = dropdown_parent;
+        $this->dropdown_parent = $dropdown_parent;
     }
 
     public function getMinResultsForSearch()
