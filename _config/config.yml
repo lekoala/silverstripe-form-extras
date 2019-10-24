@@ -20,6 +20,8 @@ FormExtraJquery:
   jquery_ui_theme: 'default'
 BaseUploadField:
   use_subsite_integration: true
+BirthDateField:
+  year_range: 120 # JD-2019.10.24 Make year range configurable
 ImageUploadField:
   # default size in MB
   default_max_file_size: 4
