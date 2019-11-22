@@ -98,7 +98,7 @@ class BirthDateField extends DateField
     public function Years()
     {
         $list = new ArrayList();
-        foreach (range(date('Y') - 120, date('Y')) as $v) {
+        foreach (range(date('Y') - self::config()->year_range, date('Y')) as $v) { // JD-2019.10.24 Make year range configurable
             $list->push(new ArrayData(array(
                 'Value' => $v,
                 'Title' => $v,
