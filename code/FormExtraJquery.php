@@ -16,7 +16,7 @@
  *
  * @author lekoala
  */
-class FormExtraJquery extends Object
+class FormExtraJquery extends SS_Object
 {
 
     const JQUERY_FRAMEWORK = 'framework';
