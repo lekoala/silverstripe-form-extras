@@ -33,6 +33,7 @@ class FrontendUploadField extends BaseUploadField
     protected $useFocuspoint = false;
     protected $galleryUrl = null;
     protected $editEnabled = true;
+    protected $keepOriginalName = false;
     private static $common_image_types = ['jpg', 'jpeg', 'png'];
     private static $common_image_size = '2M';
 
@@ -271,6 +272,27 @@ jQuery(window).load(function() {
     }
 
     /**
+     * By default, the uploaded file will be renamed with field name + date.
+     * This option allow to disable this behavior and keep the original filename.
+     *
+     * @param bool $v
+     * @return $this
+     */
+    public function setKeepOriginalName($v = true)
+    {
+        $this->keepOriginalName = $v;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function KeepOriginalName()
+    {
+        return $this->keepOriginalName;
+    }
+
+    /**
      * Override default item handler
      *
      * @param int $itemID
@@ -345,8 +367,10 @@ jQuery(window).load(function() {
     protected function saveTemporaryFile($tmpFile, &$error = null)
     {
         // Override with a more meaningful name
-        $tmpFile['name'] = $this->name . '_' . time() . '.' . strtolower(pathinfo($tmpFile['name'], PATHINFO_EXTENSION));
-
+        if (!$this->keepOriginalName) {
+            $tmpFile['name'] = $this->name . '_' . time() . '.' . strtolower(pathinfo($tmpFile['name'], PATHINFO_EXTENSION));
+        }
+        
         $file = parent::saveTemporaryFile($tmpFile, $error);
 
         return $file;
