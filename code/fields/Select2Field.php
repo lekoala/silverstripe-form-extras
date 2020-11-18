@@ -29,6 +29,31 @@ class Select2Field extends ListboxField
         parent::__construct($name, $title, $source, $value, $form, $emptyString);
     }
 
+    public static function RequirementsForV3()
+    {
+        Requirements::css(FORM_EXTRAS_PATH . '/javascript/select2-v3/select2.css');
+        Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v3/select2.min.js');
+        // Locale support
+        $lang = i18n::get_lang_from_locale(i18n::get_locale());
+        if ($lang != 'en') {
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v3/select2_locale_' . $lang . '.js');
+        }
+    }
+
+    public static function RequirementsForV4()
+    {
+        // Use full release
+        Requirements::css(FORM_EXTRAS_PATH . '/javascript/select2-v4/css/select2.min.css');
+        FormExtraJquery::include_mousewheel();
+        Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v4/js/select2.full.min.js');
+
+        // Locale support
+        $lang = i18n::get_lang_from_locale(i18n::get_locale());
+        if ($lang != 'en') {
+            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v4/js/i18n/' . $lang . '.js');
+        }
+    }
+
     public function Field($properties = array())
     {
         FormExtraJquery::include_jquery();
@@ -36,24 +61,9 @@ class Select2Field extends ListboxField
         $use_v3 = self::config()->use_v3;
 
         if ($use_v3) {
-            Requirements::css(FORM_EXTRAS_PATH . '/javascript/select2-v3/select2.css');
-            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v3/select2.min.js');
-            // Locale support
-            $lang = i18n::get_lang_from_locale(i18n::get_locale());
-            if ($lang != 'en') {
-                Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v3/select2_locale_' . $lang . '.js');
-            }
+            self::RequirementsForV3();
         } else {
-            // Use full release
-            Requirements::css(FORM_EXTRAS_PATH . '/javascript/select2-v4/css/select2.min.css');
-            FormExtraJquery::include_mousewheel();
-            Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v4/js/select2.full.min.js');
-
-            // Locale support
-            $lang = i18n::get_lang_from_locale(i18n::get_locale());
-            if ($lang != 'en') {
-                Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/select2-v4/js/i18n/' . $lang . '.js');
-            }
+            self::RequirementsForV4();
         }
 
         // Build options
@@ -121,7 +131,7 @@ class Select2Field extends ListboxField
             $opts['templateSelection'] = $this->template_selection;
             $fcts[] = $this->template_selection;
         }
-        if($this->dropdown_parent) {
+        if ($this->dropdown_parent) {
             $opts['dropdownParent'] = $this->dropdown_parent;
             $fcts[] = $this->dropdown_parent;
         }
@@ -182,7 +192,8 @@ class Select2Field extends ListboxField
             $attrs['value'] = $values;
         }
         return array_merge(
-            parent::getAttributes(), $attrs
+            parent::getAttributes(),
+            $attrs
         );
     }
 
@@ -235,8 +246,10 @@ class Select2Field extends ListboxField
             $fieldname = str_replace('[]', '', $this->name);
             $relation = ($fieldname && $record && $record->hasMethod($fieldname)) ? $record->$fieldname() : null;
 
-            if ($fieldname && $record && $relation &&
-                ($relation instanceof RelationList || $relation instanceof UnsavedRelationList)) {
+            if (
+                $fieldname && $record && $relation &&
+                ($relation instanceof RelationList || $relation instanceof UnsavedRelationList)
+            ) {
                 $idList = (is_array($this->value)) ? array_values($this->value) : array();
                 if (!$record->ID) {
                     $record->write(); // record needs to have an ID in order to set relationships
@@ -278,7 +291,7 @@ class Select2Field extends ListboxField
             return parent::saveInto($record);
         }
     }
-    
+
     public function getDropdownParent()
     {
         return $this->dropdown_parent;
@@ -470,20 +483,26 @@ class Select2Field extends ListboxField
             $strValue = implode(',', $strValue);
         }
         $errorMessage = _t(
-            'Select2Field.SOURCE_VALIDATION', "Please select a value within the list provided. %s is not a valid option", array('value' => $strValue)
+            'Select2Field.SOURCE_VALIDATION',
+            "Please select a value within the list provided. %s is not a valid option",
+            array('value' => $strValue)
         );
         $source = $this->getSourceAsArray();
         if (is_array($values)) {
             if (!array_intersect_key($source, array_flip($values))) {
                 $validator->validationError(
-                    $this->name, $errorMessage, "validation"
+                    $this->name,
+                    $errorMessage,
+                    "validation"
                 );
                 return false;
             }
         } else {
             if (!array_key_exists($this->value, $source)) {
                 $validator->validationError(
-                    $this->name, $errorMessage, "validation"
+                    $this->name,
+                    $errorMessage,
+                    "validation"
                 );
                 return false;
             }
