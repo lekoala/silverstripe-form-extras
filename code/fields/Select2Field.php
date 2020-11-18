@@ -297,6 +297,14 @@ class Select2Field extends ListboxField
         return $this->dropdown_parent;
     }
 
+    /**
+     * Add a dropdown parent to this field
+     *
+     * Allows fixing z-index issues in modal for example
+     *
+     * @param string $dropdown_parent Expression or quoted string
+     * @return void
+     */
     public function setDropdownParent($dropdown_parent)
     {
         $this->dropdown_parent = $dropdown_parent;
@@ -450,6 +458,24 @@ class Select2Field extends ListboxField
     public function setAjax($arr)
     {
         $this->ajax = $arr;
+    }
+
+    /**
+     * The controller should return an object with a results key
+     *
+     * Entries should have an id and a text
+     *
+     * @link https://select2.github.io/options.html#ajax
+     * @param string $url
+     * @param string $dataType
+     * @return void
+     */
+    public function setAjaxWizard($url, $dataType = 'json')
+    {
+        $this->ajax = [
+            'url' => $url,
+            'dataType' => $dataType
+        ];
     }
 
     public function getPlaceholder()
