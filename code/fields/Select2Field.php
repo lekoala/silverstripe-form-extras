@@ -500,7 +500,7 @@ class Select2Field extends ListboxField
         if (!$values) {
             return true;
         }
-        if ($this->ajax) {
+        if ($this->ajax || $this->tags) {
             return true;
         }
 
