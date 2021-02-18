@@ -136,16 +136,15 @@ class Select2Field extends ListboxField
             $fcts[] = $this->dropdown_parent;
         }
 
-        $jsonOpts = json_encode($opts);
+        $jsonOpts = json_encode($opts, JSON_FORCE_OBJECT);
 
-        foreach ($fcts as $fct) {
-            $jsonOpts = str_replace('"' . $fct . '"', $fct, $jsonOpts);
-        }
-
+        $this->setAttribute('data-config', $jsonOpts);
         if (FormExtraJquery::isAdminBackend()) {
-            $this->setAttribute('data-config', $jsonOpts);
             Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/Select2Field.js');
         } else {
+            foreach ($fcts as $fct) {
+                $jsonOpts = str_replace('"' . $fct . '"', $fct, $jsonOpts);
+            }
             Requirements::customScript('jQuery("#' . $this->ID() . '").select2(' . $jsonOpts . ');');
         }
 
