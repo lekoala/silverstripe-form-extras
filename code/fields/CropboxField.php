@@ -6,8 +6,8 @@
 class CropboxField extends FormField
 {
 
-    protected $cropWidth = 200;
-    protected $cropHeight = 200;
+    protected $cropboxWidth = 200;
+    protected $cropboxHeight = 200;
 
     public function __construct($name = 'Cropbox', $title = 'Crop Box', $imageID = null, $value = '', $form = null)
     {
@@ -22,29 +22,29 @@ class CropboxField extends FormField
         $this->value = array(
             'CropX' => 0,
             'CropY' => 0,
-            'CropWidth' => 0,
-            'CropHeight' => 0
+            'CropboxWidth' => 0,
+            'CropboxHeight' => 0
         );
     }
 
-    public function getCropWidth()
+    public function getCropboxWidth()
     {
-        return $this->cropWidth;
+        return $this->cropboxWidth;
     }
 
-    public function getCropHeight()
+    public function getCropboxHeight()
     {
-        return $this->cropHeight;
+        return $this->cropboxHeight;
     }
 
-    public function setCropWidth($cropWidth)
+    public function setCropboxWidth($cropWidth)
     {
-        $this->cropWidth = $cropWidth;
+        $this->cropboxWidth = $cropWidth;
     }
 
-    public function setCropHeight($cropHeight)
+    public function setCropboxHeight($cropHeight)
     {
-        $this->cropHeight = $cropHeight;
+        $this->cropboxHeight = $cropHeight;
     }
 
     public function setImage($imageID)
@@ -60,8 +60,8 @@ class CropboxField extends FormField
             $this->setValue(array(
                 'CropX' => $image->CropX,
                 'CropY' => $image->CropY,
-                'CropWidth' => $image->CropWidth,
-                'CropHeight' => $image->CropHeigth
+                'CropboxWidth' => $image->CropboxWidth,
+                'CropboxHeight' => $image->CropboxHeigth
             ));
         }
     }
@@ -102,8 +102,8 @@ class CropboxField extends FormField
             cropheight = image.data('cropheight'),
 			x       = jQuery('[name=CropX]', t),
             y       = jQuery('[name=CropY]', t),
-            w       = jQuery('[name=CropWidth]', t),
-            h       = jQuery('[name=CropHeight]', t)
+            w       = jQuery('[name=CropboxWidth]', t),
+            h       = jQuery('[name=CropboxHeight]', t)
 		;
 
           image.cropbox( {width: cropwidth, height: cropheight, result: {cropX:x.val(), cropY:y.val(), cropW:w.val(), cropH:h.val()} })
@@ -126,8 +126,8 @@ class CropboxImage extends DataExtension
     private static $db = array(
         'CropX' => 'Int',
         'CropY' => 'Int',
-        'CropWidth' => 'Int',
-        'CropHeight' => 'Int',
+        'CropboxWidth' => 'Int',
+        'CropboxHeight' => 'Int',
     );
     private static $defaults = array(
         'CropX' => '0',
@@ -137,7 +137,9 @@ class CropboxImage extends DataExtension
     public function updateCMSFields(FieldList $fields)
     {
         $field = new CropboxField(
-            $name = "Cropbox", $title = "Crop Box", $imageID = $this->owner->ID
+            $name = "Cropbox",
+            $title = "Crop Box",
+            $imageID = $this->owner->ID
         );
         $field->addExtraClass('stacked');
 
@@ -154,10 +156,11 @@ class CropboxImage extends DataExtension
             //Save coords
             $this->owner->CropX = isset($_POST['CropX']) ? (int) $_POST['CropX'] : 0;
             $this->owner->CropY = isset($_POST['CropY']) ? (int) $_POST['CropY'] : 0;
-            $this->owner->CropWidth = isset($_POST['CropWidth']) ? (int) $_POST['CropWidth'] : 0;
-            $this->owner->CropHeight = isset($_POST['CropHeight']) ? (int) $_POST['CropHeight'] : 0;
+            $this->owner->CropWidth = isset($_POST['CropboxWidth']) ? (int) $_POST['CropboxWidth'] : 0;
+            $this->owner->CropHeight = isset($_POST['CropboxHeight']) ? (int) $_POST['CropboxHeight'] : 0;
             //Flush images if crop has changed
-            if ($this->owner->isChanged('CropX') || $this->owner->isChanged('CropY') || $this->owner->isChanged('CropWidth') || $this->owner->isChanged('CropHeight')
+            if (
+                $this->owner->isChanged('CropX') || $this->owner->isChanged('CropY') || $this->owner->isChanged('CropboxWidth') || $this->owner->isChanged('CropboxHeight')
             ) {
                 $this->owner->deleteFormattedImages();
             }
@@ -206,6 +209,5 @@ class CropboxImage extends DataExtension
 
     public function writeTo($path)
     {
-
     }
 }
