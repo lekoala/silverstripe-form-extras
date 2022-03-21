@@ -135,16 +135,22 @@ class Select2Field extends ListboxField
             $opts['dropdownParent'] = $this->dropdown_parent;
             $fcts[] = $this->dropdown_parent;
         }
+        // Support custom data function for extra params
+        // @link https://select2.org/data-sources/ajax#request-parameters
+        if (isset($this->ajax) && isset($this->ajax["data"])) {
+            $fcts[] = $this->ajax["data"];
+        }
 
-        $jsonOpts = json_encode($opts, JSON_FORCE_OBJECT);
+        $jsonOpts = json_encode($opts);
 
-        $this->setAttribute('data-config', $jsonOpts);
+        foreach ($fcts as $fct) {
+            $jsonOpts = str_replace('"' . $fct . '"', $fct, $jsonOpts);
+        }
+
         if (FormExtraJquery::isAdminBackend()) {
+            $this->setAttribute('data-config', $jsonOpts);
             Requirements::javascript(FORM_EXTRAS_PATH . '/javascript/Select2Field.js');
         } else {
-            foreach ($fcts as $fct) {
-                $jsonOpts = str_replace('"' . $fct . '"', $fct, $jsonOpts);
-            }
             Requirements::customScript('jQuery("#' . $this->ID() . '").select2(' . $jsonOpts . ');');
         }
 
