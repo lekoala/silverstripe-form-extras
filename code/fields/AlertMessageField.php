@@ -8,6 +8,7 @@
 class AlertMessageField extends LiteralField
 {
     protected static $count = 0;
+    protected $alertType;
 
     public function __construct($content, $type = 'info', $name = null)
     {
@@ -15,7 +16,26 @@ class AlertMessageField extends LiteralField
         if ($name === null) {
             $name = 'AlertMessageField' . self::$count;
         }
-        $content = '<div class="message '.$type.'" id="'.$name.'">' . $content . '</div>';
+        $this->alertType = $type;
         parent::__construct($name, $content);
+    }
+
+    public function FieldHolder($properties = array())
+    {
+        if ($this->content instanceof ViewableData) {
+            $context = $this->content;
+
+            if ($properties) {
+                $context = $context->customise($properties);
+            }
+
+            $content = $context->forTemplate();
+        } else {
+            $content = $this->content;
+        }
+        $type = $this->alertType;
+        $name = $this->name;
+        $content = '<div class="message ' . $type . ' ' . $this->extraClass() . '" id="' . $name . '">' . $content . '</div>';
+        return $content;
     }
 }
